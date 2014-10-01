@@ -1,0 +1,11 @@
+<%# add navigation links to this file %>
+<!-- <li><%#= link_to 'About', page_path('about') %></li> -->
+<% if session[:user_id].nil? %>
+  <li><%= link_to 'Login via twitter', signin_path, class: 'navbar-brand' %></li>
+<% else %>
+  <li id='userName'>Hello <%= session[:name] %></li>
+  <li><%= link_to 'Logout', signout_path %></li>
+<% end %>
+<li><%= link_to 'Create Event' %></li>
+<li><%= text_field_tag :search %></li>
+<li><%= link_to 'Clear' %></li>

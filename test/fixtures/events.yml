@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  start_date: 2014-10-01
+  end_date: 2014-10-01
+  start_time: 2014-10-01 16:38:46
+  end_time: 2014-10-01 16:38:46
+  address: MyString
+  city: MyString
+  country: MyString
+  contact_number: 1
+  description: MyText
+  status: false
+  image_url: MyString
+
+two:
+  name: MyString
+  start_date: 2014-10-01
+  end_date: 2014-10-01
+  start_time: 2014-10-01 16:38:46
+  end_time: 2014-10-01 16:38:46
+  address: MyString
+  city: MyString
+  country: MyString
+  contact_number: 1
+  description: MyText
+  status: false
+  image_url: MyString
