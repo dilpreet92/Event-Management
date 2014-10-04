@@ -1,0 +1,53 @@
+<%= form_for([@event, @event_session]) do |f| %>
+  <% if @event_session.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@event_session.errors.count, "error") %> prohibited this event_session from being saved:</h2>
+
+      <ul>
+      <% @event_session.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :topic %><br>
+    <%= f.text_field :topic %>
+  </div>
+  <div class="field">
+    <%= f.label :start_date %><br>
+    <%= f.date_select :start_date %>
+  </div>
+  <div class="field">
+    <%= f.label :end_date %><br>
+    <%= f.date_select :end_date %>
+  </div>
+  <div class="field">
+    <%= f.label :start_time %><br>
+    <%= f.time_select :start_time, ignore_date: true %>
+  </div>
+  <div class="field">
+    <%= f.label :end_time %><br>
+    <%= f.time_select :end_time, ignore_date: true %>
+  </div>
+  <div class="field">
+    <%= f.label :location %><br>
+    <%= f.text_field :location %>
+  </div>
+    <div class="field">
+    <%= f.label :description %><br>
+    <%= f.text_field :description %>
+  </div>
+  <div class="field">
+    <%= f.label :speaker %><br>
+    <%= f.text_field :speaker %>
+  </div>
+  <div class="field">
+    <%= f.label :status %><br>
+    <%= f.check_box :status %>Enable
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

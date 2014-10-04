@@ -13,8 +13,15 @@
       <%= render 'layouts/navigation' %>
     </header>
     <main role="main">
-       <%= render 'layouts/messages' %>
-       <%= yield %>
+      <%= render 'layouts/messages' %>
+        <div id='tabs'>
+          <%= link_to 'All Events', events_path %> 
+          <% if current_user %>|
+            <%= link_to 'Events I Created', myevents_path %> |
+            <%= link_to "Event I'm Attending" %> |
+          <% end %>
+        </div> 
+      <%= yield %>
     </main>
   </body>
 </html>

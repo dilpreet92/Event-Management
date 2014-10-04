@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  topic: MyString
+  start_date: 2014-10-04
+  end_date: 2014-10-04
+  start_time: 2014-10-04 10:59:00
+  end_time: 2014-10-04 10:59:00
+  location: MyString
+  speaker: MyString
+  status: false
+  event_id: 1
+
+two:
+  topic: MyString
+  start_date: 2014-10-04
+  end_date: 2014-10-04
+  start_time: 2014-10-04 10:59:00
+  end_time: 2014-10-04 10:59:00
+  location: MyString
+  speaker: MyString
+  status: false
+  event_id: 1

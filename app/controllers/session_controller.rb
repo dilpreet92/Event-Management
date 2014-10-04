@@ -1,5 +1,6 @@
 class SessionController < ApplicationController
   skip_before_action :authorize
+
   def new
     redirect_to '/auth/twitter'
   end

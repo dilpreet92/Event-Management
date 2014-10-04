@@ -62,5 +62,28 @@
 
 <% if @event.user_id == session[:user_id] %>
   <%= link_to 'Edit', edit_event_path(@event) %>
-  <%= link_to 'Cancel', events_path %>
-<% end %>  
+  <%= link_to 'Add new Session', new_event_event_session_path(event_id: @event.id) %>
+<% end %>
+<% if @event.event_sessions.empty? %>
+  <h4> No Sessions Created Yet </h4>
+<% else %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Topic</th>
+        <th>Start date</th>
+        <th>End date</th>
+        <th>Start time</th>
+        <th>End time</th>
+        <th>Location</th>
+        <th>Speaker</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+    <tbody> 
+      <%= render @event.event_sessions %>
+    </tbody>
+  </table>
+<% end %>

@@ -5,9 +5,12 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
-    @events = Event.all
+    @events = Event.where(status: true)
   end
 
+  def my_events
+    @events = Event.where(user_id: session[:user_id])
+  end
   # GET /events/1
   # GET /events/1.json
   def show
