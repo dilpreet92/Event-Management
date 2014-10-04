@@ -60,5 +60,7 @@
   <%= @event.image_url %>
 </p>
 
-<%= link_to 'Edit', edit_event_path(@event) %> |
-<%= link_to 'Back', events_path %>
+<% if @event.user_id == session[:user_id] %>
+  <%= link_to 'Edit', edit_event_path(@event) %>
+  <%= link_to 'Cancel', events_path %>
+<% end %>  

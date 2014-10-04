@@ -1,5 +1,5 @@
 class SessionController < ApplicationController
-
+  skip_before_action :authorize
   def new
     redirect_to '/auth/twitter'
   end
@@ -10,7 +10,6 @@ class SessionController < ApplicationController
                       :id => auth['uid'].to_s).first || User.create_with_omniauth(auth)
     reset_session
     session[:user_id] = @user.id
-    session[:name] = @user.name
     redirect_to root_url, :notice => 'Signed in!'
   end
 
