@@ -8,6 +8,9 @@ class Event < ActiveRecord::Base
   validates :contact_number, length: { is: 10 }
   validate :start_date_cannot_be_greater_than_end_date
   validate :start_time_cannot_be_greater_than_end_time
+  scope :enabled, -> { where(status: true) }
+  scope :upcoming, -> { where("end_date >= ?", Date.today).order(:start_date) }
+  scope :past, -> { where("end_date < ?", Date.today).order(start_date: :desc) }
 
   def start_date_cannot_be_greater_than_end_date
     if start_date < Date.today

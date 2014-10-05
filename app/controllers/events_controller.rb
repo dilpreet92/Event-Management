@@ -1,15 +1,23 @@
 class EventsController < ApplicationController
-  skip_before_action :authorize, only: [:index, :show]
+  skip_before_action :authorize, only: [:index, :show, :upcoming_events, :past_events]
   before_action :set_event, only: [:show, :edit, :update, :destroy]
 
   # GET /events
   # GET /events.json
   def index
-    @events = Event.where(status: true)
+    @events = enabled_and_apply_pagination
   end
 
   def my_events
-    @events = Event.where(user_id: session[:user_id])
+    @events = enabled_and_apply_pagination.where(user_id: session[:user_id])
+  end
+
+  def upcoming_events
+    @events = enabled_and_apply_pagination.upcoming
+  end
+
+  def past_events
+    @events = enabled_and_apply_pagination.past
   end
   # GET /events/1
   # GET /events/1.json
@@ -68,6 +76,10 @@ class EventsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def enabled_and_apply_pagination
+      Event.enabled.paginate(:page => params[:page], :per_page => 5)
+    end
+
     def set_event
       @event = Event.find(params[:id])
     end

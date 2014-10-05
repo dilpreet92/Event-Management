@@ -58,6 +58,7 @@ group :development do
   gem 'quiet_assets'
   gem 'rails_layout'
 end
+gem 'will_paginate'
 
 # Use unicorn as the app server
 # gem 'unicorn'
