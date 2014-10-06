@@ -69,7 +69,7 @@
   <% end %>    
 </p>  
 
-<% if @event.user_id == session[:user_id] %>
+<% if @event.user_id == session[:user_id] && upcoming_event?(@event) %>
   <%= link_to 'Edit', edit_event_path(@event) %>
   <%= link_to 'Add new Session', new_event_event_session_path(event_id: @event.id) %>
 <% end %>
