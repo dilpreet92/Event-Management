@@ -1,11 +1,5 @@
 <%# add navigation links to this file %>
 <!-- <li><%#= link_to 'About', page_path('about') %></li> -->
-<% unless current_user %>
-  <li><%= link_to 'Login via twitter', signin_path, class: 'navbar-brand' %></li>
-<% else %>
-  <li id='userName'>Hello <%= @current_user.name %></li>
-  <li><%= link_to 'Logout', signout_path %></li>
-<% end %>
 <li><%= link_to 'Create Event', new_event_path %></li>
 <li>
   <%= form_tag('/search', method: :get) do %>

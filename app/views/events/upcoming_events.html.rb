@@ -1,3 +1,0 @@
-<%= link_to 'Upcoming Events', upcoming_path %>
-<%= link_to 'Past Events', past_path %>
-<%= render 'display' %>

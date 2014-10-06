@@ -73,6 +73,6 @@ class EventSessionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_session_params
-      params.require(:event_session).permit(:topic, :start_date, :end_date, :start_time, :end_time, :location, :speaker, :description, :status, :event_id)
+      params.require(:event_session).permit(:topic, :start_date, :end_date, :location, :speaker, :description, :status, :event_id)
     end
 end

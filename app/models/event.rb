@@ -7,27 +7,18 @@ class Event < ActiveRecord::Base
   validates :description, length: { maximum: 500 }
   validates :contact_number, length: { is: 10 }
   validate :start_date_cannot_be_greater_than_end_date
-  validate :start_time_cannot_be_greater_than_end_time
   scope :enabled, -> { where(status: true) }
-  scope :upcoming, -> { where("end_date >= ?", Date.today).order(:start_date) }
-  scope :past, -> { where("end_date < ?", Date.today).order(start_date: :desc) }
+  scope :upcoming, -> { where("end_date >= ?", Time.current).order(:start_date) }
+  scope :past, -> { where("end_date < ?", Time.current).order(start_date: :desc) }
   scope :search, ->(event) { where("name LIKE ? OR city LIKE ? OR country LIKE ?",
                             "%#{ event }%", "%#{ event }%", "%#{ event }%") }
 
   def start_date_cannot_be_greater_than_end_date
-    if start_date < Date.today
+    if start_date < Time.current
       errors.add(:start_date, 'Start Date should be in present')
-    elsif start_date > end_date
-      errors.add(:end_date, 'Start Date should be greater than or equal to End Date')
+    elsif start_date >= end_date
+      errors.add(:end_date, 'Start Date should be greater than End Date')
     end
   end
-
-  def start_time_cannot_be_greater_than_end_time
-    if start_time >= end_time
-      errors.add(:end_time, 'Start Time should be greate than End Time')
-    elsif start_time >= Time.now
-      errors.add(:start_time, 'Events are supposed to be scheduled in future')
-    end
-  end    
 
 end

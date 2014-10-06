@@ -24,8 +24,10 @@
           <%= link_to 'Events I Created', myevents_path %> |
           <%= link_to "Event I'm Attending", attending_path %> |
         <% end %>
-      </div> 
-      <%= yield %>
+      </div>
+      <div id="results"> 
+        <%= yield %>
+      </div>  
     </main>
   </body>
 </html>
