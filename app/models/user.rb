@@ -1,7 +1,8 @@
 class User < ActiveRecord::Base
   has_many :events
-  has_many :user_event_associations
-  has_many :attending_events, through: :user_event_associations, source: :event
+  has_many :user_session_associations
+  has_many :attending_events, through: :user_session_associations, source: :event
+  has_many :attending_sessions, through: :user_session_associations, source: :session
   validates :name, presence: true
 
   def self.create_with_omniauth(auth)
@@ -9,7 +10,8 @@ class User < ActiveRecord::Base
       user.provider = auth['provider']
       user.id = auth['uid']
       if auth['info']
-         user.name = auth['info']['name'] || ""
+        user.handle = auth['info']['urls']['Twitter']
+        user.name = auth['info']['name'] || ""
       end
     end
   end

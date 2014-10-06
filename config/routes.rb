@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   
-
   resources :events do
     resources :event_sessions
   end
@@ -8,6 +7,9 @@ Rails.application.routes.draw do
   get '/myevents' => 'events#my_events'
   get '/upcoming' => 'events#upcoming_events'
   get '/past' => 'events#past_events'
+  get '/search' => 'events#search_events'
+  get '/add_to_attendes_list' => 'events#add_to_attendes_list'
+  get 'attending' => 'events#my_attending_events'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

@@ -7,5 +7,9 @@
   <li><%= link_to 'Logout', signout_path %></li>
 <% end %>
 <li><%= link_to 'Create Event', new_event_path %></li>
-<li><%= text_field_tag :search %></li>
-<li><%= link_to 'Search' %></li>
+<li>
+  <%= form_tag('/search', method: :get) do %>
+    <%= text_field_tag :search %>
+    <%= submit_tag 'Search' %>
+  <% end %>
+</li>

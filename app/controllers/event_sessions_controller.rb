@@ -7,7 +7,13 @@ class EventSessionsController < ApplicationController
     @event_sessions = EventSession.all
   end
   
-
+  def add_to_attendes_list
+    event = Event.find(params[:event_id])
+    add_to_attendes_list = event.user_event_associations.build(user_id: session[:user_id])
+    if add_to_attendes_list.save
+      redirect_to events_url, notice: "You are attending #{ event.name }"
+    end
+  end
   # GET /event_sessions/1
   # GET /event_sessions/1.json
   def show

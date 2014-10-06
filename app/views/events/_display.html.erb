@@ -1,4 +1,7 @@
 <br>
+<% if @events.empty? %>
+  <h4>No Such Events </h4>
+<% else %>   
 <%= will_paginate @events %>
 <table class="table table-striped">
   <thead>
@@ -25,3 +28,4 @@
 </table>
 
 <br>
+<% end %>

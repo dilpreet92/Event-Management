@@ -1,5 +1,7 @@
 class EventSession < ActiveRecord::Base
   belongs_to :event
+  has_many :user_session_associations
+  has_many :attending_users, through: :user_session_associations, source: :user
   validates :topic, :location, :description, presence: true
   validates :description, length: { maximum: 250 }
   validate :session_start_date_should_be_between_event_range

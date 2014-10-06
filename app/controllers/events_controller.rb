@@ -12,6 +12,27 @@ class EventsController < ApplicationController
     @events = enabled_and_apply_pagination.where(user_id: session[:user_id])
   end
 
+  def search_events
+    if params[:search].blank?
+      @events = enabled_and_apply_pagination.upcoming
+    else
+      @events = enabled_and_apply_pagination.search(params[:search])
+    end
+  end
+
+  def my_attending_events
+    user = User.find(session[:user_id])
+    @events = user.attending_events.enabled.paginate(:page => params[:page], :per_page => 5).uniq
+  end
+  
+  def add_to_attendes_list
+    event = Event.find(params[:event_id])
+    add_to_attendes_list = event.user_session_associations.build(user_id: session[:user_id], session_id: params[:session_id])
+    if add_to_attendes_list.save
+      redirect_to events_url, notice: "You are now attending #{ event.name }"
+    end
+  end
+
   def upcoming_events
     @events = enabled_and_apply_pagination.upcoming
   end
@@ -22,6 +43,8 @@ class EventsController < ApplicationController
   # GET /events/1
   # GET /events/1.json
   def show
+    @event = Event.find(params[:id])
+    @users = @event.attending_users.uniq
   end
 
   # GET /events/new

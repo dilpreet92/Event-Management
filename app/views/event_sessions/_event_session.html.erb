@@ -8,8 +8,10 @@
   <td><%= event_session.speaker %></td>
   <td><%= event_session.description %></td>
   <td><%= event_session.status %></td>
-  <td>Attend Session </td>
   <% if session[:user_id] == event_session.event.user_id %>
     <td><%= link_to 'Edit', edit_event_event_session_path(event_id: event_session.event.id, id: event_session) %></td>
+  <% else %>
+    <td><%= link_to 'Attend Session', add_to_attendes_list_path(session_id: event_session.id,
+    event_id: event_session.event_id) %> </td>  
   <% end %>  
 </tr>

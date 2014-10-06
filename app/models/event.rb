@@ -1,7 +1,7 @@
 class Event < ActiveRecord::Base
   belongs_to :user
-  has_many :user_event_associations
-  has_many :attending_users, through: :user_event_associations, source: :user
+  has_many :user_session_associations
+  has_many :attending_users, through: :user_session_associations, source: :user
   has_many :event_sessions, dependent: :destroy
   validates :name, :address, :city, :country, :contact_number, :description, presence: true
   validates :description, length: { maximum: 500 }
@@ -11,6 +11,8 @@ class Event < ActiveRecord::Base
   scope :enabled, -> { where(status: true) }
   scope :upcoming, -> { where("end_date >= ?", Date.today).order(:start_date) }
   scope :past, -> { where("end_date < ?", Date.today).order(start_date: :desc) }
+  scope :search, ->(event) { where("name LIKE ? OR city LIKE ? OR country LIKE ?",
+                            "%#{ event }%", "%#{ event }%", "%#{ event }%") }
 
   def start_date_cannot_be_greater_than_end_date
     if start_date < Date.today

@@ -14,13 +14,17 @@
     </header>
     <main role="main">
       <%= render 'layouts/messages' %>
-        <div id='tabs'>
-          <%= link_to 'All Events', events_path %> 
-          <% if current_user %>|
-            <%= link_to 'Events I Created', myevents_path %> |
-            <%= link_to "Event I'm Attending" %> |
-          <% end %>
-        </div> 
+      <div id='welcomeImage'>
+        <%= image_tag("rails.jpeg", size: '20*30') %>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
+      </div>
+      <div id='tabs'>
+        <%= link_to 'All Events', events_path %> 
+        <% if current_user %>|
+          <%= link_to 'Events I Created', myevents_path %> |
+          <%= link_to "Event I'm Attending", attending_path %> |
+        <% end %>
+      </div> 
       <%= yield %>
     </main>
   </body>
