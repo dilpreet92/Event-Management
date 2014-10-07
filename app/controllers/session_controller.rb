@@ -2,6 +2,7 @@ class SessionController < ApplicationController
   skip_before_action :authorize
 
   def new
+    #FIXME_AB: use url helper. don't hard code your urls
     redirect_to '/auth/twitter'
   end
 

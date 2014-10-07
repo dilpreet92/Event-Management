@@ -1,9 +1,12 @@
 Rails.application.routes.draw do
   
   resources :events do
+    #FIXME_AB: should be sessions not event_sessoins
     resources :event_sessions
   end
   
+
+  #FIXME_AB: use REST
   get '/myevents' => 'events#my_events'
   get '/upcoming' => 'events#upcoming_events'
   get '/past' => 'events#past_events'

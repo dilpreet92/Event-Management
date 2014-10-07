@@ -9,6 +9,7 @@ class EventsController < ApplicationController
   end
 
   def my_events
+    #FIXME_AB: user current_user.id instaed of session[:user_id]
     @events = enabled_and_apply_pagination.where(user_id: session[:user_id])
   end
 
@@ -21,7 +22,9 @@ class EventsController < ApplicationController
   end
 
   def my_attending_events
+    #FIXME_AB: current_user
     user = User.find(session[:user_id])
+    #FIXME_AB: user.attending_events should be returning unique events only
     @events = user.attending_events.enabled.paginate(:page => params[:page], :per_page => 5).uniq
   end
   
@@ -44,11 +47,13 @@ class EventsController < ApplicationController
   # GET /events/1.json
   def show
     @event = Event.find(params[:id])
+    #FIXME_AB: it shoudl be event.attendees which would return unique users.
     @users = @event.attending_users.uniq
   end
 
   # GET /events/new
   def new
+    #FIXME_AB: current_user.events.build
     @event = Event.new
   end
 
@@ -59,6 +64,7 @@ class EventsController < ApplicationController
   # POST /events
   # POST /events.json
   def create
+    #FIXME_AB: user current_user here current_user.events.build....
     @user = User.find(session[:user_id])
     @event = @user.events.build(event_params)
 
@@ -90,6 +96,7 @@ class EventsController < ApplicationController
   # DELETE /events/1
   # DELETE /events/1.json
   def destroy
+    #FIXME_AB: what if there was an excepton in destroy or it was not destroyed
     @event.destroy
     respond_to do |format|
       format.html { redirect_to events_url, notice: 'Event was successfully destroyed.' }
@@ -99,6 +106,7 @@ class EventsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    #FIXME_AB: get_enabled_events
     def enabled_and_apply_pagination
       Event.enabled.paginate(:page => params[:page], :per_page => 5)
     end

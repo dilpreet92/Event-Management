@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.6'
 # Use sqlite3 as the database for Active Record
+#FIXME_AB: Don't use sqlite use mysql2
 gem 'sqlite3'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
@@ -37,28 +38,37 @@ gem 'bcrypt', '~> 3.1.7'
 #gem 'jbuilder', '~> 2.0'
 #g#em 'sdoc', '~> 0.4.0',          group: :doc
 #gem 'spring',        group: :development
+
+#FIXME_AB: I am not sure why we need high_voltage gem in the app, also it is being added twice
 gem 'high_voltage'
 gem 'omniauth'
 gem 'omniauth-twitter'
+#FIXME_AB: I think we also don't need simple_form
 gem 'simple_form'
 gem 'therubyracer', :platform=>:ruby
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_21]
   gem 'quiet_assets'
+
   gem 'rails_layout'
 end
 
 gem 'bootstrap-sass'
 gem 'high_voltage'
+#FIXME_AB: remove all duplicate gems
 gem 'therubyracer', :platform=>:ruby
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_21]
   gem 'quiet_assets'
+  #FIXME_AB: Cross check if we need this gem
   gem 'rails_layout'
 end
+
 gem 'will_paginate'
+
+#FIXME_AB: remove commented code to keep clean
 
 # Use unicorn as the app server
 # gem 'unicorn'

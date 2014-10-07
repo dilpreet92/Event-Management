@@ -4,6 +4,9 @@
 # is enabled by default.
 
 # Enable parameter wrapping for JSON. You can disable this by setting :format to an empty array.
+
+#FIXME_AB: Read about this, you many need this when you will expose APIs
+
 ActiveSupport.on_load(:action_controller) do
   wrap_parameters format: [:json] if respond_to?(:wrap_parameters)
 end

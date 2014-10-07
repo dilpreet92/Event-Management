@@ -35,3 +35,5 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 end
+
+#FIXME_AB: Learn about development prouduciton and test environments. Explain to Akhil. Also show me how to add a new environment for example staging. You may need to add a new env. when you deploy the app.
