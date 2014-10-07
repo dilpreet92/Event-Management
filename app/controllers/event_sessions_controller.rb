@@ -1,9 +1,13 @@
 class EventSessionsController < ApplicationController
   before_action :set_event_session, only: [:show, :edit, :update, :destroy]
 
+  #FIXME_AB: delete unused actoins
+  #FIXME_AB: authorization? for update and edit/destroy
+
   # GET /event_sessions
   # GET /event_sessions.json
   def index
+    #FIXME_AB: De we need this action. Are we displaying all sessions regardless of event?
     @event_sessions = EventSession.all
   end
 

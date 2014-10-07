@@ -2,6 +2,8 @@ class EventsController < ApplicationController
   skip_before_action :authorize, only: [:index, :show, :upcoming_events, :past_events, :search_events]
   before_action :set_event, only: [:show, :edit, :update, :destroy]
 
+  #FIXME_AB: need authorization on controller level not in views
+
   # GET /events
   # GET /events.json
   def index
@@ -28,7 +30,9 @@ class EventsController < ApplicationController
     @events = user.attending_events.enabled.paginate(:page => params[:page], :per_page => 5).uniq
   end
   
+  #FIXME_AB: can be named as rsvp
   def add_to_attendes_list
+    #FIXME_AB: Since it is a event's session specific action so should be in your event session controller
     event = Event.find(params[:event_id])
     add_to_attendes_list = event.user_session_associations.build(user_id: session[:user_id], session_id: params[:session_id])
     if add_to_attendes_list.save
@@ -59,6 +63,7 @@ class EventsController < ApplicationController
 
   # GET /events/1/edit
   def edit
+    #FIXME_AB: only the creator of event can be able to edit
   end
 
   # POST /events
@@ -82,6 +87,8 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1
   # PATCH/PUT /events/1.json
   def update
+    #FIXME_AB: only the creator of event can be able to edit
+
     respond_to do |format|
       if @event.update(event_params)
         format.html { redirect_to @event, notice: 'Event was successfully updated.' }
@@ -96,6 +103,7 @@ class EventsController < ApplicationController
   # DELETE /events/1
   # DELETE /events/1.json
   def destroy
+    #FIXME_AB: only owner / super admin can destroy 
     #FIXME_AB: what if there was an excepton in destroy or it was not destroyed
     @event.destroy
     respond_to do |format|

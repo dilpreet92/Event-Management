@@ -3,23 +3,28 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Management</title>
+    <% #FIXME_AB: use proper meta description not rails bootstrap -%>
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Rails Bootstrap" %>">
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <% #FIXME_AB: read about csrf_meta_tag.  -%>
     <%= csrf_meta_tags %>
   </head>
   <body>
     <header>
+      <% #FIXME_AB: Its better to create a shared directory and put all such partials there  -%>
       <%= render 'layouts/navigation' %>
     </header>
     <main role="main">
       <%= render 'layouts/messages' %>
       <div id='welcomeImage'>
         <%= image_tag("rails.jpeg", size: '20*30') %>
+        <% #FIXME_AB: remove dummy text -%>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
       </div>
       <div id='tabs'>
         <%= link_to 'All Events', events_path %> 
+        <% #FIXME_AB: if logged_in? -%>
         <% if current_user %>|
           <%= link_to 'Events I Created', myevents_path %> |
           <%= link_to "Event I'm Attending", attending_path %> |

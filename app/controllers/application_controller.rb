@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   #FIXME_AB: Learn about it a bit and explain.  
   protect_from_forgery with: :exception
   
+  #FIXME_AB: should be authenticate not authorize
   def authorize
     #FIXME_AB: as discussed if we have moved current_user to application controller, we can us that here.
     unless User.find_by(id: session[:user_id])

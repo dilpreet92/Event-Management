@@ -3,9 +3,11 @@
   <div class ="container">
     <ul class="nav navbar-nav">
       <li><%= Date.today %></li>
+      <% #FIXME_AB: use logged_in? -%>
       <% unless current_user %>
         <li><%= link_to 'Login via twitter', signin_path, class: 'navbar-brand' %></li>
       <% else %>
+      <% #FIXME_AB: current_user.name not @current_user -%>
         <li id='userName'>Hello <%= @current_user.name %></li>
         <li><%= link_to 'Logout', signout_path %></li>
       <% end %>

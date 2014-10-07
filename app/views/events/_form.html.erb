@@ -1,4 +1,5 @@
 <%= form_for(@event) do |f| %>
+<% #FIXME_AB: this is a generic code, we may need it many places, extract out as partial. -%>
   <% if @event.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
@@ -15,6 +16,7 @@
     <%= f.label :name %><br>
     <%= f.text_field :name %>
   </div>
+  <% #FIXME_AB: low prioirty, but we would use jquery date picker -%>
   <div class="field">
     <%= f.label :start_date %><br>
     <%= f.datetime_select :start_date %>
@@ -48,6 +50,7 @@
     <%= f.check_box :status %> Enable
   </div>
   <div class="field">
+    <% #FIXME_AB: file upload here -%>
     <%= f.label :image_url %><br>
     <%= f.text_field :image_url %>
   </div>
