@@ -1,25 +1,26 @@
 Rails.application.routes.draw do
   
   resources :events do
-    resources :event_sessions
+    resources :sessions
   end
   
   get '/myevents' => 'events#my_events'
   get '/upcoming' => 'events#upcoming_events'
   get '/past' => 'events#past_events'
   get '/search' => 'events#search_events'
-  get '/add_to_attendes_list' => 'events#add_to_attendes_list'
-  get 'attending' => 'events#my_attending_events'
+  get '/add_to_attendes_list' => 'sessions#add_to_attendes_list'
+  get '/attending' => 'events#my_attending_events'
+  get '/remove_from_attendes_list' => 'sessions#remove_from_attendes_list'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
   root 'events#index'
 
-  get '/signin' => 'session#new', :as => :signin
-  get '/auth/:provider/callback' => 'session#create'
-  get '/signout' => 'session#destroy'
-  get '/auth/failure' => 'session#failure'
+  get '/signin', to: redirect('/auth/twitter'), :as => :signin
+  get '/auth/:provider/callback' => 'user_session#create'
+  get '/signout' => 'user_session#destroy'
+  get '/auth/failure' => 'user_session#failure'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

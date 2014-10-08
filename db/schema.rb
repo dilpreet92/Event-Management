@@ -11,20 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141006123542) do
-
-  create_table "event_sessions", force: true do |t|
-    t.string   "topic"
-    t.datetime "start_date"
-    t.datetime "end_date"
-    t.string   "location"
-    t.string   "speaker"
-    t.boolean  "status",      default: true
-    t.integer  "event_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "description"
-  end
+ActiveRecord::Schema.define(version: 20141007155004) do
 
   create_table "events", force: true do |t|
     t.string   "name"
@@ -35,19 +22,31 @@ ActiveRecord::Schema.define(version: 20141006123542) do
     t.string   "country"
     t.integer  "contact_number"
     t.text     "description"
-    t.boolean  "status",         default: true
+    t.boolean  "enable",         default: true
     t.string   "image_url"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
   end
 
-  create_table "user_session_associations", force: true do |t|
+  create_table "rsvps", force: true do |t|
     t.integer  "user_id"
     t.integer  "session_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "sessions", force: true do |t|
+    t.string   "topic"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.string   "location"
+    t.string   "speaker"
+    t.boolean  "status",      default: true
     t.integer  "event_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "description"
   end
 
   create_table "users", force: true do |t|

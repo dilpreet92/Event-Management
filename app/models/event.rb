@@ -1,24 +1,34 @@
 class Event < ActiveRecord::Base
+
   belongs_to :user
-  has_many :user_session_associations
-  has_many :attending_users, through: :user_session_associations, source: :user
-  has_many :event_sessions, dependent: :destroy
+
+  has_many :sessions, dependent: :restrict_with_exception
+
   validates :name, :address, :city, :country, :contact_number, :description, presence: true
   validates :description, length: { maximum: 500 }
-  validates :contact_number, length: { is: 10 }
-  validate :start_date_cannot_be_greater_than_end_date
-  scope :enabled, -> { where(status: true) }
+  validates :contact_number, numericality: { only_integer: true }
+  validate :validate_date
+
+  scope :enabled, -> { where(enable: true) }
   scope :upcoming, -> { where("end_date >= ?", Time.current).order(:start_date) }
   scope :past, -> { where("end_date < ?", Time.current).order(start_date: :desc) }
-  scope :search, ->(event) { where("name LIKE ? OR city LIKE ? OR country LIKE ?",
-                            "%#{ event }%", "%#{ event }%", "%#{ event }%") }
+  scope :search, ->(event) { where("name LIKE :event OR city LIKE :event OR country LIKE :event",
+                            event: "%#{ event }%") }
 
-  def start_date_cannot_be_greater_than_end_date
-    if start_date < Time.current
-      errors.add(:start_date, 'Start Date should be in present')
-    elsif start_date >= end_date
-      errors.add(:end_date, 'Start Date should be greater than End Date')
+  def validate_date
+    if start_date < Time.current || start_date >= end_date
+      errors.add(:start_date, ' Should be less than end date and Should be a future date')
     end
+  end
+
+  def get_attendes
+    sessions.collect do |session|
+      session.attendes
+    end.flatten.uniq
+  end
+
+  def upcoming?
+    Event.upcoming.include?(self)
   end
 
 end
