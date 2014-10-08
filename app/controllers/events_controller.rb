@@ -26,11 +26,11 @@ class EventsController < ApplicationController
   
 
   def upcoming_events
-    @events = get_enabled_events.upcoming
+    @events = get_enabled_events.upcoming.order_by(:asc)
   end
 
   def past_events
-    @events = get_enabled_events.past
+    @events = get_enabled_events.past.order_by(:desc)
   end
 
   def show
@@ -100,6 +100,10 @@ class EventsController < ApplicationController
     end
 
     def event_params
-      params.require(:event).permit(:name, :start_date, :end_date, :address, :city, :country, :contact_number, :description, :enable, :image_url)
+      params.require(:event).permit(permitted_params)
     end
+
+    def permitted_params
+      [ :name, :start_date, :end_date, :address, :city, :country, :contact_number, :description, :enable, :image_url ]
+    end  
 end

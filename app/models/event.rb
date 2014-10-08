@@ -10,8 +10,9 @@ class Event < ActiveRecord::Base
   validate :validate_date
 
   scope :enabled, -> { where(enable: true) }
-  scope :upcoming, -> { where("end_date >= ?", Time.current).order(:start_date) }
-  scope :past, -> { where("end_date < ?", Time.current).order(start_date: :desc) }
+  scope :order_by, -> (sort){ order(start_date: sort) }
+  scope :upcoming, -> { where("end_date >= ?", Time.current) }
+  scope :past, -> { where("end_date < ?", Time.current) }
   scope :search, ->(event) { where("name LIKE :event OR city LIKE :event OR country LIKE :event",
                             event: "%#{ event }%") }
 
