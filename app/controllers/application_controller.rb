@@ -22,3 +22,6 @@ class ApplicationController < ActionController::Base
     end
 
 end
+
+
+#FIXME_AB: remove unused js and css files
