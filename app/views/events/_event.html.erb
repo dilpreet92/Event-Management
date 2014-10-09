@@ -1,5 +1,5 @@
 <tr>
-  <td><%= link_to event.name, event %></td>
+  <td><%= link_to event.name, event_path(id: event) %></td>
   <td><%= event.start_date %></td>
   <td><%= event.end_date %></td>
   <td><%= event.address %></td>

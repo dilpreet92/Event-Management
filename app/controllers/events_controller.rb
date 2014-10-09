@@ -38,7 +38,7 @@ class EventsController < ApplicationController
   
 
   def user_attending_events
-    @events = get_enabled_events.where(id: current_user.get_attending_events)
+    @events = current_user.attending_events.enabled.paginate(:page => params[:page], :per_page => 5).uniq
   end
 
   def show

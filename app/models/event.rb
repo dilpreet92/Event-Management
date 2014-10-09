@@ -37,6 +37,10 @@ class Event < ActiveRecord::Base
     end_date >= Time.current 
   end
 
+  def to_param
+    "#{id}-#{name}"
+  end
+
   private
   #FIXME_AB: low priority: think about a better name
   def validate_date
