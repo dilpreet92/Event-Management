@@ -15,14 +15,16 @@
     <main role="main">
       <%= render 'index/messages' %>
       <div>
-        <%= link_to 'All Events', events_path %> 
+        <%= link_to 'All Events', events_path, id: 'allEvents' %>
         <% if logged_in? %>|
           <%= link_to 'Events I Created', myevents_path %> |
           <%= link_to "Event I'm Attending", attending_path %> |
         <% end %>
       </div>
-      <div id="results"> 
-        <%= yield %>
+      <div id='mainView'>
+        <div id='results'>
+          <%= yield %>
+        </div>  
       </div>  
     </main>
   </body>

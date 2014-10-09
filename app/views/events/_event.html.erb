@@ -7,5 +7,5 @@
   <td><%= event.country %></td>
   <td><%= event.contact_number %></td>
   <td><%= event.description %></td>
-  <td><%= event.image_url %></td>
+  <td><%= image_tag event.logo.url(:thumb) %></td>
 </tr>

@@ -9,7 +9,6 @@
   <% if session.event.upcoming? %>
     <% if logged_in? && current_user.id == session.event.user_id %>
       <td><%= link_to 'Edit', edit_event_session_path(event_id: session.event.id, id: session) %></td>
-      <td><%= link_to 'Delete', session, method: :delete, confirm: { data: 'Are you Sure?'} %></td>
     <% end %>  
     <% if session.attendes.include?(current_user) %>
       <td><%= link_to 'Unattend session', remove_from_attendes_list_path(session_id: session.id) %>

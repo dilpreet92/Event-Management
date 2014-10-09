@@ -7,9 +7,7 @@ class User < ActiveRecord::Base
   validates :name, presence: true
 
   def get_attending_events
-    attending_sessions.collect do |session|
-      session.event_id
-    end
+    attending_sessions.map(&:event_id).uniq
   end
 
   def self.create_with_omniauth(auth)

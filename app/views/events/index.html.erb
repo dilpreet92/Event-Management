@@ -1,3 +1,7 @@
-<%= link_to 'Upcoming Events', upcoming_path %>
-<%= link_to 'Past Events', past_path %>
-<%= render 'events' %>
+<%= form_tag(filter_path, method: :get, class: 'category', remote: true) do %>
+  <%= radio_button :events, 'filter', 'upcoming', checked: true, onchange: "$(this).parent('form').trigger('submit')" %>Upcoming
+  <%= radio_button :events, 'filter', 'past', onchange: "$(this).parent('form').trigger('submit')" %>Past
+  <%= submit_tag 'submit', id: 'categorySubmit' %>
+<% end %>
+<div id='events' >
+</div>

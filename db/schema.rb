@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141007155004) do
+ActiveRecord::Schema.define(version: 20141008134044) do
 
   create_table "events", force: true do |t|
     t.string   "name"
@@ -22,11 +22,14 @@ ActiveRecord::Schema.define(version: 20141007155004) do
     t.string   "country"
     t.integer  "contact_number"
     t.text     "description"
-    t.boolean  "enable",         default: true
-    t.string   "image_url"
+    t.boolean  "enable",            default: true
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
+    t.string   "logo_file_name"
+    t.string   "logo_content_type"
+    t.integer  "logo_file_size"
+    t.datetime "logo_updated_at"
   end
 
   create_table "rsvps", force: true do |t|

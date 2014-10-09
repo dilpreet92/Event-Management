@@ -1,7 +1,5 @@
 class UserSessionController < ApplicationController
 
-  skip_before_action :authenticate 
-
   def create
     auth = request.env["omniauth.auth"]
     user = User.where(:provider => auth['provider'],

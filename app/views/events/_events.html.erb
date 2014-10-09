@@ -2,7 +2,7 @@
 <% if @events.empty? %>
   <h4>No Such Events </h4>
 <% else %>   
-  <%= will_paginate @events %>
+  <%= will_paginate @events, remote: true %>
   <table class="table table-striped">
     <thead>
       <tr>

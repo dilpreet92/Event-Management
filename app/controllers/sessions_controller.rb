@@ -1,21 +1,21 @@
 class SessionsController < ApplicationController
 
-  before_action :set_session, only: [:show, :edit, :update, :destroy]
+  before_action :set_session, only: [:show, :edit, :update, :destroy ]
+  before_action :authenticate
+  before_action :set_event, only: [:new, :edit, :create]
 
   def new
-    @event = Event.find(params[:event_id])
     @session = @event.sessions.build
   end
 
   def edit
-    @event = Event.find(params[:event_id])
-    @session = @event.sessions.find(params[:id])
+    @session = @event.sessions.where(id: params[:id]).first
   end
 
   def add_to_attendes_list
-    session = Session.find(params[:session_id])
-    add_to_attendes_list = session.rsvps.build(user_id: current_user.id)
-    if add_to_attendes_list.save
+    session = Session.where(id: params[:session_id]).first
+    rsvp = session.rsvps.build(user_id: current_user.id)
+    if rsvp.save
       redirect_to events_url, notice: "You are now attending #{ session.topic } of  #{ session.event.name } "
     else
       redirect_to events_url, notice: 'You cannot attend this event'
@@ -23,13 +23,12 @@ class SessionsController < ApplicationController
   end
 
   def remove_from_attendes_list
-    @association = Rsvp.find_by(session_id: params[:session_id], user_id: current_user.id)
-    @association.destroy
+    rsvp = Rsvp.find_by(session_id: params[:session_id], user_id: current_user.id)
+    rsvp.destroy
     redirect_to events_url
   end
 
   def create
-    @event = Event.find(params[:event_id])
     @session = @event.sessions.build(session_params)
     respond_to do |format|
       if @session.save
@@ -65,9 +64,12 @@ class SessionsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_session
-      @session = Session.find(params[:id])
+      @session = Session.where(id: params[:id]).first
     end
-
+    
+    def set_event
+      @event = Event.where(id: params[:event_id]).first
+    end
     # Never trust parameters from the scary internet, only allow the white list through.
     def session_params
       params.require(:session).permit(get_permitted_params)
