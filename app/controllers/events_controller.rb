@@ -9,9 +9,9 @@ class EventsController < ApplicationController
 
   def filter
     if params[:events][:filter] == 'past'
-      @events = get_enabled_events.past.order_by(:desc)
+      @events = get_past_events
     else
-      @events = get_enabled_events.upcoming.order_by(:asc)
+      @events = get_upcoming_events
     end
     respond_to do |format|
       format.js
@@ -30,7 +30,7 @@ class EventsController < ApplicationController
       @events = get_enabled_events.search(params[:search])
     end
   end
-
+  
 
   def user_attending_events
     @events = get_enabled_events.where(id: current_user.get_attending_events)
@@ -84,7 +84,15 @@ class EventsController < ApplicationController
   end
 
   private
-    
+
+    def get_upcoming_events
+      get_enabled_events.upcoming.order_by(:asc)
+    end
+
+    def get_past_events
+      get_enabled_events.past.order_by(:desc)
+    end
+
     def check_if_user_can_edit_or_delete?
       unless @event.user_id == current_user.id && @event.upcoming?
         redirect_to events_url, notice: 'Current Activity cannot be performed'

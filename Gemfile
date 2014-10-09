@@ -18,7 +18,6 @@ gem 'therubyracer', :platform=>:ruby
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_21]
-  gem 'quiet_assets'
 end
 
 gem 'bootstrap-sass'
