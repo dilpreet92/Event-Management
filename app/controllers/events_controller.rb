@@ -28,7 +28,9 @@ class EventsController < ApplicationController
     @events = get_enabled_events.where(user_id: current_user.id)
   end
 
+  #FIXME_AB: name this action as 'search'
   def search_events
+    #FIXME_AB: I guess we only need to allow search in upcoming events. 
     if params[:search].blank?
       @events = get_enabled_events.upcoming.order_by(:asc)
     else
@@ -36,12 +38,13 @@ class EventsController < ApplicationController
     end
   end
   
-
+  #FIXME_AB: can be named as 'i_am_attending' or 'rsvpd'
   def user_attending_events
     @events = current_user.attending_events.enabled.paginate(:page => params[:page], :per_page => 5).uniq
   end
 
   def show
+    #FIXME_AB: we have event object, so we can directly use @event.attendees when ever we need
     @users = @event.get_attendes
   end
 
@@ -99,6 +102,8 @@ class EventsController < ApplicationController
     end
 
     def check_if_user_can_edit_or_delete?
+      #FIXME_AB: For better readability don't use unless with else statement and multiple conditions
+      #FIXME_AB: if !@event.owner?(current_user) || @....
       unless @event.user_id == current_user.id && @event.upcoming?
         redirect_to events_url, notice: 'Current Activity cannot be performed'
       end  
@@ -110,6 +115,7 @@ class EventsController < ApplicationController
 
     def set_event
       @event = Event.where(id: params[:id]).first
+      #FIXME_AB: what if event is not found with the id passed in params
     end
 
     def event_params

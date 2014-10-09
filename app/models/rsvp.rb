@@ -6,3 +6,6 @@ class Rsvp < ActiveRecord::Base
 
   #FIXME_AB: add required indexes to all tables. You can use bullet gem to identify them.
 end
+
+
+#FIXME_AB: We should add a unique index on this table user_id and session_id

@@ -10,9 +10,12 @@ class SessionsController < ApplicationController
 
   def edit
     @session = @event.sessions.where(id: params[:id]).first
+    #FIXME_AB: what if session with id not found
   end
 
+  #FIXME_AB: can we name it as rsvp
   def add_to_attendes_list
+    #FIXME_AB: I can do multiple RSVPs by entering url in browser 
     session = Session.where(id: params[:session_id]).first
     rsvp = session.rsvps.build(user_id: current_user.id)
     if rsvp.save
@@ -24,8 +27,11 @@ class SessionsController < ApplicationController
 
   def remove_from_attendes_list
     rsvp = Rsvp.find_by(session_id: params[:session_id], user_id: current_user.id)
+    #FIXME_AB: what about nil.destroy ?
     rsvp.destroy
-    redirect_to events_url
+    #FIXME_AB: what if the above line returned false and didn't destroy the record
+    redirect_to events_url 
+    #FIXME_AB: Always show a message to user whenever you redirect
   end
 
   def create
@@ -54,6 +60,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
+    #FIXME_AB: nil.distroy ?
     @session.destroy
     respond_to do |format|
       format.html { redirect_to sessions_url, notice: 'Session was successfully destroyed.' }
