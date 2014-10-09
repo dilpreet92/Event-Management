@@ -2,9 +2,11 @@ class EventsController < ApplicationController
 
   before_action :authenticate, except: [:index, :filter, :show, :upcoming_events, :past_events, :search_events]
   before_action :set_event, only: [:show, :edit, :update, :destroy]
+  #FIXME_AB: what if more action are added to the callback to be authorized. hence rename it as :authorize_user
   before_action :check_if_user_can_edit_or_delete?, only: [:edit, :update, :destroy]
 
   def index
+    #FIXME_AB: What is the difference between index and filter action, can be merged.
   end
 
   def filter
@@ -13,13 +15,16 @@ class EventsController < ApplicationController
     else
       @events = get_upcoming_events
     end
+    #FIXME_AB: we are only serving html requests so we can remove respond to block for all non js request
     respond_to do |format|
       format.js
       format.html
     end
   end
 
+  #FIXME_AB: I guess we can rename it as 'mine' so that url is /events/mine
   def user_events
+    #FIXME_AB: Better to use it like: current_user.events.enabled.paginate(:page => params[:page], :per_page => 5). Discuss this with me, there is a huge difference between both syntax. Hint: foreign key
     @events = get_enabled_events.where(user_id: current_user.id)
   end
 
