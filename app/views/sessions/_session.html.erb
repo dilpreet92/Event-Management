@@ -6,19 +6,19 @@
   <td><%= session.speaker %></td>
   <td><%= session.description %></td>
   <td><%= session.status %></td>
-  <% if session.event.upcoming? %>
-    
-    <% #FIXME_AB: we can use current_user.can_edit_event?(event) -%>
-    <% if logged_in? && current_user.id == session.event.user_id %>
-      <td><%= link_to 'Edit', edit_event_session_path(event_id: session.event.id, id: session) %></td>
+  <% if session.event.live_and_upcoming? %>
+
+    <% #FIXED: we can use current_user.can_edit_event?(event) -%>
+    <% if logged_in? && session.event.owner?(current_user) %>
+      <td><%= link_to 'Edit', edit_event_session_path(session.event,session) %></td>
     <% end %> 
 
-    <% #FIXME_AB: current_user.attending_session?(session) -%>
-    <% if session.attendes.include?(current_user) %>
-    <% #FIXME_AB: remove_from_attendes_list_path(session: session)  -%>
-      <td><%= link_to 'Unattend session', remove_from_attendes_list_path(session_id: session.id) %>
+    <% #FIXED: current_user.attending_session?(session) -%>
+    <% if current_user.attending_session_ids.include?(session.id) %>
+    <% #FIXED: remove_from_attendes_list_path(session: session)  -%>
+      <td><%= link_to 'Unattend session', destroy_rsvp_event_sessions_path(session_id: session, event_id: session.event) %>
     <% else %>    
-      <td><%= link_to 'Attend session', add_to_attendes_list_path(session_id: session.id, event_id: session.event_id) %> </td>  
+      <td><%= link_to 'Attend session', create_rsvp_event_sessions_path(session_id: session, event_id: session.event) %> </td>  
     <% end %>
-  <% end %>   
+  <% end %>
 </tr>

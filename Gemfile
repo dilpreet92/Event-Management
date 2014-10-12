@@ -14,6 +14,7 @@ gem 'spring', group: :development
 gem 'bcrypt', '~> 3.1.7'
 gem 'omniauth'
 gem 'omniauth-twitter'
+gem 'carmen-rails', '~> 1.0.0'
 gem 'therubyracer', :platform=>:ruby
 group :development do
   gem 'better_errors'

@@ -20,10 +20,10 @@ class User < ActiveRecord::Base
 
   def self.create_with_omniauth(auth)
 
-    #FIXME_AB: I personally don't prefer to use block with create!
-    create! do |user|
+    #FIXED: I personally don't prefer to use block with create!
+    create do |user|
       user.provider = auth['provider']
-      #FIXME_AB: id should be primary key and auto-generated, should not the twitter user id. If needed add this to uid
+      #FIXED: id should be primary key and auto-generated, should not the twitter user id. If needed add this to uid
       user.uid = auth['uid']
       if auth['info']
         user.handle = auth['info']['urls']['Twitter']

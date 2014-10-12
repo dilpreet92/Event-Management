@@ -40,14 +40,14 @@
 
 <p>
   <strong>Attendes :</strong>
-  <% @users.each do |user| %>
+  <% @event.attendes.uniq.each do |user| %>
     <p>
       <%= link_to "#{user.name}", user.handle %>
     </p>
   <% end %>    
 </p>  
 
-<% if logged_in? && @event.user_id == current_user.id && @event.upcoming? %>
+<% if logged_in? && @event.owner?(current_user) && @event.live_and_upcoming? %>
   <%= link_to 'Edit Event', edit_event_path(@event) %>
   <%= link_to 'Add new Session', new_event_session_path(event_id: @event.id) %>
 <% end %>

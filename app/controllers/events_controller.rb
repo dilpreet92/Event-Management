@@ -1,51 +1,48 @@
 class EventsController < ApplicationController
 
-  before_action :authenticate, except: [:index, :filter, :show, :upcoming_events, :past_events, :search_events]
+  before_action :authenticate, except: [:index, :filter, :show, :search]
   before_action :set_event, only: [:show, :edit, :update, :destroy]
-  #FIXME_AB: what if more action are added to the callback to be authorized. hence rename it as :authorize_user
-  before_action :check_if_user_can_edit_or_delete?, only: [:edit, :update, :destroy]
+  #FIXED: what if more action are added to the callback to be authorized. hence rename it as :authorize_user
+  before_action :authorize_user?, only: [:edit, :update, :destroy]
 
   def index
-    #FIXME_AB: What is the difference between index and filter action, can be merged.
   end
 
   def filter
     if params[:events][:filter] == 'past'
       @events = get_past_events
     else
-      @events = get_upcoming_events
+      @events = get_live_and_upcoming_events
     end
-    #FIXME_AB: we are only serving html requests so we can remove respond to block for all non js request
+    #FIXED: we are only serving html requests so we can remove respond to block for all non js request
     respond_to do |format|
       format.js
-      format.html
     end
   end
 
-  #FIXME_AB: I guess we can rename it as 'mine' so that url is /events/mine
-  def user_events
+  #FIXED: I guess we can rename it as 'mine' so that url is /events/mine
+  def mine
     #FIXME_AB: Better to use it like: current_user.events.enabled.paginate(:page => params[:page], :per_page => 5). Discuss this with me, there is a huge difference between both syntax. Hint: foreign key
-    @events = get_enabled_events.where(user_id: current_user.id)
+    @events = current_user.events.enabled.paginate(:page => params[:page], :per_page => 5)
   end
 
-  #FIXME_AB: name this action as 'search'
-  def search_events
-    #FIXME_AB: I guess we only need to allow search in upcoming events. 
+  #FIXED: name this action as 'search'
+  def search
+    #FIXED: I guess we only need to allow search in upcoming events. 
     if params[:search].blank?
-      @events = get_enabled_events.upcoming.order_by(:asc)
+      @events = get_live_and_upcoming_events.order_by_start_date(:asc)
     else
-      @events = get_enabled_events.search(params[:search])
+      @events = get_live_and_upcoming_events.search(params[:search])
     end
   end
   
-  #FIXME_AB: can be named as 'i_am_attending' or 'rsvpd'
-  def user_attending_events
+  #FIXED: can be named as 'i_am_attending' or 'rsvpd'
+  def rsvps
     @events = current_user.attending_events.enabled.paginate(:page => params[:page], :per_page => 5).uniq
   end
 
   def show
-    #FIXME_AB: we have event object, so we can directly use @event.attendees when ever we need
-    @users = @event.get_attendes
+    #FIXED: we have event object, so we can directly use @event.attendees when ever we need
   end
 
   def new
@@ -57,35 +54,24 @@ class EventsController < ApplicationController
 
   def create
     @event = current_user.events.build(event_params)
-    respond_to do |format|
-      if @event.save
-        format.html { redirect_to events_url, notice: 'Event was successfully created.' }
-        format.json { render :show, status: :created, location: @event }
-      else
-        format.html { render :new }
-        format.json { render json: @event.errors, status: :unprocessable_entity }
-      end
+    if @event.save
+      redirect_to @event, notice: 'Event was successfully created.'
+    else
+      render :new
     end
   end
 
   def update
-    respond_to do |format|
-      if @event.update(event_params)
-        format.html { redirect_to @event, notice: 'Event was successfully updated.' }
-        format.json { render :show, status: :ok, location: @event }
-      else
-        format.html { render :edit }
-        format.json { render json: @event.errors, status: :unprocessable_entity }
-      end
+    if @event.update(event_params)
+      redirect_to @event, notice: 'Event was successfully updated.'
+    else
+      render :edit
     end
   end
 
   def destroy
     if @event.destroy
-      respond_to do |format|
-        format.html { redirect_to events_url, notice: 'Event was successfully destroyed.' }
-        format.json { head :no_content }
-      end
+      redirect_to events_url, notice: 'Event was successfully destroyed.'
     else
       redirect_to events_url, notice: "#{ @event.name } cannot be destroyed "
     end    
@@ -93,18 +79,18 @@ class EventsController < ApplicationController
 
   private
 
-    def get_upcoming_events
-      get_enabled_events.upcoming.order_by(:asc)
+    def get_live_and_upcoming_events
+      get_enabled_events.live_and_upcoming.order_by_start_date(:asc)
     end
 
     def get_past_events
-      get_enabled_events.past.order_by(:desc)
+      get_enabled_events.past.order_by_start_date(:desc)
     end
 
-    def check_if_user_can_edit_or_delete?
-      #FIXME_AB: For better readability don't use unless with else statement and multiple conditions
-      #FIXME_AB: if !@event.owner?(current_user) || @....
-      unless @event.user_id == current_user.id && @event.upcoming?
+    def authorize_user?
+      #FIXED: For better readability don't use unless with else statement and multiple conditions
+      #FIXED: if !@event.owner?(current_user) || @....
+      if !@event.owner?(current_user) || @event.past?
         redirect_to events_url, notice: 'Current Activity cannot be performed'
       end  
     end
@@ -115,7 +101,10 @@ class EventsController < ApplicationController
 
     def set_event
       @event = Event.where(id: params[:id]).first
-      #FIXME_AB: what if event is not found with the id passed in params
+      if !@event
+        redirect_to events_url, notice: 'Event not found or disabled'
+      end    
+      #FIXED: what if event is not found with the id passed in params
     end
 
     def event_params

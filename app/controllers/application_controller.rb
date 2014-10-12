@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
 
-  #FIXME_AB: I guess you won't need authenticate in views, so can ignore it as a helper
-  helper_method :current_user, :logged_in?, :authenticate
+  #FIXED: I guess you won't need authenticate in views, so can ignore it as a helper
+  helper_method :current_user, :logged_in?
   protect_from_forgery with: :exception
 
   private
@@ -17,11 +17,11 @@ class ApplicationController < ActionController::Base
     end
 
     def logged_in?
-      #FIXME_AB: use !!current_user
-      current_user
+      #FIXED: use !!current_user
+      !!current_user
     end
 
 end
 
 
-#FIXME_AB: remove unused js and css files
+#FIXED: remove unused js and css files

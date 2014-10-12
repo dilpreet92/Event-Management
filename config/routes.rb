@@ -1,15 +1,20 @@
 Rails.application.routes.draw do
   
   resources :events do
-    resources :sessions
+    collection do
+      get '/mine' => 'events#mine'
+      get '/search' => 'events#search'
+      get '/i_am_attending' => 'events#rsvps'
+    end  
+    resources :sessions do
+      collection do
+        get '/create_rsvp' => 'sessions#create_rsvp'
+        get '/destroy_rsvp' => 'sessions#destroy_rsvp'
+      end
+    end
   end
   
-  get '/myevents' => 'events#user_events'
-  get '/upcoming' => 'events#upcoming_events'
-  get '/past' => 'events#past_events'
-  get '/search' => 'events#search_events'
-  get '/add_to_attendes_list' => 'sessions#add_to_attendes_list'
-  get '/attending' => 'events#user_attending_events'
+  
   get '/remove_from_attendes_list' => 'sessions#remove_from_attendes_list'
   get '/filter' => 'events#filter'
   # The priority is based upon order of creation: first created -> highest priority.
