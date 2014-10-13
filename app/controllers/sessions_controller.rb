@@ -12,12 +12,10 @@ class SessionsController < ApplicationController
 
   def edit
     @session = @event.sessions.where(id: params[:id]).first
-    #FIXED: what if session with id not found
   end
 
-  #FIXED: can we name it as rsvp
   def create_rsvp
-    #FIXED: I can do multiple RSVPs by entering url in browser
+    #FIXME_AB: use .build(user: current_user), if you don't know why, ask me
     rsvp = @session.rsvps.build(user_id: current_user.id)
     if rsvp.save
       redirect_to events_url, notice: "You are now attending #{ @session.topic } of  #{ @session.event.name } "
@@ -27,14 +25,11 @@ class SessionsController < ApplicationController
   end
 
   def destroy_rsvp
-    #FIXED: what about nil.destroy ?
     if @rsvp.destroy
-    #FIXED: what if the above line returned false and didn't destroy the record
       redirect_to events_url, notice: "You are now not attending #{ @rsvp.session.topic }"
     else
       redirect_to events_url, notice: 'Current operation cannot be performed'
     end  
-    #FIXED: Always show a message to user whenever you redirect
   end
 
   def create
@@ -55,7 +50,6 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    #FIXED: nil.distroy ?
     if @session.destroy
       redirect_to @session.event, notice: 'Session was successfully destroyed.'
     else
@@ -67,6 +61,7 @@ class SessionsController < ApplicationController
     
     def check_if_already_attending
       @session = Session.where(id: params[:session_id]).first
+      #FIXME_AB: use exists? 
       if @session.attendes.include?(current_user)
         redirect_to events_url, notice: "You are already attending #{ @session.topic }"
       end  

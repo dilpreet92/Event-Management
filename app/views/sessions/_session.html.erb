@@ -8,14 +8,11 @@
   <td><%= session.status %></td>
   <% if logged_in? && session.event.live_and_upcoming? %>
 
-    <% #FIXED: we can use current_user.can_edit_event?(event) -%>
     <% if session.event.owner?(current_user) %>
       <td><%= link_to 'Edit', edit_event_session_path(session.event, session) %></td>
     <% end %> 
 
-    <% #FIXED: current_user.attending_session?(session) -%>
     <% if current_user.attending_session_ids.include?(session.id) %>
-    <% #FIXED: remove_from_attendes_list_path(session: session)  -%>
       <td><%= link_to 'Unattend session', destroy_rsvp_event_sessions_path(session_id: session, event_id: session.event) %>
     <% else %>    
       <td><%= link_to 'Attend session', create_rsvp_event_sessions_path(session_id: session, event_id: session.event) %> </td>  

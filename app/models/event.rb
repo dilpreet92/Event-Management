@@ -1,12 +1,11 @@
 class Event < ActiveRecord::Base
-  #FIXED: address should not be string, it should be text
-
   belongs_to :user
   
   has_many :sessions, dependent: :destroy
   has_many :attendes, through: :sessions, source: :attendes
   before_save :contains_session_outside_event_range
 
+  #FIXME_AB: Don't push attachments to repository.
   #FIXME_AB: you should also rad about the patterns we can pass to paperclip styles. like we have > sign in following style, there are much more.
   has_attached_file :logo, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/missing.png"
 
@@ -18,23 +17,19 @@ class Event < ActiveRecord::Base
   validate :event_date_valid
 
   scope :enabled, -> { where(enable: true) }
-  #FIXED: as discussed we don't need following order_by scope. In case we need then it should be:   scope :order_by_start_date, -> (sort = 'ASC') { order(start_date: sort) }
   scope :order_by_start_date, -> (sort) { order(start_date: sort) }
 
-  #FIXED: rename it to live_and_upcoming
   scope :live_and_upcoming, -> { where("end_date >= ?", Time.current) }
   scope :past, -> { where("end_date < ?", Time.current) }
   scope :search, -> (query) { where("name LIKE :query OR city LIKE :query OR country LIKE :query",
                             query: "%#{ query }%") }
 
   # def get_attendes
-  #   #FIXED: we can do it through associations like we did from event. [90% sure]
   #   sessions.collect do |session|
   #     session.attendes
   #   end.flatten.uniq
   # end
 
-  #FIXED: should be named as live_and_upcoming
   def live_and_upcoming?
     end_date >= Time.current 
   end
@@ -52,9 +47,7 @@ class Event < ActiveRecord::Base
   end
 
   private
-  #FIXED: low priority: think about a better name
     def event_date_valid
-      #FIXED: if start_date_unacceptable? or if start_date_invalid?
       if start_date_unacceptable?
         errors.add(:start_date, ' Should be less than end date and Should be a future date')
       end
@@ -76,6 +69,5 @@ class Event < ActiveRecord::Base
       end        
     end
 
-  #FIXED: When I am updating any event, we should check for session time too. It should not allow event to shrink beyond the session times
 
 end

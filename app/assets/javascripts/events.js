@@ -1,5 +1,4 @@
 $(document).on('ready page:load', function(){
-  // FIXED: Its better if we can use id selector or any other precise selector.
   //Submitting the form on page load for upcoming radio button
   $('form.category :submit').click();
   //Making pagination links work as a ajax request
