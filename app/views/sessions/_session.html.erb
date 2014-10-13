@@ -6,15 +6,15 @@
   <td><%= session.speaker %></td>
   <td><%= session.description %></td>
   <td><%= session.status %></td>
-  <% if session.event.live_and_upcoming? %>
+  <% if logged_in? && session.event.live_and_upcoming? %>
 
     <% #FIXED: we can use current_user.can_edit_event?(event) -%>
-    <% if logged_in? && session.event.owner?(current_user) %>
+    <% if session.event.owner?(current_user) %>
       <td><%= link_to 'Edit', edit_event_session_path(session.event, session) %></td>
     <% end %> 
 
     <% #FIXED: current_user.attending_session?(session) -%>
-    <% if logged_in? && current_user.attending_session_ids.include?(session.id) %>
+    <% if current_user.attending_session_ids.include?(session.id) %>
     <% #FIXED: remove_from_attendes_list_path(session: session)  -%>
       <td><%= link_to 'Unattend session', destroy_rsvp_event_sessions_path(session_id: session, event_id: session.event) %>
     <% else %>    
