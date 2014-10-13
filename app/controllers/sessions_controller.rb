@@ -2,7 +2,8 @@ class SessionsController < ApplicationController
 
   before_action :set_session, only: [:show, :edit, :update, :destroy ]
   before_action :authenticate
-  before_action :set_event, only: [:new, :edit, :create]
+  before_action :set_event, only: [:new, :edit, :create, :update]
+  before_action :check_if_enable, only: [:create_rsvp]
   before_action :set_rsvp, only: [:destroy_rsvp]
   before_action :check_if_already_attending, only: [:create_rsvp]
 
@@ -15,8 +16,8 @@ class SessionsController < ApplicationController
   end
 
   def create_rsvp
-    #FIXME_AB: use .build(user: current_user), if you don't know why, ask me
-    rsvp = @session.rsvps.build(user_id: current_user.id)
+    #FIXED: use .build(user: current_user), if you don't know why, ask me
+    rsvp = @session.rsvps.build(user: current_user)
     if rsvp.save
       redirect_to events_url, notice: "You are now attending #{ @session.topic } of  #{ @session.event.name } "
     else
@@ -58,11 +59,17 @@ class SessionsController < ApplicationController
   end
 
   private
+
+    def check_if_enable
+      if !@session.enable
+        redirect_to @session.event, notice: 'Session disabled'
+      end
+    end
     
     def check_if_already_attending
       @session = Session.where(id: params[:session_id]).first
-      #FIXME_AB: use exists? 
-      if @session.attendes.include?(current_user)
+      #FIXED: use exists?
+      if current_user.attending?(@session)
         redirect_to events_url, notice: "You are already attending #{ @session.topic }"
       end  
     end
@@ -93,6 +100,6 @@ class SessionsController < ApplicationController
     end
 
     def get_permitted_params
-      [:topic, :start_date, :end_date, :location, :speaker, :description, :status, :event_id]
+      [:topic, :start_date, :end_date, :location, :enable, :description, :speaker, :event_id]
     end
 end

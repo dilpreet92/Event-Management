@@ -8,4 +8,4 @@ class Rsvp < ActiveRecord::Base
 end
 
 
-#FIXME_AB: We should add a unique index on this table user_id and session_id
+#FIXED: We should add a unique index on this table user_id and session_id

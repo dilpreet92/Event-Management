@@ -20,7 +20,7 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_21]
 end
-
+gem "bullet", :group => "development"
 group :production do
   gem 'thin'
 end

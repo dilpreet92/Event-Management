@@ -1,21 +1,22 @@
-<tr>
-  <td><%= session.topic %></td>
-  <td><%= session.start_date %></td>
-  <td><%= session.end_date %></td>
-  <td><%= session.location %></td>
-  <td><%= session.speaker %></td>
-  <td><%= session.description %></td>
-  <td><%= session.status %></td>
-  <% if logged_in? && session.event.live_and_upcoming? %>
+<% if session.enable %>
+  <tr>
+    <td><%= session.topic %></td>
+    <td><%= session.start_date %></td>
+    <td><%= session.end_date %></td>
+    <td><%= session.location %></td>
+    <td><%= session.speaker %></td>
+    <td><%= session.description %></td>
+    <% if logged_in? && session.event.live_and_upcoming? %>
 
-    <% if session.event.owner?(current_user) %>
-      <td><%= link_to 'Edit', edit_event_session_path(session.event, session) %></td>
-    <% end %> 
+      <% if session.event.owner?(current_user) %>
+        <td><%= link_to 'Edit', edit_event_session_path(session.event, session) %></td>
+      <% end %> 
 
-    <% if current_user.attending_session_ids.include?(session.id) %>
-      <td><%= link_to 'Unattend session', destroy_rsvp_event_sessions_path(session_id: session, event_id: session.event) %>
-    <% else %>    
-      <td><%= link_to 'Attend session', create_rsvp_event_sessions_path(session_id: session, event_id: session.event) %> </td>  
+      <% if current_user.attending?(session) %>
+        <td><%= link_to 'Unattend session', destroy_rsvp_event_sessions_path(session_id: session, event_id: session.event) %>
+      <% else %>    
+        <td><%= link_to 'Attend session', create_rsvp_event_sessions_path(session_id: session, event_id: session.event) %> </td>  
+      <% end %>
     <% end %>
-  <% end %>
-</tr>
+  </tr>
+<% end %>

@@ -10,14 +10,15 @@ $(document).on('ready page:load', function(){
   $('#showEvents').on('click', '#allEvents' , function() {
     $('.category :submit').click();
   });
-
+  // Clicking on upcoming tab will submit the form with value upcoming
   $('#events_filter_upcoming').on('change', function() {
     $(this).parent('form').trigger('submit');
   });
-
+  
+  //Clicking on past tab will submit the form with value past
   $('#events_filter_past').on('change', function() {
     $(this).parent('form').trigger('submit');
   });
 })
 
-// FIXME_AB: JS could be very unreadable so start adding comments
+// FIXED: JS could be very unreadable so start adding comments

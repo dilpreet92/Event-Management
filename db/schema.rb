@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141013051010) do
+ActiveRecord::Schema.define(version: 20141013142921) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20141013051010) do
     t.text     "address"
     t.string   "city"
     t.string   "country"
-    t.integer  "contact_number"
+    t.string   "contact_number"
     t.text     "description"
     t.boolean  "enable",            default: true
     t.datetime "created_at"
@@ -42,13 +42,15 @@ ActiveRecord::Schema.define(version: 20141013051010) do
     t.datetime "updated_at"
   end
 
+  add_index "rsvps", ["user_id", "session_id"], name: "index_rsvps_on_user_id_and_session_id", unique: true, using: :btree
+
   create_table "sessions", force: true do |t|
     t.string   "topic"
     t.datetime "start_date"
     t.datetime "end_date"
     t.string   "location"
     t.string   "speaker"
-    t.boolean  "status",      default: true
+    t.boolean  "enable",      default: true
     t.integer  "event_id"
     t.datetime "created_at"
     t.datetime "updated_at"
