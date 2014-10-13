@@ -14,7 +14,7 @@
     <% end %> 
 
     <% #FIXED: current_user.attending_session?(session) -%>
-    <% if current_user.attending_session_ids.include?(session.id) %>
+    <% if logged_in? && current_user.attending_session_ids.include?(session.id) %>
     <% #FIXED: remove_from_attendes_list_path(session: session)  -%>
       <td><%= link_to 'Unattend session', destroy_rsvp_event_sessions_path(session_id: session, event_id: session.event) %>
     <% else %>    
