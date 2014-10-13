@@ -5,6 +5,7 @@ class Event < ActiveRecord::Base
   
   has_many :sessions, dependent: :destroy
   has_many :attendes, through: :sessions, source: :attendes
+  before_save :contains_session_outside_event_range
 
   #FIXME_AB: you should also rad about the patterns we can pass to paperclip styles. like we have > sign in following style, there are much more.
   has_attached_file :logo, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/missing.png"
@@ -63,6 +64,18 @@ class Event < ActiveRecord::Base
       (start_date < Time.current) || (start_date >= end_date)
     end
 
-  #FIXME_AB: When I am updating any event, we should check for session time too. It should not allow event to shrink beyond the session times
+    def contains_session_outside_event_range
+      sessions.each do |session|
+        if session.start_date < start_date
+          errors.add(:start_date, 'Cannot update the event as it contains session')
+          return false
+        elsif session.end_date > end_date
+          errors.add(:end_date, 'Cannot update the event as it contains session')
+          return false
+        end  
+      end        
+    end
+
+  #FIXED: When I am updating any event, we should check for session time too. It should not allow event to shrink beyond the session times
 
 end

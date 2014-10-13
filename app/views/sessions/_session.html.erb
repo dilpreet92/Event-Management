@@ -10,7 +10,7 @@
 
     <% #FIXED: we can use current_user.can_edit_event?(event) -%>
     <% if logged_in? && session.event.owner?(current_user) %>
-      <td><%= link_to 'Edit', edit_event_session_path(session.event,session) %></td>
+      <td><%= link_to 'Edit', edit_event_session_path(session.event, session) %></td>
     <% end %> 
 
     <% #FIXED: current_user.attending_session?(session) -%>

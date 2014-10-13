@@ -11,18 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141011102847) do
+ActiveRecord::Schema.define(version: 20141013051010) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "events", force: true do |t|
     t.string   "name"
     t.datetime "start_date"
     t.datetime "end_date"
-    t.text     "address",           limit: 255
+    t.text     "address"
     t.string   "city"
     t.string   "country"
     t.integer  "contact_number"
     t.text     "description"
-    t.boolean  "enable",                        default: true
+    t.boolean  "enable",            default: true
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
@@ -59,7 +62,7 @@ ActiveRecord::Schema.define(version: 20141011102847) do
     t.string   "twitter_secret"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "uid"
+    t.string   "uid"
     t.string   "handle"
   end
 

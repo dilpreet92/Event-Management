@@ -1,4 +1,4 @@
-<%= form_tag(filter_path, method: :get, class: 'category', remote: true) do %>
+<%= form_tag(filter_events_path, method: :get, class: 'category', remote: true) do %>
   <%= radio_button :events, 'filter', 'upcoming', checked: true %>Upcoming
   <%= radio_button :events, 'filter', 'past' %>Past
   <%= submit_tag 'submit', id: 'categorySubmit' %>
