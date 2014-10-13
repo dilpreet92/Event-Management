@@ -21,5 +21,9 @@ group :development do
   gem 'binding_of_caller', :platforms=>[:mri_21]
 end
 
+group :production do
+  gem 'thin'
+end
+
 gem 'bootstrap-sass'
 gem 'will_paginate'
