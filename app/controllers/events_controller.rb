@@ -23,6 +23,17 @@ class EventsController < ApplicationController
     @events = current_user.events.enabled.paginate(:page => params[:page], :per_page => 5)
   end
 
+  def attending_filter
+    if params[:events][:filter] == 'past'
+      @events = current_user.attending_events.enabled.past.paginate(:page => params[:page], :per_page => 5).uniq
+    else
+      @events = current_user.attending_events.enabled.live_and_upcoming.paginate(:page => params[:page], :per_page => 5).uniq
+    end
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def search
     if params[:search].blank?
       @events = get_live_and_upcoming_events.order_by_start_date(:asc)
@@ -32,7 +43,6 @@ class EventsController < ApplicationController
   end
   
   def rsvps
-    @events = current_user.attending_events.enabled.paginate(:page => params[:page], :per_page => 5).uniq
   end
 
   def show

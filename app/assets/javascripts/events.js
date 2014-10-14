@@ -7,7 +7,7 @@ $(document).on('ready page:load', function(){
     return false;
   });
   //Clicking on all events will submit the form with radio button upcoming clicked
-  $('#showEvents').on('click', '#allEvents' , function() {
+  $('#showEvents').on('click', '#allEvents #attendingEvents' , function() {
     $('.category :submit').click();
   });
   // Clicking on upcoming tab will submit the form with value upcoming
