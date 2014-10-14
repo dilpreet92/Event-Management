@@ -2,8 +2,11 @@
 <!-- <li><%#= link_to 'About', page_path('about') %></li> -->
 <li><%= link_to 'Create Event', new_event_path %></li>
 <li>
-  <%= form_tag(search_events_path, method: :get) do %>
+  <%= form_tag(search_events_path, method: :get, remote: true) do %>
     <%= text_field_tag :search %>
     <%= submit_tag 'Search' %>
   <% end %>
 </li>
+<li>
+  <input id='clearText' type='button' value='Clear'>
+</li>  

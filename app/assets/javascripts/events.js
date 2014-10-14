@@ -19,6 +19,10 @@ $(document).on('ready page:load', function(){
   $('#events_filter_past').on('change', function() {
     $(this).parent('form').trigger('submit');
   });
+
+  $('#clearText').on('click', function() {
+    $('#search').val(' ');
+  });
 })
 
 // FIXED: JS could be very unreadable so start adding comments
