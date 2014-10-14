@@ -19,7 +19,6 @@ class EventsController < ApplicationController
   end
 
   def mine
-    #FIXED: Better to use it like: current_user.events.enabled.paginate(:page => params[:page], :per_page => 5). Discuss this with me, there is a huge difference between both syntax. Hint: foreign key
     @events = current_user.events.enabled.paginate(:page => params[:page], :per_page => 5)
   end
 

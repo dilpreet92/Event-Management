@@ -1,7 +1,5 @@
 class User < ActiveRecord::Base
 
-  #FIXED: what would happen when I destroy a user. handle this case with all associations
-  #FIXED: As discussed in the meeting, I should not be able to destroy a user. So, overwrite destroy, delete, destroy_all and other related methods and raise exception 
   has_many :events, dependent: :destroy
   has_many :rsvps, dependent: :destroy
   has_many :attending_sessions, through: :rsvps, source: :session
@@ -11,7 +9,6 @@ class User < ActiveRecord::Base
   validates :uid, :provider, presence: true
 
   def self.create_with_omniauth(auth)
-    #FIXED:  I personally don't prefer to use block with create
     create(provider: auth['provider'], uid: auth['uid'], 
            handle: auth['info']['urls']['Twitter'], name: auth['info']['name'])
   end

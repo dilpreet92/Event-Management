@@ -21,4 +21,3 @@ $(document).on('ready page:load', function(){
   });
 })
 
-// FIXED: JS could be very unreadable so start adding comments

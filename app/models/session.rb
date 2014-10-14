@@ -5,7 +5,6 @@ class Session < ActiveRecord::Base
   has_many :rsvps, dependent: :destroy
   has_many :attendes, through: :rsvps, source: :user
 
-  #FIXED: Don't use event_id use event
   validates :event, presence: true
   validates :topic, :location, :description, presence: true
   validates_length_of :description, maximum: 250
@@ -34,7 +33,6 @@ class Session < ActiveRecord::Base
       end_date > event.end_date || end_date < start_date
     end
 
-    #FIXED: it is not showing anything, it is just returning a message so just name it 'dates_error_message', Or just remove this method and use this string directly
     def dates_error_message
       "Session should be present between #{ event.start_date } and #{ event.end_date }"
     end

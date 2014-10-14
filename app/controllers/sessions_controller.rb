@@ -16,7 +16,6 @@ class SessionsController < ApplicationController
   end
 
   def create_rsvp
-    #FIXED: use .build(user: current_user), if you don't know why, ask me
     rsvp = @session.rsvps.build(user: current_user)
     if rsvp.save
       redirect_to events_url, notice: "You are now attending #{ @session.topic } of  #{ @session.event.name } "
@@ -68,7 +67,6 @@ class SessionsController < ApplicationController
     
     def check_if_already_attending
       @session = Session.where(id: params[:session_id]).first
-      #FIXED: use exists?
       if current_user.attending?(@session)
         redirect_to events_url, notice: "You are already attending #{ @session.topic }"
       end  
