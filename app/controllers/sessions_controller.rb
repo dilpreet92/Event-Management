@@ -3,7 +3,7 @@ class SessionsController < ApplicationController
   before_action :set_session, only: [:show, :edit, :update, :destroy ]
   before_action :authenticate
   before_action :set_event, only: [:new, :edit, :create, :update]
-  before_action :check_if_enable, only: [:create_rsvp]
+  #before_action :check_if_enable, only: [:create_rsvp]
   before_action :set_rsvp, only: [:destroy_rsvp]
   before_action :check_if_already_attending, only: [:create_rsvp]
 
