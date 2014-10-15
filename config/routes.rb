@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   
-
   devise_for :admins
+
+  namespace :admins do
+    resources :users
+  end
+
   resources :events do
     collection do
       get '/mine' => 'events#mine'
