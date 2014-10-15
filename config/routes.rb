@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
+  
 
-  devise_for :admins, controllers: { sessions: "admins/sessions" }
+  devise_for :admins
   resources :events do
     collection do
       get '/mine' => 'events#mine'

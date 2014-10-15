@@ -5,7 +5,9 @@ class DeviseCreateAdmins < ActiveRecord::Migration
       t.string :username, null: false
       t.string :encrypted_password, null: false
       t.timestamps
+
     end
-    add_index :admins, :username, unique: true
+
+    add_index :admins, :username
   end
 end
