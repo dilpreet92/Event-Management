@@ -1,5 +1,9 @@
 <tr>
-  <td><%= link_to event.name, event_path(id: event) %></td>
+  <% if admin_signed_in? %>
+    <td><%= link_to event.name, edit_event_path(event) %><td>
+  <% else %>    
+    <td><%= link_to event.name, event_path(event) %></td>
+  <% end %>  
   <td><%= event.start_date %></td>
   <td><%= event.end_date %></td>
   <td><%= event.address %></td>

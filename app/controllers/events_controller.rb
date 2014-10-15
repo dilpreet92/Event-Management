@@ -1,8 +1,8 @@
 class EventsController < ApplicationController
 
-  before_action :authenticate, except: [:index, :filter, :show, :search]
+  before_action :authenticate, unless: :admin_signed_in?, except: [:index, :filter, :show, :search]
   before_action :set_event, only: [:show, :edit, :update, :destroy]
-  before_action :authorize_user?, only: [:edit, :update, :destroy]
+  before_action :authorize_user?, unless: :admin_signed_in?, only: [:edit, :update, :destroy]
 
   def index
   end

@@ -3,11 +3,15 @@
   <div class ="container">
     <ul class="nav navbar-nav">
       <li><%= Date.today %></li>
-      <% if logged_in? %>
-        <li id='userName'>Hello <%= current_user.name %></li>
-        <li><%= link_to 'Logout', signout_path %></li>
-      <% else %>
-        <li><%= link_to 'Login via twitter', signin_path, class: 'navbar-brand' %></li>
+      <% if admin_signed_in? %>
+        <li><%= link_to 'Logout Admin', '/admins/sign_out' %>
+      <% else %>    
+        <% if logged_in? %>
+          <li id='userName'>Hello <%= current_user.name %></li>
+          <li><%= link_to 'Logout', signout_path %></li>
+        <% else %>
+          <li><%= link_to 'Login via twitter', signin_path, class: 'navbar-brand' %></li>
+        <% end %>  
       <% end %>
     </ul>  
   </div>  
