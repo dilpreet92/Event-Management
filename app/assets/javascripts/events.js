@@ -21,7 +21,7 @@ $(document).on('ready page:load', function(){
   });
 
   $('#clearText').on('click', function() {
-    $('#search').val(' ');
+    $('#search').val('');
   });
 })
 
