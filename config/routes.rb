@@ -1,6 +1,25 @@
 Rails.application.routes.draw do
   
   devise_for :admins
+
+  namespace :api, defaults: { format: 'json' } do
+    namespace :v1 do
+      resources :events do
+        member do
+          get '/attendees' => 'events#attendees'
+        end
+        collection do
+          get '/myevents' => 'events#mine_events'
+          get '/i_am_attending' => 'events#rsvps'
+        end
+        resources :sessions do
+          member do
+            get '/attendees' => 'sessions#attendees'
+          end
+        end
+      end
+    end
+  end
   
   namespace :admins do
     resources :users do

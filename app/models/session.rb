@@ -11,6 +11,8 @@ class Session < ActiveRecord::Base
   validate :session_start_date
   validate :session_end_date
 
+  scope :enabled, -> { where(enable: true) }
+
   def session_start_date
     if start_date_unacceptable?
       errors.add(:start_date, dates_error_message)
