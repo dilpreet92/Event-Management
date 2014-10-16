@@ -18,8 +18,10 @@ class Event < ActiveRecord::Base
 
   scope :live_and_upcoming, -> { where("events.end_date >= ?", Time.current) }
   scope :past, -> { where("events.end_date < ?", Time.current) }
+
   scope :search, -> (query) { where("events.name ILIKE :query OR events.city ILIKE :query OR 
     events.country ILIKE :query OR sessions.topic ILIKE :query", query: "%#{ query }%") }
+
 
   def live_and_upcoming?
     end_date >= Time.current 

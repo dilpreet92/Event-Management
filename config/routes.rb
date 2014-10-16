@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       get '/i_am_attending' => 'events#rsvps'
       get '/filter' => 'events#filter'
       get '/mine_filter' => 'events#mine_filter'
+      get '/attending_filter' => 'events#attending_filter'
     end
     resources :sessions do
       collection do
