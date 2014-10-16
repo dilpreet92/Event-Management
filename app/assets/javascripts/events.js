@@ -10,6 +10,10 @@ $(document).on('ready page:load', function(){
   $('#showEvents').on('click', '#allEvents' , function() {
     $('.category :submit').click();
   });
+  
+  // $('#searchButton').on('click', function() {
+  //   $('.category :submit').click();
+  // });
   // Clicking on upcoming tab will submit the form with value upcoming
   $('#events_filter_upcoming').on('change', function() {
     $(this).parent('form').trigger('submit');

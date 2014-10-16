@@ -6,7 +6,6 @@ Rails.application.routes.draw do
       get '/search' => 'events#search'
       get '/i_am_attending' => 'events#rsvps'
       get '/filter' => 'events#filter'
-      get '/search_filter' => 'events#search_filter'
     end
     resources :sessions do
       collection do
