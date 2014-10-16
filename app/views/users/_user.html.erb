@@ -1,0 +1,9 @@
+<tr>
+  <td><%= user.name %></td>
+  <td><%= link_to user.handle, user.handle %></td>
+  <% if user.enable %>
+    <td><%= link_to 'disable', disable_users_path(id: user) %>
+  <% else %>
+    <td><%= link_to 'enable', enable_users_path(id: user) %>
+  <% end %>      
+</tr>
