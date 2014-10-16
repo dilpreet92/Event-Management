@@ -16,10 +16,10 @@ class Event < ActiveRecord::Base
   scope :enabled, -> { where(enable: true) }
   scope :order_by_start_date, -> (sort) { order(start_date: sort) }
 
-  scope :live_and_upcoming, -> { where("end_date >= ?", Time.current) }
-  scope :past, -> { where("end_date < ?", Time.current) }
-  scope :search, -> (query) { where("name LIKE :query OR city LIKE :query OR country LIKE :query",
-                            query: "%#{ query }%") }
+  scope :live_and_upcoming, -> { where("events.end_date >= ?", Time.current) }
+  scope :past, -> { where("events.end_date < ?", Time.current) }
+  scope :search, -> (query) { where("name ILIKE :query OR city ILIKE :query OR country ILIKE :query
+    OR sessions.topic ILIKE :query", query: "%#{ query }%") }
 
   def live_and_upcoming?
     end_date >= Time.current 

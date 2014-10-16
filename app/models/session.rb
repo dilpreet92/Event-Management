@@ -26,7 +26,7 @@ class Session < ActiveRecord::Base
   private
 
     def start_date_unacceptable?
-      start_date < event.start_date || start_date > event.end_date
+      start_date < event.start_date || start_date > event.end_date 
     end
 
     def end_date_unacceptable?

@@ -19,5 +19,9 @@ $(document).on('ready page:load', function(){
   $('#events_filter_past').on('change', function() {
     $(this).parent('form').trigger('submit');
   });
+
+  $('#clearText').on('click', function() {
+    $('#search').val(' ');
+  });
 })
 
