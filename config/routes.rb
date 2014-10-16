@@ -19,11 +19,13 @@ Rails.application.routes.draw do
       get '/filter' => 'events#filter'
       get '/mine_filter' => 'events#mine_filter'
       get '/attending_filter' => 'events#attending_filter'
+      get '/disable' => 'events#disable'
     end
     resources :sessions do
       collection do
         get '/create_rsvp' => 'sessions#create_rsvp'
         get '/destroy_rsvp' => 'sessions#destroy_rsvp'
+        get '/disable' => 'sessions#disable'
       end
     end
   end

@@ -1,8 +1,9 @@
 class SessionsController < ApplicationController
 
-  before_action :set_session, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate
-  before_action :set_event, only: [:new, :edit, :create, :update]
+
+  before_action :set_session, only: [:show, :edit, :update, :destroy, :disable ]
+  before_action :authenticate, unless: :admin_signed_in?
+  before_action :set_event, only: [:new, :edit, :create, :update, :disable]
   before_action :set_rsvp, only: [:destroy_rsvp]
   before_action :check_if_already_attending_or_disabled, only: [:create_rsvp]
 
@@ -54,6 +55,15 @@ class SessionsController < ApplicationController
     else
       redirect_to @session.event, notice: 'Session cannot be destroyed'
     end
+  end
+
+  def disable
+    @session.enable = false
+    if @session.save(validate: false)
+      redirect_to @session.event, notice: 'Session Disabled'
+    else
+      redirect_to @session.event, notice: 'Session Cannot be disabled'
+    end    
   end
 
   private
