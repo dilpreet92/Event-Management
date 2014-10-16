@@ -8,7 +8,7 @@
     <td><%= session.description %></td>
     <% if logged_in? && session.event.live_and_upcoming? %>
 
-      <% if session.event.owner?(current_user) %>
+      <% if session.event.owner?(current_user) || admin_signed_in? %>
         <td><%= link_to 'Edit', edit_event_session_path(session.event, session) %></td>
       <% end %> 
 
