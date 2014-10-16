@@ -24,10 +24,13 @@ class EventsController < ApplicationController
   end
 
   def search
+  end
+
+  def search_filter
     if params[:search].blank?
       @events = get_live_and_upcoming_events.order_by_start_date(:asc)
     else
-      @events = get_live_and_upcoming_events.joins(:sessions).search(params[:search]).uniq
+      @events = get_live_and_upcoming_events.eager_load(:sessions).search(params[:search]).uniq
     end
     respond_to do |format|
       format.js
