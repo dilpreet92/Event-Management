@@ -1,13 +1,15 @@
 Rails.application.routes.draw do
   
   devise_for :admins
- 
-  resources :users do
-    collection do
-      get '/disable' => 'users#disable'
-      get '/enable' => 'users#enable'
+  
+  namespace :admins do
+    resources :users do
+      collection do
+        get '/disable' => 'users#disable'
+        get '/enable' => 'users#enable'
+      end
     end
-  end
+  end  
 
   resources :events do
     collection do
