@@ -7,9 +7,13 @@ $(document).on('ready page:load', function(){
     return false;
   });
   //Clicking on all events will submit the form with radio button upcoming clicked
-  $('#showEvents').on('click', '#allEvents' , function() {
+  $('#showEvents').on('click', '#allEvents #myEvents' , function() {
     $('.category :submit').click();
   });
+
+  // $('#myEvents').on('click', function() {
+  //   $('#mineCategorySubmit').click();
+  // });
   // Clicking on upcoming tab will submit the form with value upcoming
   $('#events_filter_upcoming').on('change', function() {
     $(this).parent('form').trigger('submit');
