@@ -1,8 +1,8 @@
 class EventsController < ApplicationController
 
   before_action :authenticate, unless: :admin_signed_in?, except: [:index, :filter, :show, :search]
-  before_action :set_event, only: [:show, :edit, :update, :destroy]
-  before_action :authorize_user?, unless: :admin_signed_in?, only: [:edit, :update, :destroy]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :disable]
+  before_action :authorize_user?, unless: :admin_signed_in?, only: [:edit, :update, :disable]
 
   def index
   end
@@ -58,6 +58,15 @@ class EventsController < ApplicationController
       redirect_to @event, notice: 'Event was successfully updated.'
     else
       render :edit
+    end
+  end
+
+  def disable
+    @event.enable = false
+    if @event.save(validate: false)
+      redirect_to events_url, notice: 'Event successfully Disabled'
+    else
+      redirect_to events_url, notice: 'Event cannot be disabled'
     end
   end
 

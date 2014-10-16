@@ -15,11 +15,13 @@ Rails.application.routes.draw do
       get '/search' => 'events#search'
       get '/i_am_attending' => 'events#rsvps'
       get '/filter' => 'events#filter'
+      get '/disable' => 'events#disable'
     end
     resources :sessions do
       collection do
         get '/create_rsvp' => 'sessions#create_rsvp'
         get '/destroy_rsvp' => 'sessions#destroy_rsvp'
+        get '/disable' => 'sessions#disable'
       end
     end
   end

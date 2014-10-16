@@ -3,7 +3,7 @@ class Event < ActiveRecord::Base
   
   has_many :sessions, dependent: :destroy
   has_many :attendes, through: :sessions, source: :attendes
-  before_save :check_if_any_session_outside_event_range?, message: 'Event cannot be updated'
+  before_save :ensure_all_sessions_in_range?, message: 'Event cannot be updated'
 
   #FIXME_AB: you should also read about the patterns we can pass to paperclip styles. like we have > sign in following style, there are much more.
   has_attached_file :logo, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/index.jpeg"
@@ -20,6 +20,22 @@ class Event < ActiveRecord::Base
   scope :past, -> { where("end_date < ?", Time.current) }
   scope :search, -> (query) { where("name LIKE :query OR city LIKE :query OR country LIKE :query",
                             query: "%#{ query }%") }
+
+  def destroy
+    raise 'Event cannot be deleted'
+  end
+
+  def delete
+    raise 'Event cannot be deleted'
+  end
+
+  def self.destroy_all
+    raise 'Event cannot be deleted'
+  end
+
+  def self.delete_all
+    raise 'Event cannot be deleted'
+  end
 
   def live_and_upcoming?
     end_date >= Time.current 
@@ -48,7 +64,7 @@ class Event < ActiveRecord::Base
       (start_date < Time.current) || (start_date >= end_date)
     end
 
-    def check_if_any_session_outside_event_range?
+    def ensure_all_sessions_in_range?
       if sessions.all? { |session| session.start_date >= start_date && session.end_date <= end_date } 
         true
       else
