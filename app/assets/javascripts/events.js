@@ -11,9 +11,6 @@ $(document).on('ready page:load', function(){
     $('.category :submit').click();
   });
 
-  // $('#myEvents').on('click', function() {
-  //   $('#mineCategorySubmit').click();
-  // });
   // Clicking on upcoming tab will submit the form with value upcoming
   $('#events_filter_upcoming').on('change', function() {
     $(this).parent('form').trigger('submit');
