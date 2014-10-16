@@ -1,3 +1,1 @@
-$('#events_filter_past').hide();
-$('#pastLabel').hide();
-$('#events').html('<%= escape_javascript render("events") %>');
+$('#results').html('<%= escape_javascript render("events") %>').prepend('<div>OnGoing/Upcoming</div>');
