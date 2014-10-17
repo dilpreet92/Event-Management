@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   
-  devise_for :admins
+  devise_for :admin
 
   namespace :api, defaults: { format: 'json' } do
     namespace :v1 do
@@ -23,8 +23,10 @@ Rails.application.routes.draw do
       end
     end
   end
-  
-  namespace :admins do
+
+  namespace :admin do
+    get '/logout', to: redirect('/admin/sign_out')
+    get '/login', to: redirect('/admin/sign_in')
     resources :users do
       collection do
         get '/disable' => 'users#disable'

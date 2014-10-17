@@ -1,4 +1,4 @@
-class Admins::UsersController < ApplicationController
+class Admin::UsersController < ApplicationController
 
   before_action :authenticate_admin!
   before_action :set_user, only: [:enable, :disable]
@@ -10,18 +10,18 @@ class Admins::UsersController < ApplicationController
   def enable
     @user.enable = true
     if @user.save
-      redirect_to admins_users_url, notice: 'User enabled'
+      redirect_to admin_users_url, notice: 'User enabled'
     else
-      redirect_to admins_users_url, notice: 'Failed to enable'
+      redirect_to admin_users_url, notice: 'Failed to enable'
     end
   end
 
   def disable
     @user.enable = false
     if @user.save
-        redirect_to admins_users_url, notice: 'User disabled'
+        redirect_to admin_users_url, notice: 'User disabled'
       else
-        redirect_to admins_users_url, notice: 'Failed to disable'
+        redirect_to admin_users_url, notice: 'Failed to disable'
       end
   end
 
