@@ -1,5 +1,7 @@
 class Admin::UsersController < ApplicationController
 
+  layout 'index'
+
   before_action :authenticate_admin!
   before_action :set_user, only: [:enable, :disable]
 
