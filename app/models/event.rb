@@ -19,8 +19,8 @@ class Event < ActiveRecord::Base
   scope :live_and_upcoming, -> { where("events.end_date >= ?", Time.current) }
   scope :past, -> { where("events.end_date < ?", Time.current) }
 
-  scope :search, -> (query) { where("events.name ILIKE :query OR events.city ILIKE :query OR 
-    events.country ILIKE :query OR sessions.topic ILIKE :query", query: "%#{ query }%") }
+  scope :search, -> (query) { where("lower(events.name) LIKE :query OR lower(events.city) LIKE :query OR 
+    lower(events.country) LIKE :query OR lower(sessions.topic) LIKE :query", query: "%#{ query }%") }
 
 
   def destroy

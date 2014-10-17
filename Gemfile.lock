@@ -103,8 +103,6 @@ GEM
       cocaine (~> 0.5.3)
       mime-types
     pg (0.17.1)
-    polyamorous (1.1.0)
-      activerecord (>= 3.0)
     rack (1.5.2)
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -148,10 +146,6 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (~> 2.8)
-    squeel (1.2.1)
-      activerecord (>= 3.0)
-      activesupport (>= 3.0)
-      polyamorous (~> 1.1.0)
     therubyracer (0.12.1)
       libv8 (~> 3.16.14.0)
       ref
@@ -197,7 +191,6 @@ DEPENDENCIES
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)
   spring
-  squeel
   therubyracer
   thin
   turbolinks

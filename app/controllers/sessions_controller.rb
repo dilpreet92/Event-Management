@@ -28,7 +28,7 @@ class SessionsController < ApplicationController
       redirect_to events_url, notice: "You are now not attending #{ @rsvp.session.topic }"
     else
       redirect_to events_url, notice: 'Current operation cannot be performed'
-    end  
+    end
   end
 
   def create
