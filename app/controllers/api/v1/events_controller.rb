@@ -12,11 +12,11 @@ class Api::V1::EventsController < ApplicationController
   end
 
   def mine_events
-    respond_with @current_user.events.enabled
+    respond_with @consumer_user.events.enabled
   end
 
   def rsvps
-    respond_with @current_user.attending_events.enabled
+    respond_with @consumer_user.attending_events.enabled
   end
 
 end

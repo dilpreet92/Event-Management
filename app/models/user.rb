@@ -1,19 +1,17 @@
 class User < ActiveRecord::Base
   
-  has_one :api_key
   has_many :events, dependent: :destroy
   has_many :rsvps, dependent: :destroy
   has_many :attending_sessions, through: :rsvps, source: :session
   has_many :attending_events, through: :attending_sessions, source: :event
 
   validates :name, presence: true
-  validates :uid, :provider, presence: true
-
-  after_create :create_api_key
+  validates :uid, :provider, :access_token, :twitter_secret, presence: true
 
   def self.create_with_omniauth(auth)
-    create(provider: auth['provider'], uid: auth['uid'], 
-           handle: auth['info']['urls']['Twitter'], name: auth['info']['name'])
+    create(provider: auth['provider'], uid: auth['uid'], handle: auth['info']['urls']['Twitter'], 
+           name: auth['info']['name'], access_token: auth['credentials']['token'], 
+           twitter_secret: auth['credentials']['secret'])
   end
 
   def attending?(session)
@@ -35,11 +33,5 @@ class User < ActiveRecord::Base
   def self.delete_all
     raise 'User cannot be deleted'
   end
-
-  private
-
-    def create_api_key
-      ApiKey.create(user: self)
-    end
 
 end

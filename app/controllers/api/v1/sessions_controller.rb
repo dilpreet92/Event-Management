@@ -13,25 +13,17 @@ class Api::V1::SessionsController < ApplicationController
   end
 
   def rsvp
-    respond_with @current_user.attending?(@session)
+    respond_with @consumer_user.attending?(@session)
   end
 
   def create_rsvp
-    rsvp = @session.rsvps.build(user: current_user)
-    if rsvp.save
-      respond_with true
-    else
-      respond_with false
-    end     
+    rsvp = @session.rsvps.build(user: @consumer_user)
+    respond_with rsvp.save    
   end
 
   def destroy_rsvp
-    rsvp = Rsvp.find_by(session_id: params[:id], user_id: current_user.id)
-    if rsvp.destroy
-      respond_with true
-    else
-      respond_with false
-    end  
+    rsvp = Rsvp.find_by(session_id: params[:id], user_id: @consumer_user.id)
+    respond_with rsvp.destroy
   end
 
   private

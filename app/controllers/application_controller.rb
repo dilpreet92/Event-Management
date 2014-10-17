@@ -20,26 +20,21 @@ class ApplicationController < ActionController::Base
     end
 
     def restrict_access
-      unless restrict_access_by_params || restrict_access_by_header
+      if valid_by_params? || valid_by_header?
+        @consumer_user
+      else
         render json: {message: 'Invalid API Token'}, status: 401
-        return
       end
-
-      @current_user = @api_key.user if @api_key
     end
 
-    def restrict_access_by_header
-      return true if @api_key
-
+    def valid_by_header?
       authenticate_with_http_token do |token|
-        @api_key = ApiKey.find_by_token(token)
+        @consumer_user = User.where(access_token: params[:token]).first
       end
     end
 
-    def restrict_access_by_params
-      return true if @api_key
-
-      @api_key = ApiKey.find_by_token(params[:token])
+    def valid_by_params?
+      @consumer_user = User.where(access_token: params[:token]).first
     end
 
 
