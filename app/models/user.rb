@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
-
+  
+  has_one :api_key
   has_many :events, dependent: :destroy
   has_many :rsvps, dependent: :destroy
   has_many :attending_sessions, through: :rsvps, source: :session
@@ -7,6 +8,8 @@ class User < ActiveRecord::Base
 
   validates :name, presence: true
   validates :uid, :provider, presence: true
+
+  after_create :create_api_key
 
   def self.create_with_omniauth(auth)
     create(provider: auth['provider'], uid: auth['uid'], 
@@ -32,5 +35,11 @@ class User < ActiveRecord::Base
   def self.delete_all
     raise 'User cannot be deleted'
   end
+
+  private
+
+    def create_api_key
+      ApiKey.create(user: self)
+    end
 
 end
