@@ -18,5 +18,5 @@ describe User do
   end
   it "is invalid without a provider" do
     FactoryGirl.build(:user, provider: nil).should_not be_valid
-  end 
+  end
 end
