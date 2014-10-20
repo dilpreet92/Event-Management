@@ -20,7 +20,7 @@ class Admin::UsersController < ApplicationController
 
   def disable
     @user.enable = false
-    if @user.save!
+    if @user.save
         redirect_to admin_users_url, notice: 'User disabled'
     else
         redirect_to admin_users_url, notice: 'Failed to disable'
