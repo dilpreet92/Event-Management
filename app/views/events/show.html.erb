@@ -70,8 +70,8 @@
         <th colspan="3"></th>
       </tr>
     </thead>
-    <tbody> 
-      <%= render @event.sessions %>
+    <tbody>
+      <%= render partial: @event.sessions, locals: { :event_owner => @event.owner?(current_user), :event_live_and_upcoming => @event.live_and_upcoming? } %>
     </tbody>
   </table>
 <% end %>

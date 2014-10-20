@@ -18,6 +18,10 @@ class User < ActiveRecord::Base
     attending_sessions.exists?(session)
   end
 
+  def enabled?
+    enable
+  end
+
   def destroy
     raise 'User cannot be deleted'
   end

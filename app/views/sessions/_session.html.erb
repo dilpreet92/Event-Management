@@ -4,15 +4,15 @@
     <td><%= session.start_date %></td>
     <td><%= session.end_date %></td>
     <td><%= session.location %></td>
-    <td><% session.attendes.each do |attendee| %>
-          <%= link_to attendee.name, attendee.handle %>
+    <td><% session.attendes.each do |user| %>
+          <%= link_to user.name, user.handle %>
         <% end %>
     </td>      
     <td><%= session.speaker %></td>
     <td><%= session.description %></td>
-    <% if logged_in? && session.event.live_and_upcoming? && session.upcoming? %>
+    <% if logged_in? && event_live_and_upcoming && session.upcoming? %>
 
-      <% if session.event.owner?(current_user) %>
+      <% if event_owner %>
         <td><%= link_to 'Edit', edit_event_session_path(session.event, session) %></td>
         <td><%= link_to 'Disable', disable_event_sessions_path(event_id: session.event, id: session) %></td>
       <% end %> 
