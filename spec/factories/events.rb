@@ -1,11 +1,18 @@
 FactoryGirl.define do 
   factory :event do |t| 
-    t.provider "twitter"
-    t.name   "dp"
-    t.access_token   "edeed"
-    t.twitter_secret   "twitter_secret"
-    t.uid   "uid"
-    t.handle   'abc'
-    t.enable  true
+    t.name "dilpreet"
+    t.start_date   Time.current
+    t.end_date   "edeed"
+    t.address   "twitter_secret"
+    t.city   "uid"
+    t.country   'abc'
+    t.contact_number  true
+    t.description
+    t.enable
+    t.integer
+    t.logo_file_name
+    t.logo_content_type
+    t.logo_file_size
+    t.logo_updated_at
   end 
 end

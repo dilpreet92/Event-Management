@@ -1,7 +1,9 @@
-require 'spec_helper' 
+require 'spec_helper'
+
 describe User do
 
 context 'with particular identity' do
+
   before :each do
     @user = FactoryGirl.create(:user)
   end
