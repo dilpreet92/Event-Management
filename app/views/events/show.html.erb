@@ -71,7 +71,11 @@
       </tr>
     </thead>
     <tbody>
-      <%= render partial: @event.sessions, locals: { :event_owner => @event.owner?(current_user), :event_live_and_upcoming => @event.live_and_upcoming? } %>
+      <% if logged_in? %>
+        <%= render partial: @event.sessions, locals: { :event_owner => @event.owner?(current_user), :event_live_and_upcoming => @event.live_and_upcoming? } %>
+      <% else %>
+        <%= render partial: @event.sessions, locals: { :event_owner => false, :event_live_and_upcoming => @event.live_and_upcoming? } %>
+      <% end %>    
     </tbody>
   </table>
 <% end %>
