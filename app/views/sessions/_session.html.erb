@@ -4,8 +4,8 @@
     <td><%= session.start_date %></td>
     <td><%= session.end_date %></td>
     <td><%= session.location %></td>
-    <td><% session.attendes.each do |user| %>
-          <%= link_to user.name, user.handle %>
+    <td><% session.attendes.each do |attendee| %>
+          <%= link_to attendee.name, attendee.handle %>
         <% end %>
     </td>      
     <td><%= session.speaker %></td>
