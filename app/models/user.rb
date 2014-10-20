@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   has_many :attending_events, through: :attending_sessions, source: :event
 
   validates :name, presence: true
-  validates :uid, :provider, :access_token, :twitter_secret, presence: true
+  validates :uid, :handle, :provider, :access_token, :twitter_secret, presence: true
 
   def self.create_with_omniauth(auth)
     create(provider: auth['provider'], uid: auth['uid'], handle: auth['info']['urls']['Twitter'], 

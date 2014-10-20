@@ -1,5 +1,5 @@
 FactoryGirl.define do 
-  factory :user do |t| 
+  factory :event do |t| 
     t.provider "twitter"
     t.name   "dp"
     t.access_token   "edeed"

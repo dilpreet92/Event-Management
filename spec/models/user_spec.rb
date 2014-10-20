@@ -1,22 +1,50 @@
 require 'spec_helper' 
-describe User do 
-  it "has a valid factory" do
-    FactoryGirl.create(:user).should be_valid
+describe User do
+
+context 'with particular identity' do
+  before :each do
+    @user = FactoryGirl.create(:user)
   end
+
+  it "has a valid factory" do
+    @user.should be_valid
+  end
+
   it "is invalid without a access_token" do
-    FactoryGirl.build(:user, access_token: nil).should_not be_valid
+    @user.access_token.should_not == nil
   end
 
   it "is invalid without a twitter_secret" do
-    FactoryGirl.build(:user, twitter_secret: nil).should_not be_valid
-  end 
+    @user.twitter_secret.should_not == nil
+  end
+
   it "is invalid without a uid" do
-    FactoryGirl.build(:user, uid: nil).should_not be_valid
+    @user.uid.should_not == nil
   end
+
   it "is invalid without a name" do
-    FactoryGirl.build(:user, name: nil).should_not be_valid
+    @user.name.should_not == nil
   end
+
   it "is invalid without a provider" do
-    FactoryGirl.build(:user, provider: nil).should_not be_valid
+    @user.provider.should_not == nil
   end
+
+  it "cannot be destroyed" do
+    expect { @user.destroy }.to raise_error
+  end
+
+  it "cannot be deleted" do
+    expect { @user.delete }.to raise_error
+  end
+end  
+
+  it 'Cannot be destroyed' do
+    expect { User.destroy_all }.to raise_error
+  end
+
+  it 'cannot be deleted' do
+    expect { User.delete_all }.to raise_error
+  end
+
 end
