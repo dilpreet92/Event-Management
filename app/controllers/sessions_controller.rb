@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
   before_action :authenticate, unless: :admin_signed_in?
   before_action :set_event, only: [:new, :edit, :create, :update, :disable]
   before_action :set_rsvp, only: [:destroy_rsvp]
-  before_action :check_if_already_attending_or_disabled, only: [:create_rsvp]
+  before_action :check_if_already_attending, only: [:create_rsvp]
 
   def new
     @session = @event.sessions.build
@@ -67,9 +67,9 @@ class SessionsController < ApplicationController
 
   private
 
-    def check_if_already_attending_or_disabled
+    def check_if_already_attending
       @session = Session.where(id: params[:session_id]).first
-      if current_user.attending?(@session) || !@session.enable
+      if current_user.attending?(@session)
         redirect_to events_url, notice: "You are already attending #{ @session.topic } or session is disabled"
       end  
     end
@@ -83,7 +83,7 @@ class SessionsController < ApplicationController
 
     def set_session 
       @session = Session.where(id: params[:id]).first
-      if !@session
+      if !@session || !@session.enable
         redirect_to events_url, notice: 'Session not found or disabled'
       end
     end

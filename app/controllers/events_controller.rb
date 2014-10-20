@@ -10,7 +10,7 @@ class EventsController < ApplicationController
   end
 
   def filter
-    if params[:events][:filter] == 'past'
+    if past?
       @events = get_past_events
     else
       @events = get_live_and_upcoming_events
@@ -20,8 +20,8 @@ class EventsController < ApplicationController
     end
   end
 
-  def mine_filter
-    if params[:events][:filter] == 'past'
+  def mine_events
+    if past?
       @events = current_user.events.enabled.past.paginate(:page => params[:page], :per_page => 5)
     else
       @events = current_user.events.enabled.live_and_upcoming.paginate(:page => params[:page], :per_page => 5)
@@ -34,8 +34,8 @@ class EventsController < ApplicationController
   def mine
   end
 
-  def attending_filter
-    if params[:events][:filter] == 'past'
+  def attending
+    if past?
       @events = current_user.attending_events.enabled.past.paginate(:page => params[:page], :per_page => 5).uniq
     else
       @events = current_user.attending_events.enabled.live_and_upcoming.paginate(:page => params[:page], :per_page => 5).uniq
@@ -104,6 +104,10 @@ class EventsController < ApplicationController
   end
 
   private
+
+    def past?
+      params[:events][:filter] == 'past'
+    end  
 
     def get_live_and_upcoming_events
       get_enabled_events.live_and_upcoming.order_by_start_date(:asc)

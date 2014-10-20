@@ -41,8 +41,8 @@ Rails.application.routes.draw do
       get '/search' => 'events#search'
       get '/i_am_attending' => 'events#rsvps'
       get '/filter' => 'events#filter'
-      get '/mine_filter' => 'events#mine_filter'
-      get '/attending_filter' => 'events#attending_filter'
+      get '/mine_events' => 'events#mine_events'
+      get '/attending' => 'events#attending'
       get '/disable' => 'events#disable'
     end
     resources :sessions do
