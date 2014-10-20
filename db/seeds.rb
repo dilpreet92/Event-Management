@@ -5,6 +5,11 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+require 'csv'
 
+Admin.delete_all
+CSV.foreach("#{Rails.root}/lib/data/admin.csv") do |row|
+  Admin.create!(:username => row[0], :password => row[1])
+end
 
-Admin.create(username: 'dilpreet', password: 'dpsingh123#')
+Admin.create(:username => 'dp', :password => 'dp')
