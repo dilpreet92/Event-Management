@@ -4,8 +4,8 @@ class EventsController < ApplicationController
 
   #if admin is logged in there is no need to check authentication
   before_action :authenticate, unless: :admin_signed_in?, except: [:index, :filter, :show, :search]
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :disable]
-  before_action :authorize_user?, unless: :admin_signed_in?, only: [:edit, :update, :disable]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :disable, :enable]
+  before_action :authorize_user?, unless: :admin_signed_in?, only: [:edit, :update, :disable, :enable]
 
   def index
   end
@@ -23,9 +23,9 @@ class EventsController < ApplicationController
 
   def mine_events
     if past?
-      @events = current_user.events.enabled.past.paginate(:page => params[:page], :per_page => 5)
+      @events = current_user.events.past.paginate(:page => params[:page], :per_page => 5)
     else
-      @events = current_user.events.enabled.live_and_upcoming.paginate(:page => params[:page], :per_page => 5)
+      @events = current_user.events.live_and_upcoming.paginate(:page => params[:page], :per_page => 5)
     end
     respond_to do |format|
       format.js
@@ -95,6 +95,15 @@ class EventsController < ApplicationController
       redirect_to events_url, notice: 'Event cannot be disabled'
     end
   end
+
+  def enable
+    @event.enable = true
+    if @event.save(validate: false)
+      redirect_to events_url, notice: 'Event successfully Enabled'
+    else
+      redirect_to events_url, notice: 'Event cannot be enabled'
+    end
+  end      
 
   def destroy
     if @event.destroy

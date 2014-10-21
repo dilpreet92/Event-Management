@@ -44,6 +44,7 @@ Rails.application.routes.draw do
       get '/mine_events' => 'events#mine_events'
       get '/attending' => 'events#attending'
       get '/disable' => 'events#disable'
+      get '/enable' => 'events#enable'
     end
     resources :sessions do
       collection do
