@@ -7,6 +7,7 @@ class Session < ActiveRecord::Base
 
   validates :event, presence: true
   validates :topic, :location, :description, presence: true
+  #FIXME_AB: Why using old syntax use validates :description, length: { maximum: 250 }
   validates_length_of :description, maximum: 250
   validate :session_start_date
   validate :session_end_date

@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   end
 
   def enabled?
+    #FIXME_AB: this column name should be named as enabled 
     enable
   end
 

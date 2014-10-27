@@ -5,6 +5,7 @@ class Api::V1::SessionsController < ApplicationController
   respond_to :json
 
   def index
+    #FIXME_AB: event.sessions.enabled
     respond_with Session.enabled.where(event_id: params[:event_id])
   end
 
@@ -22,6 +23,7 @@ class Api::V1::SessionsController < ApplicationController
   end
 
   def destroy_rsvp
+    #FIXME_AB: session.rsvps.find_by
     rsvp = Rsvp.find_by(session_id: params[:id], user_id: @consumer_user.id)
     respond_with rsvp.destroy
   end

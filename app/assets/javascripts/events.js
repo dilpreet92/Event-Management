@@ -22,6 +22,7 @@ $(document).on('ready page:load', function(){
   });
 
   $('#clearText').on('click', function() {
+    // FIXME_AB: should we use empty()?
     $('#search').val('');
   });
 })

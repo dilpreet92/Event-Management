@@ -23,6 +23,7 @@ class Event < ActiveRecord::Base
     lower(events.country) LIKE :query OR lower(sessions.topic) LIKE :query", query: "%#{ query }%") }
 
 
+  #FIXME_AB: since we are overwriting destroy and delete methods in many models we can move them in concern. Please read about concerns if not aware and move these methods in there.
   def destroy
     raise 'Event cannot be deleted'
   end
@@ -67,6 +68,7 @@ class Event < ActiveRecord::Base
     end
 
     def ensure_all_sessions_in_range?
+      #FIXME_AB: We should extract complex conditions in a private method for better readability
       if sessions.all? { |session| session.start_date >= start_date && session.end_date <= end_date } 
         true
       else
