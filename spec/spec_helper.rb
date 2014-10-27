@@ -25,13 +25,13 @@ ActiveRecord::Migration.maintain_test_schema!
 RSpec.configure do |config|
 
   config.expect_with :rspec do |c|
-    c.syntax = :expect
+    c.syntax = [:expect, :should]
   end
   # ## Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
   #
-  config.mock_with :mocha
+  #config.mock_with :mocha
   # config.mock_with :flexmock
   # config.mock_with :rr
 
