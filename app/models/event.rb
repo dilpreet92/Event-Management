@@ -70,7 +70,7 @@ class Event < ActiveRecord::Base
       if sessions.all? { |session| session.start_date >= start_date && session.end_date <= end_date } 
         true
       else
-        errors.add(:start_date, 'Event cannot be updated')
+        errors[:base] << 'Event cannot be updated as event has sessions'
         false
       end        
     end
