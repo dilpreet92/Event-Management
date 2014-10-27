@@ -15,4 +15,4 @@
 //= require turbolinks
 //= require_tree .
 
-// FIXME_AB: Read about require tree .
+// FIXME_AB: Read about require tree . we should try to avoid this.

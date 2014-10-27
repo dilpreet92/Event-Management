@@ -76,6 +76,7 @@
     </thead>
     <tbody>
       <% if logged_in? %>
+        <% #FIXME_AB: Instead of passing event_owner as boolean pass event object and check this inside the partial -%>
         <%= render partial: @event.sessions, locals: { :event_owner => @event.owner?(current_user), :event_live_and_upcoming => @event.live_and_upcoming? } %>
       <% else %>
         <%= render partial: @event.sessions, locals: { :event_owner => false, :event_live_and_upcoming => @event.live_and_upcoming? } %>

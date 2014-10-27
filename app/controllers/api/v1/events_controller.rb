@@ -12,6 +12,7 @@ class Api::V1::EventsController < ApplicationController
   end
 
   def mine_events
+    #FIXME_AB: current_user.events.enabled
     respond_with @consumer_user.events.enabled
   end
 

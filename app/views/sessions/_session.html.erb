@@ -1,3 +1,4 @@
+<% #FIXME_AB: session.enabled? -%>
 <% if session.enable %>
   <tr>
     <td><%= session.topic %></td>
@@ -23,6 +24,7 @@
         <td><%= link_to 'Attend session', create_rsvp_event_sessions_path(session_id: session, event_id: session.event) %> </td>  
       <% end %>
     <% elsif admin_signed_in? %>
+    <% #FIXME_AB: disable_event_sessions_path(event: session.event, id:session) remember? -%>
       <td><%= link_to 'Disable', disable_event_sessions_path(event_id: session.event, id: session) %></td>
     <% end %>  
   </tr>

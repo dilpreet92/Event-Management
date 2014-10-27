@@ -29,6 +29,7 @@ class ApplicationController < ActionController::Base
 
     def valid_by_header?
       authenticate_with_http_token do |token|
+        #FIXME_AB: This is actually current user. instead of finding him by id we are finding him by access token. 
         @consumer_user = User.where(access_token: params[:token]).first
       end
     end
