@@ -291,6 +291,7 @@ describe EventsController do
     before do
       @event = double(:event)
       Event.stub(:new).and_return(@event)
+      @event.stub(:save).and_return(true)
       @event_params = { name: "dilpreet", start_date: "2014-10-23 06:13:05", end_date: "2014-10-26 06:13:05",
        address: "Hno. 1234", city: "Delhi", country: "India", contact_number: "131313", description: "ddqqdqdqd",
         enable: true, created_at: "2014-10-22 06:13:05", updated_at: "2014-10-22 06:13:05", user_id: 1 }
@@ -306,27 +307,42 @@ describe EventsController do
         @user = double(:user)
         User.stub(:find).and_return(@user)
         controller.stub(:admin_signed_in?).and_return(false)
-        controller.stub_chain(:current_user, :events).and_return(@user)
+        controller.stub_chain(:current_user).and_return(@user)
+        @user.stub(:events, :build).with(@event_params).and_return(@event)
       end
 
       it 'should save the new event' do
-        expect(assigns[:event]).to receive(:save)
+        expect(@event).to receive(:save)
         do_post
       end
 
       it 'should redirect to event page' do
+        do_post
+        expect(response).to redirect_to(event_path(@event))
       end
 
-      it 'should flash a notice ' do
+      it 'should flash a notice' do
+        do_post
+        expect(flash[:notice]).to eql 'Event was successfully created.'
+      end
+
+      it 'should render :new when not saved' do
+        @event.stub(:save).and_return(false)
+        expect(response).to render_template :new
       end
 
     end
 
     context 'when not logged in' do
 
-      it 'should raise error' do
+      before do
+        controller.stub(:admin_signed_in?).and_return(false)
+        controller.stub(:current_user).and_return(false)
+      end
+
+      it 'should flash notice Please log in' do
         do_post
-        expect(response).to raise_exception
+        expect(flash[:notice]).to eql 'Please log in to perform the current operation'
       end
 
     end
