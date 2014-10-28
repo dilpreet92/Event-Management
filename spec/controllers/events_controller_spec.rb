@@ -1,6 +1,13 @@
 require 'spec_helper'
 
 describe EventsController do
+
+  before do
+    @user = double(:user)
+    User.stub(:find).and_return(@user)
+    controller.stub(:admin_signed_in?).and_return(false)
+    controller.stub(:current_user).and_return(@user)
+  end
   
   context 'Get #index' do
 
@@ -18,15 +25,14 @@ describe EventsController do
       before do
         @events = double(:events)
         Event.stub_chain(:past, :order_by_start_date).with(:desc).and_return(@events)
+        get :filter, :events => { :filter => 'past'}, :format => 'js'
       end
 
       it 'should assign @events to past events' do
-        get :filter, :events => { :filter => 'past'}, :format => 'js'
         expect(assigns[:events]).to eql @events
       end
       
       it 'should render the :filter js' do
-        get :filter, :events => { :filter => 'past'}, :format => 'js'
         expect(response.content_type).to eq 'text/javascript'
       end
 
@@ -37,15 +43,14 @@ describe EventsController do
       before do
         @events = double(:events)
         Event.stub_chain(:live_and_upcoming, :order_by_start_date).with(:asc).and_return(@events)
+        get :filter, :events => { :filter => 'upcoming'}, :format => 'js'
       end
 
       it 'should assign events to upcoming events' do
-        get :filter, :events => { :filter => 'upcoming'}, :format => 'js'
         expect(assigns[:events]).to eql @events
       end
 
       it 'should render the :filter js' do
-        get :filter, :events => { :filter => 'upcoming'}, :format => 'js'
         expect(response.content_type).to eq 'text/javascript'
       end
     end
@@ -55,26 +60,21 @@ describe EventsController do
   context 'get #mine_events' do
 
     before do
-      @user = double(:user)
-      User.stub(:find).and_return(@user)
-      controller.stub(:admin_signed_in?).and_return(false)
-      controller.stub(:current_user).and_return(@user)
+      @events = double(:events)
     end
 
     context 'when event is past' do
 
       before do
-        @events = double(:events)
         @user.stub_chain(:events, :enabled, :past, :paginate).with({:page=>nil, :per_page=>5}).and_return(@events)
+        get :mine_filter, :events => { :filter => 'past'}, :format => 'js'
       end
 
       it 'should assign events to my past events' do
-        get :mine_filter, :events => { :filter => 'past'}, :format => 'js'
         expect(assigns[:events]).to eql @events
       end
       
       it 'should render the :filter js' do
-        get :mine_filter, :events => { :filter => 'past'}, :format => 'js'
         expect(response.content_type).to eq 'text/javascript'
       end
 
@@ -83,17 +83,15 @@ describe EventsController do
     context 'when event is upcoming' do
 
       before do
-        @events = double(:events)
         @user.stub_chain(:events, :enabled, :live_and_upcoming, :paginate).with({:page=>nil, :per_page=>5}).and_return(@events)
+        get :mine_filter, :events => { :filter => 'upcoming' }, :format => 'js'
       end
 
       it 'should assign events to my upcoming events' do
-        get :mine_filter, :events => { :filter => 'upcoming' }, :format => 'js'
         expect(assigns[:events]).to eql @events
       end
 
       it 'should render the :filter js' do
-        get :mine_filter, :events => { :filter => 'upcoming' }, :format => 'js'
         expect(response.content_type).to eq 'text/javascript'
       end
     end
@@ -103,28 +101,23 @@ describe EventsController do
   context 'get #attending_filter' do
 
     before do
-      @user = double(:user)
-      User.stub(:find).and_return(@user)
-      controller.stub(:admin_signed_in?).and_return(false)
-      controller.stub(:current_user).and_return(@user)
+      @events = double(:events)
+      @duplicate_events = double(:dup_events)
     end
 
     context 'when event is past' do
 
       before do
-        @events = double(:events)
-        @duplicate_events = double(:dup_events)
         @user.stub_chain(:attending_events, :enabled, :past, :paginate).with({:page=>nil, :per_page=>5}).and_return(@duplicate_events)
         @duplicate_events.stub(:uniq).and_return(@events)
+        get :attending_filter, :events => { :filter => 'past'}, :format => 'js'
       end
 
       it 'should assign events to my attending events' do
-        get :attending_filter, :events => { :filter => 'past'}, :format => 'js'
         expect(assigns[:events]).to eql @events
       end
       
       it 'should render the :filter js' do
-        get :attending_filter, :events => { :filter => 'past'}, :format => 'js'
         expect(response.content_type).to eq 'text/javascript'
       end
 
@@ -133,19 +126,16 @@ describe EventsController do
     context 'when event is upcoming' do
 
       before do
-        @events = double(:events)
-        @duplicate_events = double(:dup_events)
         @user.stub_chain(:attending_events, :enabled, :live_and_upcoming, :paginate).with({:page=>nil, :per_page=>5}).and_return(@duplicate_events)
         @duplicate_events.stub(:uniq).and_return(@events)
+        get :attending_filter, :events => { :filter => 'upcoming'}, :format => 'js'
       end
 
       it 'should assign events to my attending events' do
-        get :attending_filter, :events => { :filter => 'upcoming'}, :format => 'js'
         expect(assigns[:events]).to eql @events
       end
 
       it 'should render the :filter js' do
-        get :attending_filter, :events => { :filter => 'upcoming'}, :format => 'js'
         expect(response.content_type).to eq 'text/javascript'
       end
     end
@@ -154,14 +144,6 @@ describe EventsController do
 
   context 'get #mine' do
 
-    before do
-      @user = double(:user)
-      User.stub(:find).and_return(@user)
-      controller.stub(:admin_signed_in?).and_return(false)
-      controller.stub(:current_user).and_return(@user)
-    end
-    
-   
     it 'should render the :mine events view' do
       get :mine
       expect(response).to render_template(:mine)
@@ -173,18 +155,18 @@ describe EventsController do
   context 'get #search' do
 
     context 'when no paramaters is assigned' do
+
       before do
         @events = double(:events)
         Event.stub_chain(:live_and_upcoming, :order_by_start_date).with(:asc).and_return(@events)
+        get :search, :search => '', :format => 'js'
       end
 
       it 'assign events to all upcoming events' do
-        get :search, :search => '', :format => 'js'
         expect(assigns[:events]).to eql @events
       end
 
       it 'should render the :search js' do
-        get :search, :search => '', :format => 'js'
         expect(response.content_type).to eq 'text/javascript'
       end
     end
@@ -200,28 +182,20 @@ describe EventsController do
         @upcoming_events.stub_chain(:eager_load).with(:sessions).and_return(@association)
         @association.stub(:search).with('dp').and_return(@duplicate_events)
         @duplicate_events.stub(:uniq).and_return(@events)
+        get :search, :search => 'dp', :format => 'js'
       end
 
       it 'should assign events according to events that are searched for' do
-        get :search, :search => 'dp', :format => 'js'
         expect(assigns[:events]).to eql @events
       end
 
       it 'should render the :search js' do
-        get :search, :search => 'dp', :format => 'js'
         expect(response.content_type).to eq 'text/javascript'
       end
     end
   end
 
   context 'get #rsvps' do
-
-    before do
-      @user = double(:user)
-      User.stub(:find).and_return(@user)
-      controller.stub(:admin_signed_in?).and_return(false)
-      controller.stub(:current_user).and_return(@user)
-    end
 
     it 'should render the :rsvps view' do
       get :rsvps
@@ -231,13 +205,6 @@ describe EventsController do
   end
 
   context 'get #show' do
-
-    before do
-      @user = double(:user)
-      User.stub(:find).and_return(@user)
-      controller.stub(:admin_signed_in?).and_return(false)
-      controller.stub(:current_user).and_return(@user)
-    end
 
     it 'should render the :show view' do
       get :show, :id => 1
@@ -249,22 +216,17 @@ describe EventsController do
   context 'get #new' do
 
     before do
-      @user = double(:user)
       @event = double(:event)
-      User.stub(:find).and_return(@user)
-      controller.stub(:admin_signed_in?).and_return(false)
       controller.stub(:authenticate).and_return(@user)
-      controller.stub_chain(:current_user).and_return(@user)
       @user.stub(:events, :build).and_return(@event)
+      get :new
     end
 
     it 'should assign @event' do
-      get :new
       expect(assigns[:event]).not_to be_nil
     end
 
     it 'should render the template :new' do
-      get :new
       expect(response).to render_template(:new)
     end
 
@@ -273,15 +235,11 @@ describe EventsController do
   context 'get #edit' do
 
     before do
-      @user = double(:user)
-      User.stub(:find).and_return(@user)
-      controller.stub(:admin_signed_in?).and_return(false)
-      controller.stub(:current_user).and_return(@user)
       controller.stub(:authorize_user?).and_return(:true)
+      get :edit, :id => 142
     end
 
     it 'should render the :edit view' do
-      get :edit, :id => 142
       expect(response).to render_template(:edit)
     end
 
@@ -304,10 +262,6 @@ describe EventsController do
     context 'when logged in' do
 
       before do
-        @user = double(:user)
-        User.stub(:find).and_return(@user)
-        controller.stub(:admin_signed_in?).and_return(false)
-        controller.stub_chain(:current_user).and_return(@user)
         @user.stub(:events, :build).with(@event_params).and_return(@event)
       end
 
@@ -359,12 +313,8 @@ describe EventsController do
 
     before do
       @event = double(:event)
-      @user = double(:user)
       Event.stub(:find).and_return(@event)
       @event.stub(:update).and_return(true)
-      User.stub(:find).and_return(@user)
-      controller.stub(:current_user).and_return(@user)
-      controller.stub(:admin_signed_in?).and_return(false)
       controller.stub(:authorize_user?).and_return(true)
     end
 
