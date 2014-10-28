@@ -31,8 +31,8 @@ class Admin::UsersController < ApplicationController
 
     def set_user
       @user = User.where(id: params[:id]).first
-      #FIXME_AB: instead of if !@user I would prefer if @user.nil?. This looks more readable to me
-      if !@user
+      #FIXED: instead of if !@user I would prefer if @user.nil?. This looks more readable to me
+      if @user.nil?
         redirect_to users_url, notice: 'User not found'
       end  
     end

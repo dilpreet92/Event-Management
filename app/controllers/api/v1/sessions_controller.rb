@@ -32,7 +32,7 @@ class Api::V1::SessionsController < ApplicationController
 
     def set_session
       @session = Session.where(id: params[:id]).first
-      if !@session
+      if @session.nil?
         render json: {message: 'Resource not found'}, status: 404
       end
     end
