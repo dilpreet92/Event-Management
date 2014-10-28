@@ -7,7 +7,7 @@
         <li><%= link_to 'Logout Admin', admin_logout_path %></li>
       <% elsif logged_in? %>
         <li class="pull-right"><%= link_to 'Logout', signout_path, class: 'header-link' %></li>
-        <li id='userName' class="pull-right header-font">Hello <%= current_user.name %></li>
+        <li id='userName' class="pull-right header-font">Hello, <%= current_user.name %></li>
       <% else %>
         <li class="pull-right"><%= link_to 'Login via twitter', signin_path, class: 'header-link twitter' %></li>
       <% end %>
