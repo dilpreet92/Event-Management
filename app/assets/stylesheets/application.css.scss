@@ -13,24 +13,3 @@
  *= require_tree .
  *= require_self
  */
-
-#userName {
-  color: white;
-}
-
-#search, #clearText {
-  margin-top: 10px;
-}
-
-#welcomeImage, #tabs {
-  margin-left: 204px;
-  width: 64%;
-}
-
-.login-header {
-  background-color: blue;
-}
-
-#categorySubmit, #mineCategorySubmit {
-  display: none;
-}
