@@ -4,7 +4,7 @@ describe EventsController do
 
   before do
     @user = double(:user)
-    User.stub(:find).and_return(@user)
+    User.stub(:find).with(1).and_return(@user)
     controller.stub(:admin_signed_in?).and_return(false)
     controller.stub(:current_user).and_return(@user)
   end
@@ -218,7 +218,7 @@ describe EventsController do
     before do
       @event = double(:event)
       controller.stub(:authenticate).and_return(@user)
-      @user.stub(:events, :build).and_return(@event)
+      # @user.stub(:events, :build).and_return(@event)
       get :new
     end
 
