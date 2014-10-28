@@ -3,7 +3,7 @@
 </li>
 <li class="pull-right">
   <%= form_tag(search_events_path, method: :get, remote: true) do %>
-    <%= text_field_tag :search %>
+    <%= text_field_tag :search, nil, :class=>"form-control input-box", :placeholder=>"Search..." %>
     <%= submit_tag 'Search', id: 'searchButton' %>
   <% end %>
 </li>

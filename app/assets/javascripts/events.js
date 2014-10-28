@@ -9,13 +9,14 @@ $(document).on('ready page:load', function(){
   //Clicking on all events will submit the form with radio button upcoming clicked
   $('#showEvents').on('click', '#allEvents #attendingEvents' , function() {
     $('.category :submit').click();
+    $(this).parent('li').addClass('active');
   });
 
   // Clicking on upcoming tab will submit the form with value upcoming
   $('#events_filter_upcoming').on('change', function() {
     $(this).parent('form').trigger('submit');
   });
-  
+
   //Clicking on past tab will submit the form with value past
   $('#events_filter_past').on('change', function() {
     $(this).parent('form').trigger('submit');

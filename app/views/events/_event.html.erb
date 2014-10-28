@@ -1,11 +1,41 @@
-<tr>
-  <td><%= link_to event.name, event_path(event) %></td>  
-  <td><%= event.start_date %></td>
-  <td><%= event.end_date %></td>
-  <td><%= event.address %></td>
-  <td><%= event.city %></td>
-  <td><%= event.country %></td>
-  <td><%= event.contact_number %></td>
-  <td><%= event.description %></td>
-  <td><%= image_tag event.logo.url(:thumb) %></td>
-</tr>
+<div class="event_content wraper row">
+  <div class="col-md-2">
+  <%= image_tag event.logo.url(:thumb) %>
+  </div>
+  <div class="col-md-8">
+    <div class="col-md-12 event_name">
+      <%= link_to event.name, event_path(event) %>
+    </div>
+    <div class="col-md-6">
+      <%= event.start_date %>
+      <%= event.end_date %>
+    </div>
+    <div class="col-md-6">
+      <%= event.address %>
+      <%= event.city %>
+      <%= event.country %>
+      <%= event.contact_number %>
+    </div>
+    <div class="col-md-12 event_name">
+      <%= event.description %>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

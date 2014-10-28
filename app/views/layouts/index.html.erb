@@ -21,7 +21,7 @@
     <main role="main">
       <%= render 'shared/messages' %>
       <div id='showEvents'>
-        <ul class="nav nav-tabs" role="tablist">
+        <ul class="nav nav-tabs">
           <li class="active"><%= link_to 'All Events', events_path, id: 'allEvents' %></li>
           <% if logged_in? %>
             <li><%= link_to 'Events I Created', mine_events_path %></li>
@@ -33,7 +33,7 @@
         <ul>
       </div>
       <div id='mainView'>
-        <div id='results' class="tab-content">
+        <div id='results'>
           <%= yield %>
         </div>
       </div>
