@@ -86,6 +86,7 @@ GEM
     mime-types (2.3)
     minitest (5.4.2)
     multi_json (1.10.1)
+    mysql2 (0.3.16)
     oauth (0.4.7)
     omniauth (1.2.2)
       hashie (>= 1.2, < 4)
@@ -102,7 +103,6 @@ GEM
       activesupport (>= 3.0.0)
       cocaine (~> 0.5.3)
       mime-types
-    pg (0.17.1)
     rack (1.5.2)
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -183,10 +183,10 @@ DEPENDENCIES
   devise
   jbuilder (~> 2.0)
   jquery-rails
+  mysql2
   omniauth
   omniauth-twitter
   paperclip (~> 4.2)
-  pg
   rails (= 4.1.6)
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)

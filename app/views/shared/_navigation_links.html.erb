@@ -1,13 +1,13 @@
-<li><%= link_to 'Create Event', new_event_path %></li>
-<li>
+<li class="pull-left">
+  <%= link_to 'Home', root_url, class:'logo' %>
+</li>
+<li class="pull-right">
   <%= form_tag(search_events_path, method: :get, remote: true) do %>
     <%= text_field_tag :search %>
     <%= submit_tag 'Search', id: 'searchButton' %>
   <% end %>
 </li>
-<li>
+<li class="pull-right"><%= link_to 'Create Event', new_event_path, class:'btn create_event' %></li>
+<!-- <li>
   <input id='clearText' type='button' value='Clear'>
-</li>
-<li>
-  <%= link_to 'Home', root_url %>
-</li>  
+</li> -->

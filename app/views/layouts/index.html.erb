@@ -12,23 +12,31 @@
     <header>
       <%= render 'shared/navigation' %>
     </header>
+    <div class="map-area">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d112083.90692396626!2d77.19589335408418!3d28.611111892729635!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1398852914658"  frameborder="0" style="border:0"></iframe>
+      <div class="anchorarea active">
+        <div class="content">Welcome to iConfConnect<sub>Lists all Technical Conferences and Events across the Globe</sub></div>
+      </div>
+    </div>
     <main role="main">
       <%= render 'shared/messages' %>
       <div id='showEvents'>
-        <%= link_to 'All Events', events_path, id: 'allEvents' %>
-        <% if logged_in? %>|
-          <%= link_to 'Events I Created', mine_events_path %> |
-          <%= link_to "Event I'm Attending", i_am_attending_events_path, id: 'attendingEvents' %> 
-        <% end %>|
-        <% if admin_signed_in? %>
-          <%= link_to 'Users', admin_users_path %>
-        <% end %>  
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="active"><%= link_to 'All Events', events_path, id: 'allEvents' %></li>
+          <% if logged_in? %>
+            <li><%= link_to 'Events I Created', mine_events_path %></li>
+            <li><%= link_to "Event I'm Attending", i_am_attending_events_path, id: 'attendingEvents' %></li>
+          <% end %>
+          <% if admin_signed_in? %>
+            <li><%= link_to 'Users', admin_users_path %><li>
+          <% end %>
+        <ul>
       </div>
       <div id='mainView'>
-        <div id='results'>
+        <div id='results' class="tab-content">
           <%= yield %>
-        </div>  
-      </div>  
+        </div>
+      </div>
     </main>
   </body>
 </html>
