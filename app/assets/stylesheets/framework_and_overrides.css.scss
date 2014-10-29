@@ -102,11 +102,11 @@ a.header-link:hover { background-color: transparent; }
 .create_event { color: #335374 !important; background-color: #99cc99; margin: 25px 10px;}
 .create_event:hover { background-color: #99cc99; }
 .input-box { width: 270px; margin: 25px 0; color: #335374;}
-#results { background-color: #fff; padding-top: 25px; border: 1px solid #ddd; border-top-color: transparent; }
+#results { min-height: 400px; background-color: #fff; padding: 25px 0 40px; border: 1px solid #ddd; border-top-color: transparent; }
 .wraper { margin: 0 30px;}
 .event_radio_list { background-color: #f2f2f2; padding: 10px 15px; font-size: 18px; color: #213e5b; }
 .event_radio_list span { margin-right: 30px;}
 .event_radio_list input { vertical-align: text-top;}
-
+#results h4 { text-align: center; font-size: 50px; color: #aaa; margin-top: 30px;}
 
 
