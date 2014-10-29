@@ -1,0 +1,1 @@
+json.sessions @sessions, partial: 'api/v1/sessions/session',as: :session

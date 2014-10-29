@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   def self.create_with_omniauth(auth)
     create(provider: auth['provider'], uid: auth['uid'], handle: auth['info']['urls']['Twitter'], 
            name: auth['info']['name'], access_token: auth['credentials']['token'], 
-           twitter_secret: auth['credentials']['secret'])
+           twitter_secret: auth['credentials']['secret'], twitter_name: auth['info']['nickname'])
   end
 
   def attending?(session)

@@ -16,8 +16,8 @@ Rails.application.routes.draw do
           member do
             get '/attendees' => 'sessions#attendees'
             get '/rsvp' => 'sessions#rsvp'
-            get '/create_rsvp' => 'sessions#create_rsvp'
-            get '/destroy_rsvp' => 'sessions#destroy_rsvp'
+            post '/create_rsvp' => 'sessions#create_rsvp'
+            post '/destroy_rsvp' => 'sessions#destroy_rsvp'
           end
         end
       end
