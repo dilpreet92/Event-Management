@@ -24,6 +24,8 @@ ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
 
+  config.infer_base_class_for_anonymous_controllers = false
+
   config.expect_with :rspec do |c|
     c.syntax = [:expect, :should]
   end
