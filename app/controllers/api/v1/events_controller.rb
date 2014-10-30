@@ -9,7 +9,7 @@ class Api::V1::EventsController < ApplicationController
   end
 
   def attendees
-    @users = Event.where(id: params[:id]).first.attendes.uniq
+    @users = @event.attendes.uniq
   end
 
   def mine_events

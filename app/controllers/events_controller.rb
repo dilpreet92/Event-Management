@@ -48,7 +48,7 @@ class EventsController < ApplicationController
 
   def search
     if params[:search].blank?
-      @events = get_live_and_upcoming_events.order_by_start_date(:asc)
+      @events = get_live_and_upcoming_events
     else
       @events = get_live_and_upcoming_events.eager_load(:sessions).search(params[:search].strip.downcase).uniq
     end
@@ -104,14 +104,6 @@ class EventsController < ApplicationController
       redirect_to events_url, notice: 'Event cannot be enabled'
     end
   end      
-
-  def destroy
-    if @event.destroy
-      redirect_to events_url, notice: 'Event was successfully destroyed.'
-    else
-      redirect_to events_url, notice: "#{ @event.name } cannot be destroyed "
-    end    
-  end
 
   private
 

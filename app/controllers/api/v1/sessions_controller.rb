@@ -23,8 +23,8 @@ class Api::V1::SessionsController < ApplicationController
   end
 
   def create_rsvp
-    rsvp = @session.rsvps.build(user: @consumer_user)
-    if rsvp.save
+    @rsvp = @session.rsvps.build(user: @consumer_user)
+    if @rsvp.save
       render json: { message: 'success' }, status: 200
     else
       render json: { message: 'unsuccessfull' }, status: 404
@@ -33,8 +33,8 @@ class Api::V1::SessionsController < ApplicationController
 
   def destroy_rsvp
     #FIXED: session.rsvps.find_by
-    rsvp = @session.rsvps.find_by(user_id: @consumer_user.id)
-    if rsvp.destroy
+    @rsvp = @session.rsvps.find_by(user: @consumer_user)
+    if @rsvp.destroy
       render json: { message: 'success' }, status: 200
     else
       render json: { message: 'unsuccessfull' }, status: 404
