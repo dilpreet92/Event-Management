@@ -2,7 +2,7 @@ class SessionsController < ApplicationController
 
   before_action :set_session, only: [:show, :edit, :update, :destroy, :disable ]
   before_action :authenticate, unless: :admin_signed_in?
-  before_action :set_event, only: [:new, :edit, :create, :update, :disable]
+  before_action :set_event, only: [:new, :edit, :create, :update]
   before_action :set_rsvp, only: [:destroy_rsvp]
   before_action :check_if_already_attending_or_disabled, only: [:create_rsvp]
 
@@ -15,8 +15,8 @@ class SessionsController < ApplicationController
   end
 
   def create_rsvp
-    rsvp = @session.rsvps.build(user: current_user)
-    if rsvp.save
+    @rsvp = @session.rsvps.build(user: current_user)
+    if @rsvp.save
       redirect_to events_url, notice: "You are now attending #{ @session.topic } of  #{ @session.event.name } "
     else
       redirect_to events_url, notice: 'You cannot attend this event'
@@ -48,14 +48,6 @@ class SessionsController < ApplicationController
     end
   end
 
-  def destroy
-    if @session.destroy
-      redirect_to @session.event, notice: 'Session was successfully destroyed.'
-    else
-      redirect_to @session.event, notice: 'Session cannot be destroyed'
-    end
-  end
-
   def disable
     @session.enable = false
     if @session.save(validate: false)
@@ -75,22 +67,22 @@ class SessionsController < ApplicationController
     end
 
     def set_rsvp
-      @rsvp = Rsvp.find_by(session_id: params[:session_id], user_id: current_user.id)
-      if !@rsvp
+      @rsvp = Rsvp.find_by(session_id: params[:session_id], user: current_user)
+      if @rsvp.nil?
         redirect_to events_url, notice: 'Could not perform this operation'
       end
     end
 
     def set_session 
       @session = Session.where(id: params[:id]).first
-      if !@session
+      if @session.nil?
         redirect_to events_url, notice: 'Session not found or disabled'
       end
     end
     
     def set_event
       @event = Event.where(id: params[:event_id]).first
-      if !@event
+      if @event.nil?
         redirect_to events_url, notice: 'Event not found or disabled'
       end  
     end
