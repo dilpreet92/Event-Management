@@ -1,5 +1,7 @@
 class Session < ActiveRecord::Base
 
+  include Destroyable
+
   belongs_to :event
 
   has_many :rsvps, dependent: :destroy
@@ -7,8 +9,8 @@ class Session < ActiveRecord::Base
 
   validates :event, presence: true
   validates :topic, :location, :description, presence: true
-  #FIXME_AB: Why using old syntax use validates :description, length: { maximum: 250 }
-  validates_length_of :description, maximum: 250
+  #FIXED: Why using old syntax use validates :description, length: { maximum: 250 }
+  validates :description, length: { maximum: 250 }
   validate :session_start_date
   validate :session_end_date
 
@@ -16,22 +18,6 @@ class Session < ActiveRecord::Base
 
   def enabled?
     enable
-  end
-
-  def destroy
-    raise 'Session cannot be deleted'
-  end
-
-  def delete
-    raise 'Session cannot be deleted'
-  end
-
-  def self.destroy_all
-    raise 'Session cannot be deleted'
-  end
-
-  def self.delete_all
-    raise 'Session cannot be deleted'
   end
 
   def upcoming?

@@ -21,9 +21,5 @@ $(document).on('ready page:load', function(){
     $(this).parent('form').trigger('submit');
   });
 
-  $('#clearText').on('click', function() {
-    // FIXME_AB: should we use empty()?
-    $('#search').val('');
-  });
 })
 

@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
 
+  include Destroyable
+
   before_save :manipulate_related_events,if: :events
   
   has_many :events, dependent: :destroy
@@ -26,22 +28,6 @@ class User < ActiveRecord::Base
 
   def attending?(session)
     attending_sessions.exists?(session)
-  end
-
-  def destroy
-    raise 'User cannot be deleted'
-  end
-
-  def delete
-    raise 'User cannot be deleted'
-  end
-
-  def self.destroy_all
-    raise 'User cannot be deleted'
-  end
-
-  def self.delete_all
-    raise 'User cannot be deleted'
   end
 
 end

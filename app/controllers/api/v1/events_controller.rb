@@ -13,7 +13,7 @@ class Api::V1::EventsController < ApplicationController
   end
 
   def mine_events
-    #FIXME_AB: current_user.events.enabled
+    #FIXED: current_user.events.enabled
     @events = @current_user.events.enabled
   end
 

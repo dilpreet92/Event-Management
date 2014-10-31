@@ -1,4 +1,7 @@
 class Event < ActiveRecord::Base
+
+  include Destroyable
+
   belongs_to :user
   
   has_many :sessions, dependent: :destroy
@@ -10,7 +13,7 @@ class Event < ActiveRecord::Base
 
   validates_attachment_content_type :logo, :content_type => /\Aimage\/.*\Z/
   validates :name, :address, :city, :country, :contact_number, :description, presence: true
-  validates_length_of :description, maximum: 500
+  validates :description, length: { maximum: 500 }
   validate :event_date_valid
 
   scope :enabled, -> { where(enable: true) }
@@ -22,23 +25,6 @@ class Event < ActiveRecord::Base
   scope :search, -> (query) { where("lower(events.name) LIKE :query OR lower(events.city) LIKE :query OR 
     lower(events.country) LIKE :query OR lower(sessions.topic) LIKE :query", query: "%#{ query }%") }
 
-
-  #FIXME_AB: since we are overwriting destroy and delete methods in many models we can move them in concern. Please read about concerns if not aware and move these methods in there.
-  def destroy
-    raise 'Event cannot be deleted'
-  end
-
-  def delete
-    raise 'Event cannot be deleted'
-  end
-
-  def self.destroy_all
-    raise 'Event cannot be deleted'
-  end
-
-  def self.delete_all
-    raise 'Event cannot be deleted'
-  end
 
   def live_and_upcoming?
     end_date >= Time.current 
@@ -52,29 +38,34 @@ class Event < ActiveRecord::Base
     user_id == user.id
   end
 
-  def to_param
-    "#{id}-#{name}"
-  end
-
   private
+
     def event_date_valid
       if start_date_unacceptable?
-        errors.add(:start_date, ' Should be less than end date and Should be a future date')
+        errors[:base] << 'Invalid start or end date'
       end
     end
     
     def start_date_unacceptable?
-      (start_date < Time.current) || (start_date >= end_date)
+      if new_record?
+        (start_date < Time.current) || (start_date >= end_date)
+      else
+        (start_date < start_date_was) || (start_date >= end_date)
+      end 
     end
 
     def ensure_all_sessions_in_range?
-      #FIXME_AB: We should extract complex conditions in a private method for better readability
-      if sessions.all? { |session| session.start_date >= start_date && session.end_date <= end_date } 
+      #FIXED: We should extract complex conditions in a private method for better readability
+      if sessions.all? { |session| validate_session_dates(session) } 
         true
       else
-        errors[:base] << 'Event cannot be updated as event has sessions'
+        errors[:base] << 'Event cannot be updated as event has sessions outside the given interval'
         false
       end        
+    end
+
+    def validate_session_dates(session)
+      session.start_date >= start_date && session.end_date <= end_date 
     end
 
 end

@@ -47,11 +47,13 @@ Rails.application.routes.draw do
       get '/enable' => 'events#enable'
     end
     resources :sessions do
+      member do
+        get '/disable' => 'sessions#disable'
+        get '/enable' => 'sessions#enable'
+      end
       collection do
         get '/create_rsvp' => 'sessions#create_rsvp'
         get '/destroy_rsvp' => 'sessions#destroy_rsvp'
-        get '/disable' => 'sessions#disable'
-        get '/enable' => 'sessions#enable'
       end
     end
   end
