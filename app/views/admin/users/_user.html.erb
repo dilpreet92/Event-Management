@@ -1,7 +1,7 @@
 <tr>
   <td><%= user.name %></td>
   <td><%= link_to user.handle, user.handle %></td>
-  <% if user.enable %>
+  <% if user.enabled %>
     <td><%= link_to 'disable', disable_admin_users_path(id: user) %>
   <% else %>
     <td><%= link_to 'enable', enable_admin_users_path(id: user) %>

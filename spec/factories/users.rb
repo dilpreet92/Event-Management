@@ -6,6 +6,6 @@ FactoryGirl.define do
     t.twitter_secret   "twitter_secret"
     t.uid   "uid"
     t.handle   'abc'
-    t.enable  true
+    t.enabled  true
   end 
 end

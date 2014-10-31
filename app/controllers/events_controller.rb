@@ -4,6 +4,7 @@ class EventsController < ApplicationController
 
   #if admin is logged in there is no need to check authentication
   before_action :authenticate, unless: :admin_signed_in?, except: [:index, :filter, :show, :search]
+  before_action :empty_search?, only: [:search]
   before_action :set_event, only: [:show, :edit, :update, :destroy, :disable, :enable]
   before_action :authorize_user?, unless: :admin_signed_in?, only: [:edit, :update, :disable, :enable]
 
@@ -23,9 +24,9 @@ class EventsController < ApplicationController
 
   def mine_events
     if past?
-      @events = current_user.events.past.paginate(:page => params[:page], :per_page => 5)
+      @events = current_user.events.past.order_by_start_date(:desc).paginate(:page => params[:page], :per_page => 5)
     else
-      @events = current_user.events.live_and_upcoming.paginate(:page => params[:page], :per_page => 5)
+      @events = current_user.events.live_and_upcoming.order_by_start_date(:asc).paginate(:page => params[:page], :per_page => 5)
     end
     respond_to do |format|
       format.js
@@ -37,9 +38,9 @@ class EventsController < ApplicationController
 
   def attending
     if past?
-      @events = current_user.attending_events.enabled.past.paginate(:page => params[:page], :per_page => 5).uniq
+      @events = current_user.attending_events.enabled.past.order_by_start_date(:desc).paginate(:page => params[:page], :per_page => 5).uniq
     else
-      @events = current_user.attending_events.enabled.live_and_upcoming.paginate(:page => params[:page], :per_page => 5).uniq
+      @events = current_user.attending_events.enabled.live_and_upcoming.order_by_start_date(:asc).paginate(:page => params[:page], :per_page => 5).uniq
     end
     respond_to do |format|
       format.js
@@ -47,11 +48,7 @@ class EventsController < ApplicationController
   end
 
   def search
-    if params[:search].blank?
-      @events = get_live_and_upcoming_events
-    else
-      @events = get_live_and_upcoming_events.eager_load(:sessions).search(params[:search].strip.downcase).uniq
-    end
+    @events = get_live_and_upcoming_events.eager_load(:sessions).search(params[:search].strip.downcase).uniq
     respond_to do |format|
       format.js
     end
@@ -67,7 +64,7 @@ class EventsController < ApplicationController
     @event = current_user.events.build
   end
 
-  def edit   
+  def edit
   end
 
   def create
@@ -134,6 +131,12 @@ class EventsController < ApplicationController
       if !@event
         redirect_to events_url, notice: 'Event not found or disabled'
       end    
+    end
+
+    def empty_search?
+      if params[:search].blank?
+        render :js => "window.location = '/events'"
+      end
     end
 
     def event_params

@@ -5,7 +5,7 @@ class Event < ActiveRecord::Base
   has_many :attendes, through: :sessions, source: :attendes
   before_save :ensure_all_sessions_in_range?, message: 'Event cannot be updated'
 
-  #FIXME_AB: you should also read about the patterns we can pass to paperclip styles. like we have > sign in following style, there are much more.
+  #FIXED: you should also read about the patterns we can pass to paperclip styles. like we have > sign in following style, there are much more.
   has_attached_file :logo, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/index.jpeg"
 
   validates_attachment_content_type :logo, :content_type => /\Aimage\/.*\Z/

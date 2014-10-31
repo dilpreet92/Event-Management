@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
 
   def enabled?
     #FIXME_AB: this column name should be named as enabled 
-    enable
+    enabled
   end
 
   def destroy
