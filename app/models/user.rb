@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+
+  before_save :manipulate_related_events,if: :events
   
   has_many :events, dependent: :destroy
   has_many :rsvps, dependent: :destroy
@@ -12,6 +14,14 @@ class User < ActiveRecord::Base
     create(provider: auth['provider'], uid: auth['uid'], handle: auth['info']['urls']['Twitter'], 
            name: auth['info']['name'], access_token: auth['credentials']['token'], 
            twitter_secret: auth['credentials']['secret'], twitter_name: auth['info']['nickname'])
+  end
+
+  def manipulate_related_events
+    if enabled
+      events.update_all(:enable => true)
+    else
+      events.update_all(:enable => false)
+    end
   end
 
   def attending?(session)

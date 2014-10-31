@@ -10,9 +10,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def enable
-    @user.enabled = true
-    @user.events.update_all(:enable => true)
-    if @user.save
+    if @user.update(:enabled => true)
       redirect_to admin_users_url, notice: 'User enabled'
     else
       redirect_to admin_users_url, notice: 'Failed to enable'
@@ -20,9 +18,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def disable
-    @user.enabled = false
-    @user.events.update_all(:enable => false)
-    if @user.save
+    if @user.update(:enabled => false)
         redirect_to admin_users_url, notice: 'User disabled'
     else
         redirect_to admin_users_url, notice: 'Failed to disable'
