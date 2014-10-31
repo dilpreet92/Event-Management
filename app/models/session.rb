@@ -14,6 +14,10 @@ class Session < ActiveRecord::Base
 
   scope :enabled, -> { where(enable: true) }
 
+  def enabled?
+    enable
+  end
+
   def destroy
     raise 'Session cannot be deleted'
   end

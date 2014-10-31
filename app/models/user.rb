@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   end
 
   def manipulate_related_events
-    if enabled
+    if enabled?
       events.update_all(:enable => true)
     else
       events.update_all(:enable => false)
@@ -26,11 +26,6 @@ class User < ActiveRecord::Base
 
   def attending?(session)
     attending_sessions.exists?(session)
-  end
-
-  def enabled?
-    #FIXME_AB: this column name should be named as enabled 
-    enabled
   end
 
   def destroy

@@ -15,7 +15,7 @@ class Api::V1::SessionsController < ApplicationController
   end
 
   def rsvp
-    if @consumer_user.attending?(@session)
+    if @current_user.attending?(@session)
       render json: { status: 'attending'  }
     else
       render json: { status: 'not attending' }
@@ -23,7 +23,7 @@ class Api::V1::SessionsController < ApplicationController
   end
 
   def create_rsvp
-    @rsvp = @session.rsvps.build(user: @consumer_user)
+    @rsvp = @session.rsvps.build(user: @current_user)
     if @rsvp.save
       render json: { message: 'success' }, status: 200
     else
@@ -33,7 +33,7 @@ class Api::V1::SessionsController < ApplicationController
 
   def destroy_rsvp
     #FIXED: session.rsvps.find_by
-    @rsvp = @session.rsvps.find_by(user: @consumer_user)
+    @rsvp = @session.rsvps.find_by(user: @current_user)
     if @rsvp.destroy
       render json: { message: 'success' }, status: 200
     else

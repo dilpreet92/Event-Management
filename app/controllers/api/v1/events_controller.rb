@@ -14,11 +14,11 @@ class Api::V1::EventsController < ApplicationController
 
   def mine_events
     #FIXME_AB: current_user.events.enabled
-    @events = @consumer_user.events.enabled
+    @events = @current_user.events.enabled
   end
 
   def rsvps
-    @events = @consumer_user.attending_events.enabled.uniq
+    @events = @current_user.attending_events.enabled.uniq
   end
 
   private 

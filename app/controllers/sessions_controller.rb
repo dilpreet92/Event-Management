@@ -1,6 +1,7 @@
 class SessionsController < ApplicationController
 
-  before_action :set_session, only: [:show, :edit, :update, :destroy, :disable ]
+  before_action :set_session, only: [:show, :edit, :update, :destroy, :disable, :enable]
+  #skip authentication when admin is signed in
   before_action :authenticate, unless: :admin_signed_in?
   before_action :set_event, only: [:new, :edit, :create, :update]
   before_action :set_rsvp, only: [:destroy_rsvp]
@@ -49,13 +50,21 @@ class SessionsController < ApplicationController
   end
 
   def disable
-    @session.enable = false
-    if @session.save(validate: false)
+    if @session.update_attribute(enable: false)
       redirect_to @session.event, notice: 'Session Disabled'
     else
       redirect_to @session.event, notice: 'Session Cannot be disabled'
     end    
   end
+
+  def enable
+    if @session.update_attribute(enable: true)
+      redirect_to @session.event, notice: 'Session Enabled'
+    else
+      redirect_to @session.event, notice: 'Session Cannot be enabled'
+    end
+  end
+
 
   private
 

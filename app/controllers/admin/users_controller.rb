@@ -3,6 +3,7 @@ class Admin::UsersController < ApplicationController
   layout 'index'
 
   before_action :authenticate_admin!
+  before_action :set_session_nil, if: :admin_signed_in?
   before_action :set_user, only: [:enable, :disable]
 
   def index

@@ -51,6 +51,7 @@ Rails.application.routes.draw do
         get '/create_rsvp' => 'sessions#create_rsvp'
         get '/destroy_rsvp' => 'sessions#destroy_rsvp'
         get '/disable' => 'sessions#disable'
+        get '/enable' => 'sessions#enable'
       end
     end
   end

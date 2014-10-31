@@ -3,6 +3,7 @@ class EventsController < ApplicationController
   layout 'index', except: [:show, :edit, :new] 
 
   #if admin is logged in there is no need to check authentication
+  before_action :set_session_nil, if: :admin_signed_in?
   before_action :authenticate, unless: :admin_signed_in?, except: [:index, :filter, :show, :search]
   before_action :empty_search?, only: [:search]
   before_action :set_event, only: [:show, :edit, :update, :destroy, :disable, :enable]
@@ -85,8 +86,7 @@ class EventsController < ApplicationController
   end
 
   def disable
-    @event.enable = false
-    if @event.save(validate: false)
+    if @event.update_attribute('enable', false)
       redirect_to events_url, notice: 'Event successfully Disabled'
     else
       redirect_to events_url, notice: 'Event cannot be disabled'
@@ -94,8 +94,7 @@ class EventsController < ApplicationController
   end
 
   def enable
-    @event.enable = true
-    if @event.save(validate: false)
+    if @event.update_attribute('enable', true)
       redirect_to events_url, notice: 'Event successfully Enabled'
     else
       redirect_to events_url, notice: 'Event cannot be enabled'
@@ -128,7 +127,7 @@ class EventsController < ApplicationController
 
     def set_event
       @event = Event.where(id: params[:id]).first
-      if !@event
+      if @event.nil?
         redirect_to events_url, notice: 'Event not found or disabled'
       end    
     end

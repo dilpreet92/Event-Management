@@ -5,6 +5,12 @@ class ApplicationController < ActionController::Base
 
   private
 
+    def set_session_nil
+      if current_user
+        session[:user_id], @current_user = nil, nil
+      end
+    end
+
     def authenticate
       unless current_user
         redirect_to root_url, notice: "Please log in to perform the current operation"
@@ -21,7 +27,7 @@ class ApplicationController < ActionController::Base
 
     def restrict_access
       if valid_by_params? || valid_by_header?
-        @consumer_user
+        @current_user
       else
         render json: {message: 'Invalid API Token'}, status: 401
       end
@@ -29,13 +35,13 @@ class ApplicationController < ActionController::Base
 
     def valid_by_header?
       authenticate_with_http_token do |token|
-        #FIXME_AB: This is actually currentuser. instead of finding him by id we are finding him by access token. 
-        @consumer_user = User.where(access_token: token).first
+        #FIXED: This is actually current user. instead of finding him by id we are finding him by access token. 
+        @current_user = User.where(access_token: token).first
       end
     end
 
     def valid_by_params?
-      @consumer_user = User.where(access_token: params[:token]).first
+      @current_user = User.where(access_token: params[:token]).first
     end
 
 
