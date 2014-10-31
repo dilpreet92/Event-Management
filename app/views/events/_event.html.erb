@@ -1,23 +1,33 @@
-<div class="event_content wraper row">
-  <div class="col-md-2">
+<div class="event_content wraper row mtop35">
+  <div class="col-md-2 event_image">
   <%= image_tag event.logo.url(:thumb) %>
   </div>
   <div class="col-md-8">
     <div class="col-md-12 event_name">
       <%= link_to event.name, event_path(event) %>
     </div>
-    <div class="col-md-6">
-      <%= event.start_date %>
-      <%= event.end_date %>
+    <div class="col-md-6 event_time">
+      <% d = event.start_date %>
+      <%= d.strftime('%d %b %Y -') %>
+      <% d = event.end_date %>
+      <%= d.strftime('%d %b %Y') %>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 event_address">
       <%= event.address %>
       <%= event.city %>
       <%= event.country %>
       <%= event.contact_number %>
     </div>
-    <div class="col-md-12 event_name">
+    <div class="col-md-12 event_description">
       <%= event.description %>
+    </div>
+  </div>
+  <div class="col-md-2">
+    <div class="h5 text-blue event-icon">
+      <%= event.sessions.count %> Events
+    </div>
+    <div class="h5 text-blue attendes-icon">
+      <%= event.attendes.uniq.count %> Attendes
     </div>
   </div>
 </div>

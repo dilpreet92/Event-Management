@@ -1,46 +1,60 @@
 <%= form_for(@event) do |f| %>
   <%= render partial: 'errors/error', locals: { object: @event } %>
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+  <div class="row">
+      <div class="col-md-6 mtop35">
+        <div class="field">
+          <%= f.label :name %>
+          <%= f.text_field :name %>
+        </div>
+        <div class="field mtop20">
+          <%= f.label :logo %>
+          <%= f.file_field :logo %>
+        </div>
+      </div>
+      <div class="field col-md-6 mtop35">
+        <%= f.label :description %>
+        <%= f.text_area :description %>
+      </div>
   </div>
-  <div class="field">
-    <%= f.label :start_date %><br>
-    <%= f.datetime_select :start_date %>
+  <div class="row">
+    <div class="field col-md-6 mtop35">
+      <%= f.label :start_date %>
+      <%= f.text_field :start_date, class: 'datetimepicker' %>
+    </div>
+    <div class="field col-md-6 mtop35">
+      <%= f.label :end_date %>
+      <%= f.text_field :end_date, class: 'datetimepicker' %>
+    </div>
   </div>
-  <div class="field">
-    <%= f.label :end_date %><br>
-    <%= f.datetime_select :end_date %>
+  <div class="row">
+    <div class="field col-md-3 mtop35">
+      <%= f.label :contact_number %>
+      <%= f.text_field :contact_number %>
+    </div>
+    <div class="field col-md-3 mtop35">
+      <%= f.label :address %>
+      <%= f.text_field :address %>
+    </div>
+    <div class="field col-md-2 mtop35">
+      <%= f.label :city %>
+      <%= f.text_field :city %>
+    </div>
+    <div class="field col-md-4 mtop35 country_select">
+      <%= f.label :country %>
+      <%= f.country_select :country, { prompt: 'Please Select a country'}, class: 'form-control' %>
+    </div>
   </div>
-  <div class="field">
-    <%= f.label :address %><br>
-    <%= f.text_field :address %>
+  <div class="row">
+    <div class="col-md-7">
+    </div>
+    <div class="field col-md-2 enable-checkbox mtop35 text-right">
+      <%= f.check_box :enable %>
+      <%= f.label :enable %>
+    </div>
+    <div class="col-md-3 actions text-right mtop20">
+      <%= f.submit 'Save', class: 'btn btn-lg btn-warning' %>
+    <% end %>
+      <%= link_to 'Cancel', events_path, method: :get, class:'btn btn-lg btn-primary' %>
+    </div>
   </div>
-  <div class="field">
-    <%= f.label :city %><br>
-    <%= f.text_field :city %>
-  </div>
-  <div class="field">
-    <%= f.label :country %><br>
-    <%= f.country_select :country, prompt: 'Please Select a country' %>
-  </div>
-  <div class="field">
-    <%= f.label :contact_number %><br>
-    <%= f.text_field :contact_number %>
-  </div>
-  <div class="field">
-    <%= f.label :description %><br>
-    <%= f.text_area :description %>
-  </div>
-  <div class="field">
-    <%= f.label :enable %><br>
-    <%= f.check_box :enable %> Enable
-  </div>
-  <div class="field">
-    <%= f.label :logo %><br>
-    <%= f.file_field :logo %>
-  </div>
-  <div class="actions">
-    <%= f.submit 'Save' %>
-  </div>
-<% end %>
+

@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
 
-  layout 'index', except: [:show, :edit, :new] 
+  layout 'index', except: [:show, :edit, :new]
 
   #if admin is logged in there is no need to check authentication
   before_action :authenticate, unless: :admin_signed_in?, except: [:index, :filter, :show, :search]
@@ -56,7 +56,7 @@ class EventsController < ApplicationController
       format.js
     end
   end
-  
+
   def rsvps
   end
 
@@ -67,7 +67,7 @@ class EventsController < ApplicationController
     @event = current_user.events.build
   end
 
-  def edit   
+  def edit
   end
 
   def create
@@ -103,21 +103,21 @@ class EventsController < ApplicationController
     else
       redirect_to events_url, notice: 'Event cannot be enabled'
     end
-  end      
+  end
 
   def destroy
     if @event.destroy
       redirect_to events_url, notice: 'Event was successfully destroyed.'
     else
       redirect_to events_url, notice: "#{ @event.name } cannot be destroyed "
-    end    
+    end
   end
 
   private
 
     def past?
       params[:events][:filter] == 'past'
-    end  
+    end
 
     def get_live_and_upcoming_events
       get_enabled_events.live_and_upcoming.order_by_start_date(:asc)
@@ -130,7 +130,7 @@ class EventsController < ApplicationController
     def authorize_user?
       if !@event.owner?(current_user) || @event.past?
         redirect_to events_url, notice: 'Current Activity cannot be performed'
-      end  
+      end
     end
 
     def get_enabled_events
@@ -141,7 +141,7 @@ class EventsController < ApplicationController
       @event = Event.where(id: params[:id]).first
       if !@event
         redirect_to events_url, notice: 'Event not found or disabled'
-      end    
+      end
     end
 
     def event_params

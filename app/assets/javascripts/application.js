@@ -13,6 +13,5 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require jquery.datetimepicker
 //= require_tree .
-
-// FIXME_AB: Read about require tree .
