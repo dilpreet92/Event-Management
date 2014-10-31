@@ -2,7 +2,7 @@
 <div class="login-header">
   <div class ="container">
     <ul class="custom-nav">
-      <li class="pull-left header-font"><%= Date.today %></li>
+      <li class="pull-left header-font"><% d = Date.today %><%= d.strftime('%A,%d %B %y') %></li>
       <% if admin_signed_in? %>
         <li><%= link_to 'Logout Admin', admin_logout_path %></li>
       <% elsif logged_in? %>

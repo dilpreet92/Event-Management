@@ -33,6 +33,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-twitter'
+gem 'jquery-datetimepicker-rails'
 gem 'carmen-rails', '~> 1.0.0'
 gem 'therubyracer', :platform=>:ruby
 group :development do

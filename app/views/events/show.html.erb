@@ -1,86 +1,68 @@
-<p>
-  <strong>Name:</strong>
-  <%= @event.name %>
-</p>
 
-<p>
-  <strong>Start date:</strong>
-  <%= @event.start_date %>
-</p>
+<div class="session_content wraper row mtop35">
+  <div class="col-md-2 event_image">
+    <%= image_tag @event.logo.url(:medium) %>
+  </div>
+  <div class="col-md-10">
+    <div class="col-md-8 h4 text-grey">
+      <% d = @event.start_date %>
+      <%= d.strftime('%d %b %Y -') %>
+      <% d = @event.end_date %>
+      <%= d.strftime('%d %b %Y') %>
+    </div>
+    <div class="col-md-4 text-right h4 text-orange">
+      <% if logged_in? && @event.owner?(current_user) && @event.live_and_upcoming? %>
+        <%= link_to 'Edit', edit_event_path(@event) %> |
+        <% if @event.enable %>
+          <%= link_to 'Disable', disable_events_path(id: @event) %>
+        <% else %>
+          <%= link_to 'Enable Event', enable_events_path(id: @event) %>
+        <% end %>
+      <% elsif admin_signed_in? %>
+       <%= link_to 'Disable Event', disable_events_path(id: @event) %>
+      <% end %>
+    </div>
+    <div class="col-md-12 event_name text-blue">
+      <%= @event.name %>
+    </div>
+    <div class="col-md-12 text-blue back-eee p5 m15">
+      <%= @event.address %>
+      <%= @event.city %>
+      <%= @event.country %>
+      <%= @event.contact_number %>
+    </div>
+    <div class="col-md-12 event_description">
+      <%= @event.description %>
+    </div>
+  </div>
+</div>
+<div class="row wraper mtop35">
+  <div class="col-md-6">
+    <h4 class="text-success"><%= @event.sessions.count %> Sessions <span class="text-blue">in this Event</span></h4>
+  </div>
+  <div class="col-md-6 text-right">
+    <% if logged_in? && @event.owner?(current_user) && @event.live_and_upcoming? %>
+      <%= link_to 'Add new Session', new_event_session_path(event_id: @event), class:'btn btn-success' %>
+    <% end %>
+  </div>
+</div>
 
-<p>
-  <strong>End date:</strong>
-  <%= @event.end_date %>
-</p>
-
-<p>
-  <strong>Address:</strong>
-  <%= @event.address %>
-</p>
-
-<p>
-  <strong>City:</strong>
-  <%= @event.city %>
-</p>
-
-<p>
-  <strong>Country:</strong>
-  <%= @event.country %>
-</p>
-
-<p>
-  <strong>Contact number:</strong>
-  <%= @event.contact_number %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @event.description %>
-</p>
-
-<p>
-  <strong>Attendes :</strong>
+  <!-- Attendes :
   <% @event.attendes.uniq.each do |user| %>
-    <p>
-      <%= link_to "#{user.name}", user.handle %>
-    </p>
-  <% end %>    
-</p>  
 
-<% if logged_in? && @event.owner?(current_user) && @event.live_and_upcoming? %>
-  <%= link_to 'Edit Event', edit_event_path(@event) %>|
-  <% if @event.enable %>
-    <%= link_to 'Disable Event', disable_events_path(id: @event) %>
-  <% else %>
-    <%= link_to 'Enable Event', enable_events_path(id: @event) %>
-  <% end %>    
-  <%= link_to 'Add new Session', new_event_session_path(event_id: @event) %>
-<% elsif admin_signed_in? %>
-  <%= link_to 'Disable Event', disable_events_path(id: @event) %>
-<% end %>
+      <%= link_to "#{user.name}", user.handle %>
+
+  <% end %>
+ -->
+
 <% if @event.sessions.enabled.empty? %>
-  <h4> No Sessions Created Yet </h4>
+  <h3 class="text-center mtop55 text-blue back-blue p5 wraper"> No Sessions Created Yet </h3>
 <% else %>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Topic</th>
-        <th>Start date</th>
-        <th>End date</th>
-        <th>Location</th>
-        <th>Attendes</th>
-        <th>Speaker</th>
-        <th>Description</th>
-        <th colspan="3"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% if logged_in? %>
-        <% #FIXED: Instead of passing event_owner as boolean pass event object and check this inside the partial -%>
-        <%= render partial: @event.sessions, locals: { :event => @event } %>
-      <% else %>
-        <%= render partial: @event.sessions, locals: { :event => false } %>
-      <% end %>    
-    </tbody>
-  </table>
+<div class="row wraper">
+  <% if logged_in? %>
+    <%= render partial: @event.sessions, locals: { :event => @event } %>
+  <% else %>
+    <%= render partial: @event.sessions, locals: { :event => false } %>
+  <% end %>
+  </div>
 <% end %>

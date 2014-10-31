@@ -1,31 +1,63 @@
-<% #FIXED: session.enabled? -%>
 <% if session.enable? %>
-  <tr>
-    <td><%= session.topic %></td>
-    <td><%= session.start_date %></td>
-    <td><%= session.end_date %></td>
-    <td><%= session.location %></td>
-    <td><% session.attendes.each do |user| %>
-          <%= link_to user.name, user.handle %>
+  <div class="col-md-4 mtop35">
+    <div class="session-box">
+      <div class="row">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-8">
+          <%= session.topic %>
+        </div>
+      </div>
+      <div class="row back-blue">
+        <div class="col-md-12">
+          <% d = session.start_date %>
+          <%= d.strftime('%d %b :%I %M %p to') %>
+          <% d = session.end_date %>
+          <%= d.strftime('%d %b :%I %M %p') %>
+        </div>
+        <div class="col-md-6">
+        <%= session.location %>
+        </div>
+        <div class="col-md-6">
+        <%= session.attendes.count %> Atendees
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <% if logged_in? && event.live_and_upcoming? && session.upcoming? %>
+            <% if current_user.attending?(session) %>
+              <%= link_to 'Unattend', destroy_rsvp_event_sessions_path(session_id: session, event_id: session.event), class: 'attending_session' %>
+            <% else %>
+              <%= link_to 'Attend', create_rsvp_event_sessions_path(session_id: session, event_id: session.event) %>
+            <% end %>
+
+        </div>
+        <div class="col-md-4">
+
+            <% if event.owner?(current_user) %>
+              <%= link_to 'Edit', edit_event_session_path(session.event, session) %>
+
+        </div>
+        <div class="col-md-4">
+          <%= link_to 'Disable', disable_event_session_path(session.event, session) %>
+            <% end %>
+          <% elsif admin_signed_in? %>
+            <%= link_to 'Disable', disable_event_session_path(session.event, session) %>
         <% end %>
-    </td>      
-    <td><%= session.speaker %></td>
-    <td><%= session.description %></td>
-    <% if logged_in? && event.live_and_upcoming? && session.upcoming? %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+        <%= session.description %>
+        </div>
+      </div>
 
-      <% if event.owner?(current_user) %>
-        <td><%= link_to 'Edit', edit_event_session_path(session.event, session) %></td>
-        <td><%= link_to 'Disable', disable_event_session_path(session.event, session) %></td>
-      <% end %> 
+<!--
+        <% session.attendes.each do |user| %>
+              <%= link_to user.name, user.handle %>
+            <% end %>
 
-      <% if current_user.attending?(session) %>
-        <td><%= link_to 'Unattend session', destroy_rsvp_event_sessions_path(session_id: session, event_id: session.event) %>
-      <% else %>    
-        <td><%= link_to 'Attend session', create_rsvp_event_sessions_path(session_id: session, event_id: session.event) %> </td>  
-      <% end %>
-    <% elsif admin_signed_in? %>
-    <% #FIXED: disable_event_sessions_path(event: session.event, id:session) remember? -%>
-      <td><%= link_to 'Disable', disable_event_session_path(session.event, session) %></td>
-    <% end %>  
-  </tr>
+        <%= session.speaker %> -->
+    </div>
+  </div>
 <% end %>

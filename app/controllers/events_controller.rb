@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
 
-  layout 'index', except: [:show, :edit, :new] 
+  layout 'index', except: [:show, :edit, :new]
 
   #if admin is logged in there is no need to check authentication
   before_action :set_session_nil, if: :admin_signed_in?
@@ -55,7 +55,7 @@ class EventsController < ApplicationController
       format.js
     end
   end
-  
+
   def rsvps
   end
 
@@ -106,7 +106,7 @@ class EventsController < ApplicationController
 
     def past?
       params[:events][:filter] == 'past'
-    end  
+    end
 
     def get_live_and_upcoming_events
       get_enabled_events.live_and_upcoming.order_by_start_date(:asc)
@@ -119,7 +119,7 @@ class EventsController < ApplicationController
     def authorize_user?
       if !@event.owner?(current_user) || @event.past?
         redirect_to events_url, notice: 'Current Activity cannot be performed'
-      end  
+      end
     end
 
     def get_enabled_events
@@ -130,7 +130,7 @@ class EventsController < ApplicationController
       @event = Event.where(id: params[:id]).first
       if @event.nil?
         redirect_to events_url, notice: 'Event not found or disabled'
-      end    
+      end
     end
 
     def empty_search?

@@ -32,8 +32,8 @@ img {
 // to make views framework-neutral
 main {
   @extend .container;
-  text_align: center;
-  margin-top: 40px; // accommodate the navbar
+  margin-top: 40px;
+  margin-bottom: 40px;
   }
 section {
   @extend .row;
@@ -42,71 +42,92 @@ section {
 
 /*override*/
 
-body { background-color: #eeeeee !important;}
-.container {  width: 1000px; }
+#searchButton, #categorySubmit {  display: none;}
+
+/*layout*/
+
+.container {  max-width: 1000px; }
+.wraper { margin: 0 30px;}
+body { background-color: #eeeeee !important; font-style: "Myriad Pro" arial; }
 .login-header {  background-color: #0c2237;  padding: 10px 0; }
 .event-header {  background-color: #335374;  height: 85px;}
-#searchButton, #categorySubmit {  display: none;}
+footer { padding: 20px; background-color: #213e5b; color: #fff;}
 ul.custom-nav {  list-style: none;}
-.banner_img {  width: 100%;}
+
+/*common classes*/
+
+.mtop5 { margin-top: 5px !important;}
+.mtop20 { margin-top: 20px !important;}
+.mtop35 { margin-top: 35px !important;}
+.mtop55 { margin-top: 55px !important;}
+.mtop70 { margin-top: 70px !important;}
+.m15 {margin: 15px;}
+
+.p5 { padding: 5px;}
+
+.text-fff,.text-fff a,a.text-fff, a.btn { color: #fff !important; }
+.text-orange,a.text-orange, .text-orange a { color: #ffa126 !important; }
+.text-blue,a.text-blue, .text-blue a { color: #335374 !important; }
+.text-grey,a.text-grey, .text-grey a { color: #999 !important; }
+
+.back-eee { background-color: #eee;}
+.back-blue { background-color: #e6ecf1;}
 
 /*map-area*/
-
 .map-area { display:inline-block; width:100%; position:relative;}
 .map-area iframe { width:100%; height:400px; display:block;}
 .map-area .anchorarea { display:inline-block; width:770px; height:261px; padding:51px 220px 0 0; margin-left:-335px; background:url('man.png') no-repeat right top; position:absolute; left:50%; bottom:0;}
 .map-area:hover .anchorarea { left:-700px;
 animation:mymove 1s;
 /*Safari, Chrome, and Opera*/
--webkit-animation:mymove 1s;
-}
-@keyframes mymove
-{
-from {left:50%;}
-to {left:-700px;}
-}
-
+-webkit-animation:mymove 1s;}
+@keyframes mymove { from {left:50%;} to {left:-700px;} }
 /*Safari, Chrome, and Opera*/
-@-webkit-keyframes mymove
-{
-from {left:50%;}
-to {left:-700px;}
-}
+@-webkit-keyframes mymove{from {left:50%;} to {left:-700px;}}
 
 .map-area .anchorarea { left:50%;
 animation:yourmove 1s;
 /*Safari, Chrome, and Opera*/
--webkit-animation:yourmove 1s;
-}
-@keyframes yourmove
-{
-from {left:-700px;}
-to {left:50%;}
-}
-
+-webkit-animation:yourmove 1s;}
+@keyframes yourmove{from {left:-700px;} to {left:50%;}}
 /*Safari, Chrome, and Opera*/
-@-webkit-keyframes yourmove
-{
-from {left:-700px;}
-to {left:50%;}
-}
+@-webkit-keyframes yourmove{from {left:-700px;} to {left:50%;}}
 
 .map-area .anchorarea .content { background:rgba(255,255,255,0.7); font-size:33px; color:#0c2237; text-align:center; padding:10px; padding-top: 18px;}
 .map-area .anchorarea .content sub { display:block; font-size:16px; margin: 15px 0 20px 0;}
 
 a.header-link, .header-font { margin-left: 30px; color: #fff !important; font: 11px arial; }
 a.header-link { vertical-align: top;}
-a.header-link:hover { background-color: transparent; }
 .logo { width: 153px; height: 54px; display: inline-block; text-indent: -1000px; background: url('logo.png'); margin: 15.5px 0; }
-.logo:hover { background-color: transparent; }
-.create_event { color: #335374 !important; background-color: #99cc99; margin: 25px 10px;}
-.create_event:hover { background-color: #99cc99; }
-.input-box { width: 270px; margin: 25px 0; color: #335374;}
-#results { min-height: 400px; background-color: #fff; padding: 25px 0 40px; border: 1px solid #ddd; border-top-color: transparent; }
-.wraper { margin: 0 30px;}
+.logo:hover { background-color: transparent !important;}
+.create_event, a.create_event:hover { background-color: #99cc99 !important; margin: 25px 10px;}
+a.create_event { color: #335374 !important;}
+.input-box { width: 270px; margin: 25px 0; color: #335374;} /*search-header-box*/
+#results { min-height: 400px; background-color: #fff; padding: 25px 0 40px;}
 .event_radio_list { background-color: #f2f2f2; padding: 10px 15px; font-size: 18px; color: #213e5b; }
 .event_radio_list span { margin-right: 30px;}
 .event_radio_list input { vertical-align: text-top;}
-#results h4 { text-align: center; font-size: 50px; color: #aaa; margin-top: 30px;}
-
-
+.event_image img { border: 1px solid #dfdfdf; padding: 3px;}
+.event_content .event_name { position: relative;}
+.event_name a { display:block; font: 24px "Myriad Pro"; color: #335374 !important; background-color: #f2f2f2; padding: 5px 10px; padding-right: 20px;}
+.event_name a:hover { background-color: #f2f2f2; color: #335374; }
+.event_content .event_name::after { border: solid 10px transparent; border-right-color: #f2f2f2; position: absolute; z-index:10; left: -5px; top: 10px; content: "";}
+.event_time , .event_address { font: 14px "Myriad Pro"; color: #335374; margin: 8px 0;}
+.event_description { font: 14px "Myriad Pro"; color: #999;}
+#showEvents .btn-group > .btn { padding: 0; vertical-align: bottom; border-width: 0 15px;}
+#showEvents .btn-group > .btn a { display: block; padding: 15px; font: 18px "Myriad Pro"; color: #335374 !important; background-color: #dfdbd4; }
+#showEvents .btn-group > .btn.active:focus,
+#showEvents .btn-group > .btn.active:hover  {box-shadow: none !important;}
+#showEvents .btn-group > .btn.active:focus a,
+#showEvents .btn-group > .btn.active:hover a { background-color:#fff !important; box-shadow: none !important;}
+#showEvents .btn-group > .btn.active a { background-color: #fff; padding:25px 15px; }
+#showEvents .btn-group > .btn a:hover {text-decoration: none; background-color: #dfdbd4 !important;}
+.iconf_title { font: 36px bold; border-bottom: 3px solid #335374; color: #335374; }
+.create_event_design label { display: block; color: #999; font-size: 14px; font-weight: normal; margin-left: 2px;}
+.create_event_design input[type="file"], .create_event_design input[type="text"], .create_event_design textarea, .country_select select { width: 100%; height: 42px; border: none; background-color: #eee;}
+.create_event_design input[type="file"] { text-indent: -999px; font-size: 20px; padding-top: 13px; padding-left: 55px; color: #999;}
+.create_event_design textarea { height: 128px;}
+.enable-checkbox label { display: inline-block;}
+.session_content .event_name { font-size: 48px; line-height: 48px;}
+.session-box { height: 320px; border: 1px solid #eee; padding: 15px;}
+.text-orange a:hover { background-color: transparent !important;}
