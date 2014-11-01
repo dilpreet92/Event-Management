@@ -2,64 +2,99 @@ require 'spec_helper'
 
 describe Event do
   
-  let(:user) { FactoryGirl.create :user }
-  subject { user }
-  let(:event) { FactoryGirl.create(:event, :user => user) }
-  subject { event }
+  let!(:user) { FactoryGirl.build :user }
+  let!(:event) { FactoryGirl.build(:event, :user => user) }
 
-  context 'is invalid' do
+  describe 'validations' do
 
-    it ' when it has a invalid factory' do
-      expect(event).to be_valid
-    end
+    context 'is invalid' do
 
-    it ' when it is without name' do
-      expect { event.name }.not_to be_nil
-    end
+      it ' when it has a invalid factory' do
+        expect(event).to be_valid
+      end
 
-    it 'when it is without address' do
-      expect { event.address }.not_to be_nil
-    end
+      it ' when it is without name' do
+        expect { event.name }.not_to be_nil
+      end
 
-    it 'when it is without city' do
-      expect { event.city }.not_to be_nil
-    end
+      it 'when it is without address' do
+        expect { event.address }.not_to be_nil
+      end
 
-    it 'when it is without country' do
-      expect { event.country }.not_to be_nil
-    end
+      it 'when it is without city' do
+        expect { event.city }.not_to be_nil
+      end
 
-    it 'when it is without contact number' do
-      expect { event.contact_number }.not_to be_nil
-    end
+      it 'when it is without country' do
+        expect { event.country }.not_to be_nil
+      end
 
-    it 'when it is without description' do
-      expect { event.description }.not_to be_nil
-    end
+      it 'when it is without contact number' do
+        expect { event.contact_number }.not_to be_nil
+      end
 
-    it 'when it has a description of length greater than 500' do
-      expect(event.description.length).to be <= 500
-    end
+      it 'when it is without description' do
+        expect { event.description }.not_to be_nil
+      end
 
-    it 'when it is without a user' do
-      expect { event.user }.not_to be_nil
+      it 'when it has a description of length greater than 500' do
+        expect(event.description.length).to be <= 500
+      end
+
+      it 'when it is without a user' do
+        expect { event.user }.not_to be_nil
+      end
+
+      describe '#event_date_valid' do
+
+        before do
+          event.start_date = Time.current - 1.day
+        end
+
+        context 'when date invalid' do
+          it { expect(event.errors).not_to be_nil }
+        end
+
+      end
+
     end
 
   end
 
-  context '.sessions' do
+  describe 'associations' do
 
-    it 'should return sessions' do
-      expect { event.sessions }.not_to raise_error
-    end
+    it { expect(event).to belong_to(:user) }
+    it { expect(event).to have_many(:sessions) }
+    it { expect(event).to have_many(:attendes).through(:sessions).source(:attendes) }
+    it { should have_attached_file(:logo) }
 
   end
 
-  context '.attendes' do
+  describe 'callbacks' do
 
-    it 'should return users' do
-      expect { event.attendes }.not_to raise_error
+    it 'should call ensure_all_sessions_in_range before save' do
+      expect(event).to receive(:ensure_all_sessions_in_range?) 
+      event.save
     end
+
+    describe '#ensure_all_sessions_in_range?' do
+      
+      context 'when true' do
+        it 'should return true' do
+          expect(event.save).to be_true
+        end
+      end
+
+      context 'when false' do
+        let!(:session) { FactoryGirl.build(:session, :event => event ) }
+        it 'should add error message' do
+          session.start_date = session.event.start_date - 1.day
+          event.save
+          expect(event.errors).not_to be_nil
+        end
+      end
+    end
+  
   end
 
   context 'raises exception when called with' do
@@ -80,73 +115,78 @@ describe Event do
       expect { Event.destroy_all }.to raise_error
     end
 
-  end  
-
-  context '.live_and_upcoming' do
-
-    it 'should return live_and_upcoming events' do
-      event = Event.where("events.end_date >= ?", Time.current).first
-      expect(Event.live_and_upcoming).to include(event)
-    end
-
-    it 'should not return past_events' do
-      event = Event.where("events.end_date < ?", Time.current).first
-      expect(Event.live_and_upcoming).not_to include(event)
-    end
-
   end
 
-  context '.past' do
+  describe 'scopes' do
 
-    it 'should return past_events' do
-      event = Event.where("events.end_date < ?", Time.current).first
-      expect(Event.past).to include(event)
+    context '.live_and_upcoming' do
+
+      it 'should return live_and_upcoming events' do
+        event.save
+        expect(Event.live_and_upcoming).to include(event)
+      end
+
+      it 'should not return past_events' do
+        event.end_date = Time.current - 1.day
+        event.save
+        expect(Event.live_and_upcoming).not_to include(event)
+      end
+
     end
 
-    it 'should not return live_and_upcoming events' do
-      event = Event.where("events.end_date >= ?", Time.current).first
-      expect(Event.past).not_to include(event)
+    context '.past' do
+
+      it 'should return past_events' do
+        event.end_date = Time.current - 1.day
+        event.save
+        expect(Event.past).to include(event)
+      end
+
+      it 'should not return live_and_upcoming events' do
+        event.save
+        puts Event.past
+        expect(Event.past).not_to include(event)
+      end
+
     end
 
-  end
+    context '.enabled' do
 
-  context '.enabled' do
+      it 'should return enabled events' do
+        enabled_event =  FactoryGirl.create(:event, enable: true)
+        expect(Event.enabled).to include(enabled_event)
+      end
 
-    it 'should return enabled events' do
-      enabled_event =  FactoryGirl.create(:event, enable: true)
-      expect(Event.enabled).to include(enabled_event)
+      it 'should not return disabled events' do
+        disabled_event = FactoryGirl.create(:event, enable: false)
+        expect(Event.enabled).not_to include(disabled_event)
+      end
     end
 
-    it 'should not return disabled events' do
-      disabled_event = FactoryGirl.create(:event, enable: false)
-      expect(Event.enabled).not_to include(disabled_event)
-    end
+    context '.search' do
 
-  end
+      let(:event_session_association) { Event.enabled.live_and_upcoming.eager_load(:sessions) }
+      subject { event_session_association }
 
-  context '.search' do
+      it 'should return events as per the name' do
+        query = 'dilpreet'
+        expect(event_session_association.search(query.downcase)).to include(event)
+      end
 
-    let(:event_session_association) { Event.enabled.live_and_upcoming.eager_load(:sessions) }
-    subject { event_session_association }
+      it 'should return events as per the city' do
+        query = 'Delhi'
+        expect(event_session_association.search(query.downcase)).to include(event)
+      end
 
-    it 'should return events as per the name' do
-      query = 'dilpreet'
-      expect(event_session_association.search(query.downcase)).to include(event)
-    end
+      it 'should return events as per the country' do
+        query = 'IN'
+        expect(event_session_association.search(query.downcase)).to include(event)
+      end
 
-    it 'should return events as per the city' do
-      query = 'Delhi'
-      expect(event_session_association.search(query.downcase)).to include(event)
-    end
-
-    it 'should return events as per the country' do
-      query = 'IN'
-      expect(event_session_association.search(query.downcase)).to include(event)
-    end
-
-    it 'should return event as per the topic of the session' do
-      query = 'dilpreet'
-      expect(event_session_association.search(query.downcase)).to include(event)
+      it 'should return event as per the topic of the session' do
+        query = 'dilpreet'
+        expect(event_session_association.search(query.downcase)).to include(event)
+      end
     end
 
   end
@@ -185,7 +225,7 @@ describe Event do
     end
 
     it 'should return false if current user is not owner' do
-      user = FactoryGirl.create(:user)
+      user = FactoryGirl.build(:user)
       expect(event.owner?(user)).to be_false
     end
 

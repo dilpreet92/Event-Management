@@ -2,23 +2,19 @@ require 'spec_helper'
 
 describe Admin do
 
-  let(:admin) { FactoryGirl.create :admin }
-  subject { admin }
+  let!(:admin) { FactoryGirl.build :admin }
 
-  context 'is invalid' do
+  describe 'validation' do
 
-    it 'when it has a invalid factory' do
+    it 'it has a invalid factory' do
       expect(admin).to be_valid
     end
 
-    it 'when it is without a username' do
-      expect{ admin.username }.not_to be_nil
-    end
-
-    it 'when it is without a password' do
-      expect { admin.password }.not_to be_nil
-    end
-
+    it { expect(admin).to validate_presence_of(:username) }
+    it { expect(admin).to validate_presence_of(:password) }
+    it { expect(admin).to validate_uniqueness_of(:username) }
+    it { expect(admin.password.to_s).to match(/\A(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$\z/) }
+  
   end
 
 end

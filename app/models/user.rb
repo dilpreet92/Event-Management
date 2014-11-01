@@ -18,6 +18,22 @@ class User < ActiveRecord::Base
            twitter_secret: auth['credentials']['secret'], twitter_name: auth['info']['nickname'])
   end
 
+  def my_created_past_events
+    events.past.order_by_start_date(:desc)
+  end
+
+  def my_created_upcoming_events
+    events.live_and_upcoming.order_by_start_date(:asc)
+  end
+
+  def my_past_attended_events
+    attending_events.enabled.past.order_by_start_date(:desc)
+  end
+
+  def my_upcoming_attending_events
+    attending_events.enabled.live_and_upcoming.order_by_start_date(:asc)
+  end
+
   def manipulate_related_events
     if enabled?
       events.update_all(:enable => true)

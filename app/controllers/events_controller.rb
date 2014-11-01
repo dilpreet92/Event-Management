@@ -25,9 +25,9 @@ class EventsController < ApplicationController
 
   def mine_events
     if past?
-      @events = current_user.events.past.order_by_start_date(:desc).paginate(:page => params[:page], :per_page => 5)
+      @events = current_user.my_created_past_events.paginate(:page => params[:page], :per_page => 5)
     else
-      @events = current_user.events.live_and_upcoming.order_by_start_date(:asc).paginate(:page => params[:page], :per_page => 5)
+      @events = current_user.my_created_upcoming_events.paginate(:page => params[:page], :per_page => 5)
     end
     respond_to do |format|
       format.js
@@ -39,9 +39,9 @@ class EventsController < ApplicationController
 
   def attending
     if past?
-      @events = current_user.attending_events.enabled.past.order_by_start_date(:desc).paginate(:page => params[:page], :per_page => 5).uniq
+      @events = current_user.my_past_attended_events.paginate(:page => params[:page], :per_page => 5).uniq
     else
-      @events = current_user.attending_events.enabled.live_and_upcoming.order_by_start_date(:asc).paginate(:page => params[:page], :per_page => 5).uniq
+      @events = current_user.my_upcoming_attending_events.paginate(:page => params[:page], :per_page => 5).uniq
     end
     respond_to do |format|
       format.js
@@ -49,7 +49,8 @@ class EventsController < ApplicationController
   end
 
   def search
-    @events = get_live_and_upcoming_events.eager_load(:sessions).search(params[:search].strip.downcase).uniq
+    @events = get_live_and_upcoming_events.eager_load(:sessions).search(params[:search].strip.downcase)
+                .paginate(:page => params[:page], :per_page => 5).uniq
     respond_to do |format|
       format.js
     end

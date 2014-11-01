@@ -4,15 +4,15 @@ class Event < ActiveRecord::Base
 
   belongs_to :user
   
-  has_many :sessions, dependent: :destroy
+  has_many :sessions
   has_many :attendes, through: :sessions, source: :attendes
-  before_save :ensure_all_sessions_in_range?, message: 'Event cannot be updated'
+  before_save :ensure_all_sessions_in_range?
 
   #FIXED: you should also read about the patterns we can pass to paperclip styles. like we have > sign in following style, there are much more.
   has_attached_file :logo, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/index.jpeg"
 
   validates_attachment_content_type :logo, :content_type => /\Aimage\/.*\Z/
-  validates :name, :address, :city, :country, :contact_number, :description, presence: true
+  validates :name, :address, :city, :country, :contact_number, :description, :user, presence: true
   validates :description, length: { maximum: 500 }
   validate :event_date_valid
 
@@ -24,7 +24,6 @@ class Event < ActiveRecord::Base
 
   scope :search, -> (query) { where("lower(events.name) LIKE :query OR lower(events.city) LIKE :query OR 
     lower(events.country) LIKE :query OR lower(sessions.topic) LIKE :query", query: "%#{ query }%") }
-
 
   def live_and_upcoming?
     end_date >= Time.current 
