@@ -4,21 +4,21 @@
       <div class="row">
         <div class="col-md-4">
         </div>
-        <div class="col-md-8">
+        <div class="col-md-8 h4 text-blue mtop0">
           <%= session.topic %>
         </div>
       </div>
       <div class="row back-blue">
-        <div class="col-md-12">
+        <div class="col-md-12 text-blue h5">
           <% d = session.start_date %>
           <%= d.strftime('%d %b :%I %M %p to') %>
           <% d = session.end_date %>
           <%= d.strftime('%d %b :%I %M %p') %>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 text-blue h5 mtop0">
         <%= session.location %>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 text-blue h5 mtop0">
         <%= session.attendes.count %> Atendees
         </div>
       </div>
@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 text-grey mtop20">
         <%= session.description %>
         </div>
       </div>
