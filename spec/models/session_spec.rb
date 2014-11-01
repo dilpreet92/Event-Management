@@ -2,37 +2,69 @@ require 'spec_helper'
 
 describe Session do
 
-  let(:event) { FactoryGirl.create(:event) }
-  subject { event }
-  let(:session) { FactoryGirl.create(:session, :event => event)}
-  subject { session }
+  let!(:event) { FactoryGirl.build(:event) }
+  let!(:session) { FactoryGirl.build(:session, :event => event) }
 
-  context 'is invalid' do
+  describe '#validations' do
 
-    it 'when it has a invalid factory' do
-      expect(session).to be_valid
+    context 'is invalid' do
+
+      it 'when it has a invalid factory' do
+        expect(session).to be_valid
+      end
+
+      it 'when it is without topic' do
+        expect { session.topic }.not_to be_nil
+      end
+
+      it 'when it is without location' do
+        expect { session.location }.not_to be_nil
+      end
+
+      it 'when it is without description' do
+        expect { session.description }.not_to be_nil
+      end
+
+      it 'when it is without event id' do
+        expect { session.event_id }.not_to be_nil
+      end
+
+      it 'when it has a description of length greater than 250' do
+        expect(session.description.length).to be <= 250
+      end
+
+    end  
+
+    describe '#session_start_date' do
+
+      context 'when invalid' do
+        before do
+          session.start_date = Time.current - 1.day
+          session.save
+        end
+          it { expect(session.errors).not_to be_nil }
+      end
+
     end
 
-    it 'when it is without topic' do
-      expect { session.topic }.not_to be_nil
+    describe '#session_end_date' do
+      context 'when invalid' do
+        before do
+          session.end_date = Time.current - 1.day
+          session.save
+        end
+        it { expect(session.errors).not_to be_nil }
+      end
     end
 
-    it 'when it is without location' do
-      expect { session.location }.not_to be_nil
-    end
+  end
 
-    it 'when it is without description' do
-      expect { session.description }.not_to be_nil
-    end
+  describe '#associations' do
 
-    it 'when it is without event id' do
-      expect { session.event_id }.not_to be_nil
-    end
-
-    it 'when it has a description of length greater than 250' do
-      expect(session.description.length).to be <= 250
-    end
-
+    it { expect(session).to belong_to(:event) }
+    it { expect(session).to have_many(:rsvps).dependent(:destroy) }
+    it { expect(session).to have_many(:attendes).through(:rsvps).source(:user) }
+  
   end
 
   context '.rsvps' do
@@ -74,25 +106,30 @@ describe Session do
   context 'when called with #upcoming?' do
 
     it 'should return true if session is upcoming' do
-      expect { session.upcoming? }.to be_true
+      expect(session.upcoming?).to be_true
     end
 
     it 'should return false if session is past' do
-      session = Session.where("end_date < ?", Time.current).first
-      expect { session.upcoming? }.to be_false
+      session.update_attribute(:end_date, (Time.current - 1.day))
+      expect(session.upcoming?).to be_false
     end
 
   end
 
-  context 'when called with .enabled' do
+  describe '.scopes' do
 
-    it 'should return enabled events' do
-      expect(Session.enabled).to include(session)
-    end
+    context 'when called with .enabled' do
 
-    it 'should not return disabled events' do
-      session = Session.where(enable: false).first
-      expect(Session.enabled).not_to include(session)
+      it 'should return enabled events' do
+        session.save
+        expect(Session.enabled).to include(session)
+      end
+
+      it 'should not return disabled events' do
+        session.update_attribute(:enable, false)
+        expect(Session.enabled).not_to include(session)
+      end
+
     end
 
   end

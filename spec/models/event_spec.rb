@@ -127,8 +127,7 @@ describe Event do
       end
 
       it 'should not return past_events' do
-        event.end_date = Time.current - 1.day
-        event.save
+        event.update_attribute(:end_date, Time.current - 1.day )
         expect(Event.live_and_upcoming).not_to include(event)
       end
 
@@ -137,14 +136,12 @@ describe Event do
     context '.past' do
 
       it 'should return past_events' do
-        event.end_date = Time.current - 1.day
-        event.save
+        event.update_attribute(:end_date, Time.current - 1.day )
         expect(Event.past).to include(event)
       end
 
       it 'should not return live_and_upcoming events' do
         event.save
-        puts Event.past
         expect(Event.past).not_to include(event)
       end
 
@@ -153,21 +150,22 @@ describe Event do
     context '.enabled' do
 
       it 'should return enabled events' do
-        enabled_event =  FactoryGirl.create(:event, enable: true)
-        expect(Event.enabled).to include(enabled_event)
+        event.save
+        expect(Event.enabled).to include(event)
       end
 
       it 'should not return disabled events' do
-        disabled_event = FactoryGirl.create(:event, enable: false)
-        expect(Event.enabled).not_to include(disabled_event)
+        event.update_attribute(:enable, false)
+        expect(Event.enabled).not_to include(event)
       end
     end
 
     context '.search' do
 
-      let(:event_session_association) { Event.enabled.live_and_upcoming.eager_load(:sessions) }
-      subject { event_session_association }
-
+      let!(:event_session_association) { Event.enabled.live_and_upcoming.eager_load(:sessions) }
+      before do
+        event.save
+      end
       it 'should return events as per the name' do
         query = 'dilpreet'
         expect(event_session_association.search(query.downcase)).to include(event)
@@ -191,42 +189,44 @@ describe Event do
 
   end
 
-  context '#live_and_upcoming?' do
+  describe '#instance_methods' do
 
-    it 'should return true if event is live_and_upcoming' do
-      event = Event.where("end_date >= ?", Time.current).first
-      expect(event.live_and_upcoming?).to be_true
+    context '#live_and_upcoming?' do
+
+      it 'should return true if event is live_and_upcoming' do
+        expect(event.live_and_upcoming?).to be_true
+      end
+
+      it 'should return false if event is past' do
+        event.update_attribute(:end_date, (Time.current - 1.day) ) 
+        expect(event.live_and_upcoming?).to be_false
+      end
+
     end
 
-    it 'should return false if event is past' do
-      event = Event.where("end_date < ?", Time.current).first
-      expect(event.live_and_upcoming?).to be_false
+    context '#past?' do
+
+      it 'should return true if event is past' do
+        event.update_attribute(:end_date, (Time.current - 1.day) )
+        expect(event.past?).to be_true
+      end
+
+      it 'should return false if event is live_and_upcoming' do
+        event.save
+        expect(event.past?).to be_false
+      end
     end
 
-  end
+    context '#owner?' do
 
-  context '#past?' do
+      it 'should return true if current user is owner of event' do
+        expect(event.owner?(user)).to be_true
+      end
 
-    it 'should return true if event is past' do
-      event = Event.where("end_date < ?", Time.current).first
-      expect(event.live_and_upcoming?).to be_true
-    end
-
-    it 'should return false if event is live_and_upcoming' do
-      event = Event.where("end_date >= ?", Time.current).first
-      expect(event.live_and_upcoming?).to be_true
-    end
-  end
-
-  context '#owner?' do
-
-    it 'should return true if current user is owner of event' do
-      expect(event.owner?(user)).to be_true
-    end
-
-    it 'should return false if current user is not owner' do
-      user = FactoryGirl.build(:user)
-      expect(event.owner?(user)).to be_false
+      it 'should return false if current user is not owner' do
+        user = FactoryGirl.build(:user, id: 500)
+        expect(event.owner?(user)).to be_false
+      end
     end
 
   end

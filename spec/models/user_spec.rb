@@ -2,41 +2,56 @@ require 'spec_helper'
 
 describe User do
 
-  let(:user) { FactoryGirl.create :user }
-  subject { user }
-  let(:event) { FactoryGirl.create(:event, :user => user) }
-  subject { event }
-  let(:session) { FactoryGirl.create(:session, :event => event) }
-  subject { session }
-  let(:rsvp) { FactoryGirl.create(:rsvp, :session => session, :user => user) }
-  subject { rsvp }
+  let!(:user) { FactoryGirl.build :user }
+  let!(:event) { FactoryGirl.build(:event, :user => user) }
+  let!(:session) { FactoryGirl.build(:session, :event => event) }
+  let!(:rsvp) { FactoryGirl.build(:rsvp, :session => session, :user => user) }
 
-  context 'is invalid' do
+  describe 'validations' do
+    context 'is invalid' do
 
-    it 'when it has a invalid factory' do
-      expect(user).to be_valid
+      it 'when it has a invalid factory' do
+        expect(user).to be_valid
+      end
+
+      it "when it is without a access_token" do
+        expect(user.access_token).not_to be_nil
+      end
+
+      it "when it is without a twitter_secret" do
+        expect(user.twitter_secret).not_to be_nil
+      end
+
+      it "when it is without a uid" do
+        expect(user.uid).not_to be_nil
+      end
+
+      it "when it is without a name" do
+        expect(user.name).not_to be_nil
+      end
+
+      it "when it is without a provider" do
+        expect(user.provider).not_to be_nil
+      end
+
     end
 
-    it "when it is without a access_token" do
-      expect(user.access_token).not_to be_nil
-    end
+  end
 
-    it "when it is without a twitter_secret" do
-      expect(user.twitter_secret).not_to be_nil
-    end
+  describe '#associations' do
+    
+    it { expect(user).to have_many(:events) }
+    it { expect(user).to have_many(:rsvps).dependent(:destroy) }
+    it { expect(user).to have_many(:attending_sessions).through(:rsvps).source(:session) }
+    it { expect(user).to have_many(:attending_events).through(:attending_sessions).source(:event) }
 
-    it "when it is without a uid" do
-      expect(user.uid).not_to be_nil
-    end
+  end
 
-    it "when it is without a name" do
-      expect(user.name).not_to be_nil
+  describe '#callbacks' do
+    it 'should call manipulate_related_events before save' do
+      expect(user).to receive(:manipulate_related_events)
+      user.save
     end
-
-    it "when it is without a provider" do
-      expect(user.provider).not_to be_nil
-    end
-
   end
 
   context '#events' do
@@ -89,31 +104,80 @@ describe User do
       expect { User.delete_all }.to raise_error
     end
 
-  end  
+  end
 
-  context '.create_with_ominauth' do
+  describe '.class_methods' do
 
-    it 'should return user' do
-      auth = { 'provider' => "twitter",
-               'credentials' => { 'token' => "edeed", 'twitter_secret' => "twitter_secret" },
-               'uid' => "uid",
-               'info' => { 'urls' => { 'Twitter' => 'abc' }, 'name' => "dp" },
-             }
-      expect(User.create_with_omniauth(auth)).to be_an_instance_of(User)
+    context '.create_with_ominauth' do
+
+      it 'should return user' do
+        auth = { 'provider' => "twitter",
+                 'credentials' => { 'token' => "edeed", 'twitter_secret' => "twitter_secret" },
+                 'uid' => "uid",
+                 'info' => { 'urls' => { 'Twitter' => 'abc' }, 'name' => "dp" },
+               }
+        expect(User.create_with_omniauth(auth)).to be_an_instance_of(User)
+      end
+
     end
 
   end
 
-  context '#attending?' do
-    
-    it 'should return true if attending session' do
-      Rails.logger.debug user.attending?(session).inspect
-      expect(user.attending?(session)).to be_true
+  describe '#instance_methods' do
+
+    context '#attending?' do
+      
+      it 'should return true if attending session' do
+        rsvp.save
+        expect(user.attending?(session)).to be_true
+      end
+
+      it 'should return false if not attending session' do
+        expect(user.attending?(session)).to be_false
+      end
+
     end
 
-    it 'should return false if not attending session' do
-      session = FactoryGirl.create(:session, :event => event)
-      expect(user.attending?(session)).to be_false
+    context '#my_created_past_events' do
+
+      it 'should return my past created events' do
+        event.update_attribute(:end_date, Time.current - 1.day )
+        expect(user.my_created_past_events).to include(event)
+      end
+
+    end
+
+    context '#my_created_upcoming_events' do
+
+      it 'should return my upcoming created events' do
+        event.save
+        expect(user.my_created_upcoming_events).to include(event)
+      end
+
+    end
+
+    context '#my_past_attended_events' do
+
+      before do
+        event.update_attribute(:end_date, Time.current - 1.day )
+        user.save
+        session.save(validate: false)
+        rsvp.save
+      end
+
+      it 'should return my past attended events' do
+        expect(user.my_past_attended_events).to include(event)
+      end
+
+    end
+
+    context '#my_upcoming_attending_events' do
+
+      it 'should return my upcoming attending events' do
+        rsvp.save
+        expect(user.my_upcoming_attending_events).to include(event)
+      end
+
     end
 
   end

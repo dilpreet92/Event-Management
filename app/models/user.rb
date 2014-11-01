@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
 
   before_save :manipulate_related_events,if: :events
   
-  has_many :events, dependent: :destroy
+  has_many :events
   has_many :rsvps, dependent: :destroy
   has_many :attending_sessions, through: :rsvps, source: :session
   has_many :attending_events, through: :attending_sessions, source: :event
@@ -34,16 +34,18 @@ class User < ActiveRecord::Base
     attending_events.enabled.live_and_upcoming.order_by_start_date(:asc)
   end
 
-  def manipulate_related_events
-    if enabled?
-      events.update_all(:enable => true)
-    else
-      events.update_all(:enable => false)
-    end
-  end
-
   def attending?(session)
     attending_sessions.exists?(session)
   end
+
+  private
+
+    def manipulate_related_events
+      if enabled?
+        events.update_all(:enable => true)
+      else
+        events.update_all(:enable => false)
+      end
+    end
 
 end
