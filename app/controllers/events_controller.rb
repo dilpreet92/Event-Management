@@ -49,8 +49,7 @@ class EventsController < ApplicationController
   end
 
   def search
-    @events = get_live_and_upcoming_events.eager_load(:sessions).search(params[:search].strip.downcase)
-                .paginate(:page => params[:page], :per_page => 5).uniq
+    @events = get_live_and_upcoming_events.eager_load(:sessions).search(params[:search].strip.downcase).uniq
     respond_to do |format|
       format.js
     end

@@ -27,7 +27,7 @@
       <div id='showEvents' class="row">
         <div class="btn-group btn-group-justified">
           <% unless admin_signed_in? %>
-            <% if current_page?(controller: 'events', action: 'index') %>
+            <% if current_page?(controller: 'events', action: 'index') || current_page?('/') %>
               <div class="btn active"><%= link_to 'All Events', events_path, id: 'allEvents' %></div>
             <% else %>
               <div class="btn"><%= link_to 'All Events', events_path, id: 'allEvents' %></div>
