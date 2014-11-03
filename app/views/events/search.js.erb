@@ -1,3 +1,3 @@
-$('#results').html('<%= escape_javascript render partial: "events", 
+$('#results').html('<%= escape_javascript render partial: "events",
   locals: { message: "Did not find any such events" } %>')
-  .prepend('<div>OnGoing/Upcoming </div>');
+  .prepend('<div class="event_radio_list wraper">OnGoing/Upcoming </div>');

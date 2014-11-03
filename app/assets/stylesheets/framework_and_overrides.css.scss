@@ -42,8 +42,8 @@ section {
 
 /*override*/
 
-#searchButton, #categorySubmit {  display: none;}
-.sprite { background: url('image-sprite.png'); height: 20px; width: 20px;}
+#categorySubmit {  display: none;}
+.sprite { background: url('image-sprite.png'); height: 20px; width: 20px; display: inline-block; margin-right: 4px;}
 
 /*layout*/
 
@@ -71,9 +71,12 @@ ul.custom-nav {  list-style: none;}
 .text-orange,a.text-orange, .text-orange a { color: #ffa126 !important; }
 .text-blue,a.text-blue, .text-blue a { color: #335374 !important; }
 .text-grey,a.text-grey, .text-grey a { color: #999 !important; }
+.dark-grey,a.dark-grey, .dark-grey a { color: #666 !important; }
 
 .back-eee { background-color: #eee;}
 .back-blue { background-color: #e6ecf1;}
+
+.relative {position: relative;}
 
 /*map-area*/
 .map-area { display:inline-block; width:100%; position:relative;}
@@ -98,7 +101,7 @@ animation:yourmove 1s;
 .map-area .anchorarea .content { background:rgba(255,255,255,0.7); font-size:33px; color:#0c2237; text-align:center; padding:10px; padding-top: 18px;}
 .map-area .anchorarea .content sub { display:block; font-size:16px; margin: 15px 0 20px 0;}
 
-a.header-link, .header-font { margin-left: 30px; color: #fff !important; font: 11px arial; }
+a.header-link, .header-font { margin-left: 30px; color: #fff !important; font: 11px arial; line-height: 20px; }
 a.header-link { vertical-align: top;}
 .logo { width: 153px; height: 54px; display: inline-block; text-indent: -1000px; background: url('logo.png'); margin: 15.5px 0; }
 .logo:hover { background-color: transparent !important;}
@@ -114,7 +117,7 @@ a.create_event { color: #335374 !important;}
 .event_name a { display:block; font: 24px "Myriad Pro"; color: #335374 !important; background-color: #f2f2f2; padding: 5px 10px; padding-right: 20px;}
 .event_name a:hover { background-color: #f2f2f2; color: #335374; }
 .event_content .event_name::after { border: solid 10px transparent; border-right-color: #f2f2f2; position: absolute; z-index:10; left: -5px; top: 10px; content: "";}
-.event_time , .event_address { font: 14px "Myriad Pro"; color: #335374; margin: 8px 0;}
+.event_time , .event_address { font: 14px "Myriad Pro"; color: #335374; margin: 8px 0; line-height: 26px;}
 .event_description { font: 14px "Myriad Pro"; color: #999;}
 #showEvents .btn-group > .btn { padding: 0; vertical-align: bottom; border-width: 0 15px;}
 #showEvents .btn-group > .btn a { display: block; padding: 15px; font: 18px "Myriad Pro"; color: #335374 !important; background-color: #dfdbd4; }
@@ -133,3 +136,13 @@ a.create_event { color: #335374 !important;}
 .session_content .event_name { font-size: 48px; line-height: 48px;}
 .session-box { height: 320px; border: 1px solid #eee; padding: 15px;}
 .text-orange a:hover { background-color: transparent !important;}
+.create_event .sprite { vertical-align: bottom; background-position: -20px 0;}
+.iconsearch .sprite { position: absolute; background-position: -40px 0; top: 32px; right: 0; border: none;}
+.event_address .sprite { background-position: -60px 0; vertical-align: text-bottom; margin-right: 0;}
+.event-icon .sprite { background-position: -80px 0; vertical-align: text-bottom;}
+.attendes-icon .sprite { background-position: 0px -20px; vertical-align: text-bottom;}
+.add_session.sprite { vertical-align: bottom; background-position: -20px -20px;}
+.attend-box, .attending-box { height: 64px; background-color: #f2f5f8; color: #94aabd; border-radius: 5px; margin: 0 0 10px 15px;}
+.attending-box { background-color: #bbc420; color: #fff;}
+.attend-box .sprite, .attending-box .sprite { height: 30px; width: 30px; background-position: 0 -40px; margin-top: 10px; margin-right: 0;}
+.attending-box .sprite { background-position: -30px -40px;}

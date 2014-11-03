@@ -9,7 +9,7 @@
         <li class="pull-right"><%= link_to 'Logout', signout_path, class: 'header-link' %></li>
         <li id='userName' class="pull-right header-font">Hello, <%= current_user.name %></li>
       <% else %>
-        <li class="pull-right"><%= link_to 'Login via twitter', signin_path, class: 'header-link twitter' %></li>
+        <li class="pull-right"><%= link_to '<span class="sprite"></span>Login via twitter'.html_safe, signin_path, class: 'header-link twitter' %></li>
       <% end %>
     </ul>
   </div>
