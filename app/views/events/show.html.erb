@@ -43,7 +43,7 @@
   </div>
   <div class="col-md-6 text-right">
     <% if logged_in? && @event.owner?(current_user) && @event.live_and_upcoming? %>
-      <%= link_to 'Add new Session', new_event_session_path(event_id: @event), class:'btn btn-success' %>
+      <%= link_to '<span class="sprite add_session"></span>Add new Session'.html_safe, new_event_session_path(event_id: @event), class:'btn btn-success' %>
     <% end %>
   </div>
 </div>

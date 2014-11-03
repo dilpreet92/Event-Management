@@ -1,14 +1,17 @@
 <li class="pull-left">
   <%= link_to 'Home', root_url, class: 'logo' %>
 </li>
-<li class="pull-right">
+<li class="pull-right iconsearch relative">
   <%= form_tag(search_events_path, method: :get, remote: true) do %>
     <%= text_field_tag :search, nil, :class=>"form-control input-box", :placeholder=>"Search..." %>
-    <%= submit_tag 'Search', id: 'searchButton' %>
+    <%= submit_tag '', id: 'searchButton', class: 'sprite' %>
   <% end %>
 </li>
-
 <% unless admin_signed_in? %>
-  <li class="pull-right"><%= link_to 'Create Event', new_event_path, :class => 'btn create_event' %></li>
-<% end %>  
+  <li class="pull-right">
+  <%= link_to '<span class="sprite"></span>Create Event'.html_safe, new_event_path, :class => 'btn create_event' %></li>
+<% end %>
 
+<!-- <li>
+  <input id='clearText' type='button' value='Clear'>
+</li> -->

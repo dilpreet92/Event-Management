@@ -18,4 +18,12 @@
 /tmp
 /app/assets/javascripts/.DS_Store
 app/assets/javascripts/.DS_Store
+iconfconnect-web-app/Gemfile
+/Gemfile.lock
+/config/database.yml
+/db/schema.rb
+Gemfile
+Gemfile.lock
+config/database.yml
+db/schema.rb
 
