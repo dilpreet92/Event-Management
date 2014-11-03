@@ -8,14 +8,31 @@ describe UserSessionController do
 
   describe '#create' do
 
-    it 'should successfully create a user' do
+    context 'when new user' do
+      before do
+        @user = double(:user)
+        User.stub(:where).with(:provider => 'twitter', :uid => '12221445').and_return(@user)
+        @user.stub(:first).and_return(nil)
+        User.stub(:create_with_omniauth).with(request.env['omniauth.auth']).and_return(@user)
+        @user.stub(:enabled?).and_return(true)
+        @user.stub(:id).and_return(20)
+      end
+
+      it 'should successfully create a user' do
       expect {
         get :create, provider: :twitter
       }.to change{ User.count }.by(1)
+      end
+
     end
     
     context 'when user is enabled' do
       before do
+        @user = double(:user)
+        User.stub(:where).with(:provider => 'twitter', :uid => '12221445').and_return(@user)
+        @user.stub(:first).and_return(@user)
+        @user.stub(:id).and_return(20)
+        @user.stub(:enabled?).and_return(true)
         get :create, provider: :twitter
       end
   
@@ -28,6 +45,24 @@ describe UserSessionController do
         expect(flash[:notice]).to eql 'Signed in!'
       end
 
+    end
+
+    context 'when the user is disabled' do
+      before do
+        @user = double(:user)
+        User.stub(:where).with(:provider => 'twitter', :uid => '12221445').and_return(@user)
+        @user.stub(:first).and_return(@user)
+        @user.stub(:id).and_return(20)
+        @user.stub(:enabled?).and_return(false)
+        get :create, provider: :twitter
+      end
+      it 'should redirect to root url' do
+        expect(response).to redirect_to root_url
+      end
+
+      it 'should flash notice' do
+        expect(flash[:notice]).to eql 'Authentication error'
+      end
     end
 
   end
@@ -63,7 +98,7 @@ describe UserSessionController do
     end
 
     it 'should flash a alert' do
-      expect(flash[:alert]).to eql 'Authentication error ' 
+      expect(flash[:alert]).to eql 'Application not authorized' 
     end
 
   end

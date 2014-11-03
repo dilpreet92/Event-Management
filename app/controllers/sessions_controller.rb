@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
 
-  before_action :set_session, only: [:show, :edit, :update, :destroy, :disable, :enable]
+  before_action :set_session, only: [:show, :update, :destroy, :disable, :enable]
   #skip authentication when admin is signed in
   before_action :authenticate, unless: :admin_signed_in?
   before_action :set_event, only: [:new, :edit, :create, :update]

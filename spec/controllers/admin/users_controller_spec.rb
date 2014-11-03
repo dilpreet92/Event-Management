@@ -1,9 +1,12 @@
 require 'spec_helper'
 
 describe Admin::UsersController do
+
   before do
     controller.stub(:authenticate_admin!).and_return(true)
+    controller.stub(:admin_signed_in?).and_return(false)
   end
+
   context '#index' do
     before do
       @users =  double(:users)
@@ -30,8 +33,7 @@ describe Admin::UsersController do
       @user = double(:user)
       User.stub(:where).with(:id => '1').and_return(@user)
       @user.stub(:first).and_return(@user)
-      @user.stub(:enable=).with(true).and_return(true)
-      @user.stub(:save).and_return(true)
+      @user.stub(:update).with(:enabled => true).and_return(true)
     end
 
     context 'when saved successfully' do
@@ -48,7 +50,7 @@ describe Admin::UsersController do
 
     context 'when not saved' do
       before do
-        @user.stub(:save).and_return(false)
+        @user.stub(:update).with(:enabled => true).and_return(false)
       end
 
       it 'should redirect to admin users url' do
@@ -71,8 +73,7 @@ describe Admin::UsersController do
       @user = double(:user)
       User.stub(:where).with(:id => '1').and_return(@user)
       @user.stub(:first).and_return(@user)
-      @user.stub(:enable=).with(false).and_return(true)
-      @user.stub(:save).and_return(true)
+      @user.stub(:update).with(:enabled => false).and_return(true)
     end
 
     context 'when saved successfully' do
@@ -89,7 +90,7 @@ describe Admin::UsersController do
 
     context 'when not saved' do
       before do
-        @user.stub(:save).and_return(false)
+        @user.stub(:update).with(:enabled => false).and_return(false)
       end
 
       it 'should redirect to admin users url' do

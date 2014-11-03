@@ -100,7 +100,7 @@ class EventsController < ApplicationController
     else
       redirect_to events_url, notice: 'Event cannot be enabled'
     end
-  end      
+  end
 
   private
 

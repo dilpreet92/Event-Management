@@ -3,9 +3,9 @@ require 'spec_helper'
 describe Api::V1::SessionsController do
 
   before do
-    @consumer_user = double(:user)
-    User.stub(:where).with(:access_token => 'edeed').and_return(@consumer_user)
-    @consumer_user.stub(:first).and_return(@consumer_user)
+    @current_user = double(:user)
+    User.stub(:where).with(:access_token => 'edeed').and_return(@current_user)
+    @current_user.stub(:first).and_return(@current_user)
   end
 
   context '#index' do
@@ -60,7 +60,7 @@ describe Api::V1::SessionsController do
     end
     context 'when user is attending session' do
       before do
-        @consumer_user.stub(:attending?).with(@session).and_return(true)
+        @current_user.stub(:attending?).with(@session).and_return(true)
         get :rsvp, :id => '300', :event_id => '146', :format => 'json', :token => 'edeed'
       end
       it 'should render rsvp json' do
@@ -74,7 +74,7 @@ describe Api::V1::SessionsController do
 
     context 'when user is not attending the session' do
       before do
-        @consumer_user.stub(:attending?).with(@session).and_return(false)
+        @current_user.stub(:attending?).with(@session).and_return(false)
         get :rsvp, :id => '300', :event_id => '146', :format => 'json', :token => 'edeed'
       end
       it 'should render rsvp json' do
@@ -96,7 +96,7 @@ describe Api::V1::SessionsController do
       @session = double(:session)
       Session.stub(:where).with(:id => '300').and_return(@session)
       @session.stub(:first).and_return(@session)
-      Rsvp.stub(:where).with(:session => @session, :user => @consumer_user).and_return(@rsvp)
+      Rsvp.stub(:where).with(:session => @session, :user => @current_user).and_return(@rsvp)
       @session.stub_chain(:rsvps, :build).and_return(@rsvp)
       @rsvp.stub(:save).and_return(true)
     end
@@ -142,7 +142,7 @@ describe Api::V1::SessionsController do
       @rsvp = double(:rsvp)
       Session.stub(:where).with(:id => '300').and_return(@session)
       @session.stub(:first).and_return(@session)
-      @session.stub_chain(:rsvps, :find_by).with(:user => @consumer_user).and_return(@rsvp)
+      @session.stub_chain(:rsvps, :find_by).with(:user => @current_user).and_return(@rsvp)
       @rsvp.stub(:destroy).and_return(true)
     end
 

@@ -7,6 +7,7 @@ describe EventsController do
     User.stub(:find).with(1).and_return(@user)
     controller.stub(:admin_signed_in?).and_return(false)
     controller.stub(:current_user).and_return(@user)
+    controller.class.stub(:protect_from_forgery).with(:null_session).and_return(:null_session)
   end
   
   context '#index' do
@@ -20,20 +21,12 @@ describe EventsController do
 
   context '#filter' do
 
-    context 'when admin signed in' do
-
-      before do
-        controller.stub(:admin_signed_in?).and_return(true)
-      end
-
-    end
-
     context 'when event is past' do
 
       before do
         @events = double(:events)
         Event.stub_chain(:past, :order_by_start_date).with(:desc).and_return(@events)
-        get :filter, :events => { :filter => 'past'}, :format => 'js'
+        xhr :get, :filter, :events => { :filter => 'past'}, :format => 'js'
       end
 
       it 'should assign @events to past events' do
@@ -51,7 +44,7 @@ describe EventsController do
       before do
         @events = double(:events)
         Event.stub_chain(:live_and_upcoming, :order_by_start_date).with(:asc).and_return(@events)
-        get :filter, :events => { :filter => 'upcoming'}, :format => 'js'
+        xhr :get, :filter, :events => { :filter => 'upcoming'}, :format => 'js'
       end
 
       it 'should assign events to upcoming events' do
@@ -74,8 +67,8 @@ describe EventsController do
     context 'when event is past' do
 
       before do
-        @user.stub_chain(:events, :enabled, :past, :paginate).with({:page=>nil, :per_page=>5}).and_return(@events)
-        get :mine_filter, :events => { :filter => 'past'}, :format => 'js'
+        @user.stub_chain(:my_created_past_events, :paginate).with({:page=>nil, :per_page=>5}).and_return(@events)
+        xhr :get, :mine_events, :events => { :filter => 'past'}, :format => 'js'
       end
 
       it 'should assign events to my past events' do
@@ -91,8 +84,8 @@ describe EventsController do
     context 'when event is upcoming' do
 
       before do
-        @user.stub_chain(:events, :enabled, :live_and_upcoming, :paginate).with({:page=>nil, :per_page=>5}).and_return(@events)
-        get :mine_filter, :events => { :filter => 'upcoming' }, :format => 'js'
+        @user.stub_chain(:my_created_upcoming_events, :paginate).with({:page=>nil, :per_page=>5}).and_return(@events)
+        xhr :get, :mine_events, :events => { :filter => 'upcoming' }, :format => 'js'
       end
 
       it 'should assign events to my upcoming events' do
@@ -106,19 +99,18 @@ describe EventsController do
 
   end
 
-  context '#attending_filter' do
+  context '#attending' do
 
     before do
       @events = double(:events)
-      @duplicate_events = double(:dup_events)
     end
 
     context 'when event is past' do
 
       before do
-        @user.stub_chain(:attending_events, :enabled, :past, :paginate).with({:page=>nil, :per_page=>5}).and_return(@duplicate_events)
-        @duplicate_events.stub(:uniq).and_return(@events)
-        get :attending_filter, :events => { :filter => 'past'}, :format => 'js'
+        @user.stub_chain(:my_past_attended_events, :paginate).with({:page=>nil, :per_page=>5}).and_return(@events)
+        @events.stub(:uniq).and_return(@events)
+        xhr :get, :attending, :events => { :filter => 'past'}, :format => 'js'
       end
 
       it 'should assign events to my attending events' do
@@ -134,9 +126,9 @@ describe EventsController do
     context 'when event is upcoming' do
 
       before do
-        @user.stub_chain(:attending_events, :enabled, :live_and_upcoming, :paginate).with({:page=>nil, :per_page=>5}).and_return(@duplicate_events)
-        @duplicate_events.stub(:uniq).and_return(@events)
-        get :attending_filter, :events => { :filter => 'upcoming'}, :format => 'js'
+        @user.stub_chain(:my_upcoming_attending_events, :paginate).with({:page=>nil, :per_page=>5}).and_return(@events)
+        @events.stub(:uniq).and_return(@events)
+        xhr :get, :attending, :events => { :filter => 'upcoming'}, :format => 'js'
       end
 
       it 'should assign events to my attending events' do
@@ -162,35 +154,35 @@ describe EventsController do
 
   context '#search' do
 
+    before do
+      @events = double(:events)
+    end
+
     context 'when no paramaters is assigned' do
 
       before do
-        @events = double(:events)
-        Event.stub_chain(:live_and_upcoming, :order_by_start_date).with(:asc).and_return(@events)
-        get :search, :search => '', :format => 'js'
+        xhr :get, :search, :search => '', :format => 'js'
       end
 
-      it 'assign events to all upcoming events' do
-        expect(assigns[:events]).to eql @events
-      end
-
-      it 'should render the :search js' do
+      it 'should generate js response' do
         expect(response.content_type).to eq 'text/javascript'
       end
+
+      it 'should generate a sucessfull response' do
+        expect(response.status).to eql 200
+      end
+
     end
 
     context 'when a query is passed as parameters' do
       
       before do
-        @events = double(:events)
-        @upcoming_events = double(:upcoming)
-        @association = double(:association)
-        @duplicate_events = double(:duplicate_events)
-        Event.stub_chain(:live_and_upcoming, :order_by_start_date).with(:asc).and_return(@upcoming_events)
-        @upcoming_events.stub_chain(:eager_load).with(:sessions).and_return(@association)
-        @association.stub(:search).with('dp').and_return(@duplicate_events)
-        @duplicate_events.stub(:uniq).and_return(@events)
-        get :search, :search => 'dp', :format => 'js'
+        @rsvp = double(:rsvp)
+        controller.stub_chain(:get_live_and_upcoming_events, :eager_load).with(:sessions).and_return(@rsvp)
+        @rsvp.stub(:search).with('dp').and_return(@events)
+        @events.stub(:paginate).with({:page=>nil, :per_page=>5}).and_return(@events)
+        @events.stub(:uniq).and_return(@events)
+        xhr :get, :search, :search => 'dp', :format => 'js'
       end
 
       it 'should assign events according to events that are searched for' do
@@ -269,7 +261,7 @@ describe EventsController do
       before do
         @user.stub_chain(:events, :build).with(@event_params).and_return(@event)
         @event.stub(:save).and_return(true)
-      end
+      end 
 
       it 'should assign event' do
         do_post
@@ -362,22 +354,45 @@ describe EventsController do
       @event = double(:event)
       Event.stub(:where).with(:id => '142').and_return(@event)
       @event.stub(:first).and_return(@event)
-      @event.stub(:enable=).and_return(false)
-      @event.stub(:save).with(validate: false).and_return(true)
-      controller.stub(:authorize_user?).and_return(:true)
-      get :disable, :id => 142
+      controller.stub(:authorize_user?).and_return(true)
     end
 
-    it 'should assign event to current event' do
-      expect(assigns[:event]).to eql @event
+    context 'when successfully disabled' do
+
+      before do
+        @event.stub(:update_attribute).with('enable', false).and_return(true)
+        xhr :get, :disable, :id => 142
+      end
+
+      it 'should assign event to current event' do
+        expect(assigns[:event]).to eql @event
+      end
+
+      it 'should redirect to events page' do
+        expect(response).to redirect_to events_url
+      end
+
+      it 'should flash a notice Event successfully disabled' do
+        expect(flash[:notice]).to eq 'Event successfully Disabled'
+      end
+
     end
 
-    it 'should redirect to events page' do
-      expect(response).to redirect_to events_url
-    end
+    context 'when not disabled' do
 
-    it 'should flash a notice Event successfully disabled' do
-      expect(flash[:notice]).to eq 'Event successfully Disabled'
+      before do
+        @event.stub(:update_attribute).with('enable', false).and_return(false)
+        xhr :get, :disable, :id => 142
+      end
+
+      it 'should redirect to events page' do
+        expect(response).to redirect_to events_url
+      end
+
+      it 'should flash a notice' do
+        expect(flash[:notice]).to eq 'Event cannot be disabled'
+      end
+
     end
          
   end 

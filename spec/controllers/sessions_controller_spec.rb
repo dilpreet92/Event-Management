@@ -4,23 +4,31 @@ describe SessionsController do
   
   before do
     @user = double(:user)
+    @event = double(:event)
+    @session = double(:session)
     User.stub(:find).with(1).and_return(@user)
-    @user.stub(:id).and_return(1)
     controller.stub(:admin_signed_in?).and_return(false)
     controller.stub(:current_user).and_return(@user)
+  end
+
+  def set_event
+    Event.stub(:where).with(:id => "106").and_return(@event)
+    @event.stub(:first).and_return(@event)
+  end
+
+  def set_session
+    Session.stub(:where).with(:id => "10").and_return(@session)
+    @session.stub(:first).and_return(@session)
   end
 
   context '#new' do
     
     before do
-      @event = double(:event)
-      @session = double(:session)
-      Event.stub(:where).with(:id => "142").and_return(@event)
-      @event.stub(:first).and_return(@event)
+      set_event
       @event.stub_chain(:sessions, :build).and_return(@session)
-      get :new, :event_id => "142"
+      xhr :get, :new, :event_id => "106"
     end
-    
+
     it 'should render new template' do
       expect(response).to render_template :new
     end
@@ -34,13 +42,10 @@ describe SessionsController do
   context '#edit' do
     
     before do
-      @event = double(:event)
-      @session = double(:session)
-      Event.stub(:where).with(:id => "146").and_return(@event)
-      @event.stub(:first).and_return(@event)
-      @event.stub_chain(:sessions, :where).with(:id => "300").and_return(@session)
-      @session.stub_chain(:first).and_return(@session)
-      get :edit, :event_id => 146, :id => 300
+      set_event
+      @event.stub_chain(:sessions, :where).with(:id => "10").and_return(@session)
+      @session.stub(:first).and_return(@session)
+      xhr :get, :edit, :event_id => 106, :id => 10
     end
 
     it 'should render edit template' do
@@ -55,10 +60,8 @@ describe SessionsController do
 
   context '#create_rsvp' do
     before do
-      @session = double(:session)
       @rsvp = double(:rsvp)
-      Session.stub(:where).with(:id => "300").and_return(@session)
-      @session.stub(:first).and_return(@session)
+      set_session
       @session.stub_chain(:rsvps, :build).with(:user => @user).and_return(@rsvp)
       @session.stub(:enable).and_return(true)
       @session.stub(:topic).and_return('dilpreet')
@@ -70,7 +73,7 @@ describe SessionsController do
 
       before do
         @rsvp.stub(:save).and_return(true)
-        get :create_rsvp, :event_id => 146, :session_id => 300
+        get :create_rsvp, :event_id => 106, :session_id => 10
       end
 
       it 'should assign rsvp' do
@@ -91,7 +94,7 @@ describe SessionsController do
 
      before do
       @rsvp.stub(:save).and_return(false)
-      get :create_rsvp, :event_id => 146, :session_id => 300
+      get :create_rsvp, :event_id => 106, :session_id => 10
      end
 
       it 'should redirect to events url' do
@@ -109,20 +112,20 @@ describe SessionsController do
   context '#destroy_rsvp' do
     before do
       @rsvp = double(:rsvp)
-      Rsvp.stub(:find_by).with(:session_id => '300', user: @user).and_return(@rsvp)
+      Rsvp.stub(:find_by).with(:session_id => '10', user: @user).and_return(@rsvp)
       @rsvp.stub_chain(:session, :topic).and_return('dilpreet')
       @rsvp.stub(:destroy).and_return(true)
     end
 
     it 'should assign rsvp' do
-      get :destroy_rsvp, :event_id => 146, :session_id => 300
+      get :destroy_rsvp, :event_id => 106, :session_id => 10
       expect(assigns[:rsvp]).to eql @rsvp
     end
 
     context 'when sucessfully destroyed' do
 
       before do
-        get :destroy_rsvp, :event_id => 146, :session_id => 300
+        get :destroy_rsvp, :event_id => 106, :session_id => 10
       end
 
       it 'should redirect to events url' do
@@ -138,7 +141,7 @@ describe SessionsController do
 
       before do
         @rsvp.stub(:destroy).and_return(false)
-        get :destroy_rsvp, :event_id => 146, :session_id => 300
+        get :destroy_rsvp, :event_id => 106, :session_id => 10
       end
 
       it 'should redirect to events url' do
@@ -155,7 +158,7 @@ describe SessionsController do
     before do
       @event = mock_model("Event")
       @session = double(:session)
-      Event.stub(:where).with(:id => '146').and_return(@event)
+      Event.stub(:where).with(:id => '106').and_return(@event)
       @event.stub(:first).and_return(@event)
       @session_params = { "topic" => "wefwfwwf", 'start_date' =>  "2014-10-22 06:38:00", "end_date" => "2014-10-22 19:38:00", 
         "location" => "fewfwe", "speaker" => "wefwef", "enable" => true, "description" => "fwefwef" }
@@ -164,7 +167,7 @@ describe SessionsController do
     end
 
     def do_post
-      post :create, :event_id => 146, :session => @session_params
+      post :create, :event_id => 106, :session => @session_params
     end
 
     it 'should assign session' do
@@ -197,12 +200,11 @@ describe SessionsController do
 
   context '#update' do
     before do
-      @session = double(:session)
       @event = mock_model("Event")
-      Event.stub(:where).with(:id => '146').and_return(@event)
+      Event.stub(:where).with(:id => '106').and_return(@event)
       @event.stub(:first).and_return(@event)
-      Session.stub(:where).with(:id => '300').and_return(@session)
-      @session.stub(:first).and_return(@session)
+      set_session
+      @session.stub(:enable).and_return(true)
       @session_params = { "topic" => "wefwfwwf", 'start_date' =>  "2014-10-22 06:38:00", "end_date" => "2014-10-22 19:38:00", 
         "location" => "fewfwe", "speaker" => "wefwef", "enable" => true, "description" => "fwefwef" }
       @session.stub(:update).with(@session_params).and_return(true)
@@ -210,7 +212,7 @@ describe SessionsController do
     end
 
     def do_put
-      put :update, :event_id => 146, :id => 300, :session => @session_params
+      put :update, :event_id => 106, :id => 10, :session => @session_params
     end
 
     context 'when update successfully' do
@@ -237,26 +239,24 @@ describe SessionsController do
 
   context '#disable' do
     before do
-      @session = double(:session)
       @event = mock_model("Event")
-      Event.stub(:where).with(:id => '146').and_return(@event)
+      Event.stub(:where).with(:id => '106').and_return(@event)
       @event.stub(:first).and_return(@event)
-      Session.stub(:where).with(:id => '300').and_return(@session)
-      @session.stub(:first).and_return(@session)
-      @session.stub(:enable=).with(false).and_return(false)
-      @session.stub(:save).with(:validate => false).and_return(true)
+      set_session
+      @session.stub(:enable).and_return(true)
+      @session.stub(:update_attribute).with(enable: false).and_return(true)
       @session.stub(:event).and_return(@event)
     end
 
-    it 'should receive enable = false' do
-      expect(@session).to receive(:enable=).with(false)
-      get :disable, :id => 300, :event_id => 146
+    it 'should receive update attribute' do
+      expect(@session).to receive(:update_attribute).with(enable: false)
+      get :disable, :id => 10, :event_id => 106
     end
 
     context 'when saved sucessfully' do
 
       before do
-        get :disable, :id => 300, :event_id => 146
+        get :disable, :id => 10, :event_id => 106
       end
 
       it 'should redirect to event' do
@@ -270,8 +270,8 @@ describe SessionsController do
 
     context 'when not saved' do
       before do
-        @session.stub(:save).with(:validate => false).and_return(false)
-        get :disable, :id => 300, :event_id => 146
+        @session.stub(:update_attribute).with(enable: false).and_return(false)
+        get :disable, :id => 10, :event_id => 106
       end
 
       it 'should redirect to event' do

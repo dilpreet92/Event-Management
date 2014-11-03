@@ -20,9 +20,9 @@ class Admin::UsersController < ApplicationController
 
   def disable
     if @user.update(:enabled => false)
-        redirect_to admin_users_url, notice: 'User disabled'
+      redirect_to admin_users_url, notice: 'User disabled'
     else
-        redirect_to admin_users_url, notice: 'Failed to disable'
+      redirect_to admin_users_url, notice: 'Failed to disable'
     end
   end
 

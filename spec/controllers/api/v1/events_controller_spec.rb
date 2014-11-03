@@ -3,9 +3,9 @@ require 'spec_helper'
 describe Api::V1::EventsController do
 
   before do
-    @consumer_user = double(:user)
-    User.stub(:where).with(:access_token => 'edeed').and_return(@consumer_user)
-    @consumer_user.stub(:first).and_return(@consumer_user)
+    @current_user = double(:user)
+    User.stub(:where).with(:access_token => 'edeed').and_return(@current_user)
+    @current_user.stub(:first).and_return(@current_user)
   end
 
   context '#index' do
@@ -71,7 +71,7 @@ describe Api::V1::EventsController do
 
     before do
       @events = double(:events)
-      @consumer_user.stub_chain(:events, :enabled).and_return(@events)
+      @current_user.stub_chain(:events, :enabled).and_return(@events)
     end
 
     it 'should expect a json response' do
@@ -98,7 +98,7 @@ describe Api::V1::EventsController do
 
     before do
       @events = double(:events)
-      @consumer_user.stub_chain(:attending_events, :enabled, :uniq).and_return(@events)
+      @current_user.stub_chain(:attending_events, :enabled, :uniq).and_return(@events)
     end
 
     it 'should expect a json response' do
