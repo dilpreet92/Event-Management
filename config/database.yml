@@ -1,27 +1,25 @@
 # SQLite version 3.x
-#   gem install sqlite3
+# gem install sqlite3
 #
-#   Ensure the SQLite 3 gem is defined in your Gemfile
-#   gem 'sqlite3'
+# Ensure the SQLite 3 gem is defined in your Gemfile
+# gem 'sqlite3'
 #
 default: &default
-  adapter: mysql2
-  username: 'root'
-  password: root
-  #host: 'localhost'
+  adapter: postgresql
+  encoding: unicode
+  role: 'dp'
   pool: 5
 
 development:
   <<: *default
-  database: icc_development
-
+  database: db/development
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
-# test:
-#   <<: *default
-#   database: db/test
+test:
+  <<: *default
+  database: db/test
 
-# production:
-#   <<: *default
-#   database: db/production
+production:
+  <<: *default
+  database: db/production

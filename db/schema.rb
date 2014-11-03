@@ -11,7 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141030140352) do
+
+ActiveRecord::Schema.define(version: 20141015135245) do
+
+  enable_extension "plpgsql"
 
   create_table "admins", force: true do |t|
     t.string   "username",           null: false
