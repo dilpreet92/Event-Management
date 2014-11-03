@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
       if valid_by_params? || valid_by_header?
         @current_user
       else
-        render json: {message: 'Invalid API Token'}, status: 401
+        render json: { message: 'Invalid API Token' }, status: 401
       end
     end
 

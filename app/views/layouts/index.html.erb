@@ -26,13 +26,29 @@
       <%= render 'shared/messages' %>
       <div id='showEvents' class="row">
         <div class="btn-group btn-group-justified">
-          <div class="btn active"><%= link_to 'All Events', events_path, id: 'allEvents' %></div>
+          <% unless admin_signed_in? %>
+            <% if current_page?(controller: 'events', action: 'index') %>
+              <div class="btn active"><%= link_to 'All Events', events_path, id: 'allEvents' %></div>
+            <% else %>
+              <div class="btn"><%= link_to 'All Events', events_path, id: 'allEvents' %></div>
+            <% end %> 
+          <% else %>
+            <div class="btn"><%= link_to 'All Events', events_path, id: 'allEvents' %></div>
+          <% end %>   
           <% if logged_in? %>
-            <div class="btn"><%= link_to 'Events I Created', mine_events_path, id: 'mineEvents' %></div>
-            <div class="btn"><%= link_to "Event I'm Attending", i_am_attending_events_path, id: 'attendingEvents' %></div>
+            <% if current_page?(controller: 'events', action: 'mine')  %>
+              <div class="btn active"><%= link_to 'Events I Created', mine_events_path, id: 'mineEvents' %></div>
+            <% else %>
+              <div class="btn"><%= link_to 'Events I Created', mine_events_path, id: 'mineEvents' %></div>
+            <% end %>
+            <%if current_page?(controller: 'events', action: 'rsvps') %>   
+              <div class="btn active"><%= link_to "Event I'm Attending", i_am_attending_events_path, id: 'attendingEvents' %></div>
+            <% else %>
+              <div class="btn"><%= link_to "Event I'm Attending", i_am_attending_events_path, id: 'attendingEvents' %></div>
+            <% end %>  
           <% end %>
           <% if admin_signed_in? %>
-            <div><%= link_to 'Users', admin_users_path %><div>
+            <div ><%= link_to 'Users', { action: 'index', controller: 'admin/users' } %><div>
           <% end %>
         </div>
       </div>
