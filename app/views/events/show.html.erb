@@ -38,7 +38,7 @@
 </div>
 <div class="row wraper mtop35">
   <div class="col-md-6">
-    <h4 class="text-success"><%= @event.sessions.count %> Sessions <span class="text-blue">in this Event</span></h4>
+    <h4 class="text-success"><%= @event.sessions.enabled.count %> Sessions <span class="text-blue">in this Event</span></h4>
   </div>
   <div class="col-md-6 text-right">
     <% if logged_in? && @event.owner?(current_user) && @event.live_and_upcoming? %>

@@ -37,5 +37,7 @@ $(document).on('ready page:load', function(){
     $('#categorySubmit').click();
   });
 
+  $('.datetimepicker').datetimepicker();
+
 });
 
