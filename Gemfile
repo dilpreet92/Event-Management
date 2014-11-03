@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '4.1.6'
-gem 'pg'
+gem 'mysql2'
 gem 'sass-rails', '~> 4.0.3'
 group :development, :test do
   gem 'factory_girl_rails'
@@ -11,16 +11,16 @@ group :development, :test do
   gem 'shoulda'
 end
 
-group :test do 
-  gem 'faker' 
+group :test do
+  gem 'faker'
   gem 'capybara'
-  gem 'guard-rspec' 
+  gem 'guard-rspec'
   gem 'launchy'
   gem 'rspec-expectations'
   gem 'minitest'
   gem 'rspec-mocks'
   gem 'mocha'
-end 
+end
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
