@@ -25,9 +25,9 @@ class EventsController < ApplicationController
 
   def mine_events
     if past?
-      @events = current_user.my_created_past_events.paginate(:page => params[:page], :per_page => 5)
+      @events = current_user.created_past_events.paginate(:page => params[:page], :per_page => 5)
     else
-      @events = current_user.my_created_upcoming_events.paginate(:page => params[:page], :per_page => 5)
+      @events = current_user.created_upcoming_events.paginate(:page => params[:page], :per_page => 5)
     end
     respond_to do |format|
       format.js
@@ -39,9 +39,9 @@ class EventsController < ApplicationController
 
   def attending
     if past?
-      @events = current_user.my_past_attended_events.paginate(:page => params[:page], :per_page => 5).uniq
+      @events = current_user.past_attended_events.paginate(:page => params[:page], :per_page => 5).uniq
     else
-      @events = current_user.my_upcoming_attending_events.paginate(:page => params[:page], :per_page => 5).uniq
+      @events = current_user.upcoming_attending_events.paginate(:page => params[:page], :per_page => 5).uniq
     end
     respond_to do |format|
       format.js
@@ -143,6 +143,8 @@ class EventsController < ApplicationController
     end
 
     def permitted_params
-      [ :name, :start_date, :end_date, :address, :city, :country, :contact_number, :description, :enable, :logo ]
+      [ :name, :start_date, :end_date, 
+        :address, :city, :country,
+        :contact_number, :description, :enable, :logo ]
     end
 end
