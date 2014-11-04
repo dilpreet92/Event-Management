@@ -4,32 +4,32 @@
     <div class="col-md-6 mtop35">
       <div class="field">
         <%= f.label :topic %>
-        <%= f.text_field :topic %>
+        <%= f.text_field :topic, class: 'form-control' %>
       </div>
-      <div class="field mtop5">
+      <div class="field mtop20">
         <%= f.label :location %>
-        <%= f.text_field :location %>
+        <%= f.text_field :location, class: 'form-control' %>
       </div>
     </div>
     <div class="field col-md-6 mtop35">
       <%= f.label :description %>
-      <%= f.text_area :description %>
+      <%= f.text_area :description, class: 'form-control' %>
     </div>
   </div>
   <div class="row">
     <div class="field col-md-6 mtop35">
       <%= f.label :start_date %>
-      <%= f.text_field :start_date, class: 'datetimepicker' %>
+      <%= f.text_field :start_date, class: 'datetimepicker form-control' %>
     </div>
     <div class="field col-md-6 mtop35">
       <%= f.label :end_date %>
-      <%= f.text_field :end_date, class: 'datetimepicker' %>
+      <%= f.text_field :end_date, class: 'datetimepicker form-control' %>
     </div>
   </div>
   <div class="row">
     <div class="field col-md-6 mtop35">
       <%= f.label :speaker %>
-      <%= f.text_field :speaker %>
+      <%= f.text_field :speaker, class: 'form-control' %>
     </div>
     <div class="col-md-1 "></div>
     <div class="field enable-checkbox col-md-2 mtop70 text-right">

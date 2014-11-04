@@ -4,40 +4,40 @@
       <div class="col-md-6 mtop35">
         <div class="field">
           <%= f.label :name %>
-          <%= f.text_field :name %>
+          <%= f.text_field :name, class: 'form-control' %>
         </div>
         <div class="field mtop20">
           <%= f.label :logo %>
-          <%= f.file_field :logo %>
+          <%= f.file_field :logo, class: 'form-control' %>
         </div>
       </div>
       <div class="field col-md-6 mtop35">
         <%= f.label :description %>
-        <%= f.text_area :description %>
+        <%= f.text_area :description, class: 'form-control' %>
       </div>
   </div>
   <div class="row">
     <div class="field col-md-6 mtop35">
       <%= f.label :start_date %>
-      <%= f.text_field :start_date, class: 'datetimepicker' %>
+      <%= f.text_field :start_date, class: 'datetimepicker form-control' %>
     </div>
     <div class="field col-md-6 mtop35">
       <%= f.label :end_date %>
-      <%= f.text_field :end_date, class: 'datetimepicker' %>
+      <%= f.text_field :end_date, class: 'datetimepicker form-control' %>
     </div>
   </div>
   <div class="row">
     <div class="field col-md-3 mtop35">
       <%= f.label :contact_number %>
-      <%= f.text_field :contact_number %>
+      <%= f.text_field :contact_number, class: 'form-control' %>
     </div>
     <div class="field col-md-3 mtop35">
       <%= f.label :address %>
-      <%= f.text_field :address %>
+      <%= f.text_field :address, class: 'form-control' %>
     </div>
     <div class="field col-md-2 mtop35">
       <%= f.label :city %>
-      <%= f.text_field :city %>
+      <%= f.text_field :city, class: 'form-control' %>
     </div>
     <div class="field col-md-4 mtop35 country_select">
       <%= f.label :country %>
