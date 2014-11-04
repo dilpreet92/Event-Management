@@ -4,7 +4,7 @@
     <ul class="custom-nav">
       <li class="pull-left header-font"><% d = Date.today %><%= d.strftime('%A,%d %B %y') %></li>
       <% if admin_signed_in? %>
-        <li><%= link_to 'Logout Admin', admin_logout_path %></li>
+        <li class="pull-right"><%= link_to 'Logout Admin', admin_logout_path, class: 'header-link' %></li>
       <% elsif logged_in? %>
         <li class="pull-right"><%= link_to 'Logout', signout_path, class: 'header-link' %></li>
         <li id='userName' class="pull-right header-font">Hello, <%= current_user.name %></li>
