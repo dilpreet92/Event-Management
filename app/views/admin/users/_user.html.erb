@@ -1,9 +1,9 @@
-<tr>
-  <td><%= user.name %></td>
-  <td><%= link_to user.handle, user.handle %></td>
+<tr class="hover_fix">
+  <td class="h5 dark-grey"><%= user.name %></td>
+  <td class="h5 dark-grey"><%= link_to user.handle, user.handle %></td>
   <% if user.enabled %>
-    <td><%= link_to 'disable', disable_admin_users_path(id: user) %>
+    <td class="h5 dark-grey"><%= link_to 'disable', disable_admin_users_path(id: user) %>
   <% else %>
-    <td><%= link_to 'enable', enable_admin_users_path(id: user) %>
-  <% end %>      
+    <td class="h5 dark-grey"><%= link_to 'enable', enable_admin_users_path(id: user) %>
+  <% end %>
 </tr>

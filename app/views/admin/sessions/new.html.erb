@@ -1,18 +1,20 @@
-<h2>Log in</h2>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+<%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'wraper signin-form' }) do |f| %>
+  <h2 class="text-blue">Log in</h2>
   <div>
-    <%= f.label :username %><br />
-    <%= f.text_field :username, autofocus: true %>
+    <%= f.label :username, class: 'text-grey mtop20' %>
+    <%= f.text_field :username, autofocus: true, class: 'form-control' %>
   </div>
 
   <div>
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
+    <%= f.label :password, class: 'text-grey mtop20' %>
+    <%= f.password_field :password, autocomplete: "off", class: 'form-control' %>
   </div>
 
-  <div>
-    <%= f.submit "Log in" %>
+  <div class="row form-group">
+    <div class="col-md-12">
+      <%= f.submit "Log in", class: 'btn btn-primary pull-right mtop20' %>
+    </div>
   </div>
 
 <% end %>
