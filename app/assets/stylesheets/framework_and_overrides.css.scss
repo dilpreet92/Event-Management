@@ -49,7 +49,7 @@ section {
 
 .container {  max-width: 1000px; }
 .wraper { margin: 0 30px;}
-body { background-color: #eeeeee !important; font-style: "Myriad Pro" arial; }
+body { background-color: #eeeeee !important; font-family: 'Lato', sans-serif; }
 .login-header {  background-color: #0c2237;  padding: 10px 0; }
 .event-header {  background-color: #335374;  height: 85px;}
 footer { padding: 20px; background-color: #213e5b; color: #fff;}
@@ -109,7 +109,7 @@ a.header-link { vertical-align: top;}
 .create_event, a.create_event:hover { background-color: #99cc99 !important; margin: 25px 10px;}
 a.create_event { color: #335374 !important;}
 .input-box { width: 270px; margin: 25px 0; color: #335374;} /*search-header-box*/
-#results { min-height: 400px; padding: 25px 0 40px; background-color: #fff;}
+#results { padding: 25px 0 40px; background-color: #fff;}
 .event_radio_list { background-color: #f2f2f2; padding: 10px 15px; font-size: 18px; color: #213e5b; }
 .event_radio_list span { margin-right: 30px;}
 .event_radio_list input { vertical-align: text-top;}
