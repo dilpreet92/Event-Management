@@ -14,8 +14,6 @@
 
 ActiveRecord::Schema.define(version: 20141015135245) do
 
-  enable_extension "plpgsql"
-
   create_table "admins", force: true do |t|
     t.string   "username",           null: false
     t.string   "encrypted_password", null: false

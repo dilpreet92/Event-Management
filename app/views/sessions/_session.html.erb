@@ -1,6 +1,8 @@
 <% if session.enable? %>
   <div class="col-md-4 mtop35">
-    <div class="session-box">
+    <div class="session-box relative">
+      <div class="edit-session sprite" data-toggle="tooltip" data-placement="top" title="Tooltip on top"></div>
+      <div class="del-session sprite" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom"></div>
       <div class="row">
         <div class="col-md-3 attend-box text-center">
           <span class="sprite"></span>
@@ -10,18 +12,30 @@
           <%= session.topic %>
         </div>
       </div>
-      <div class="row back-blue">
-        <div class="col-md-12 text-blue h5">
+      <div class="row back-blue session-info">
+        <div class="col-md-5 text-blue h6">
           <% d = session.start_date %>
-          <%= d.strftime('%d %b :%I %M %p to') %>
+          <span class="sprite date"></span>
+          <%= d.strftime('%d %b') %>
+        </div>
+        <div class="col-md-7 text-blue h6 pr0">
+          <% d = session.start_date %>
+          <span class="sprite clock"></span>
+          <%= d.strftime('%I:%M -') %>
           <% d = session.end_date %>
-          <%= d.strftime('%d %b :%I %M %p') %>
+          <%= d.strftime('%I:%M') %>
         </div>
-        <div class="col-md-6 text-blue h5 mtop0">
-        <%= session.location %>
+        <div class="col-md-5 text-blue h6 mtop0 pr0">
+          <span class="sprite speaker"></span>
+          10 Speaker
         </div>
-        <div class="col-md-6 text-blue h5 mtop0">
+        <div class="col-md-7 text-blue h6 mtop0">
+          <span class="sprite atendee-ico"></span>
         <%= session.attendes.count %> Atendees
+        </div>
+        <div class="col-md-12 text-blue h6 mtop0">
+          <span class="sprite location"></span>
+        <%= session.location %>
         </div>
       </div>
       <div class="row">
