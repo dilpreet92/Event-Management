@@ -21,11 +21,14 @@ class Event < ActiveRecord::Base
   scope :live_and_upcoming, -> { where("events.end_date >= ?", Time.current) }
   scope :past, -> { where("events.end_date < ?", Time.current) }
   scope :search, -> (query) { where("lower(events.name) LIKE :query OR lower(events.city) LIKE :query OR 
-    lower(events.country) LIKE :country OR lower(sessions.topic) LIKE :query", query: "%#{ query }%", country: 
-    "%#{ Carmen::Country.named(query).code.downcase }%") }
+    lower(events.country) LIKE :country OR lower(sessions.topic) LIKE :query", query: "%#{ query }%", :country => get_country_name(query) ) }
 
   def live_and_upcoming?
     end_date >= Time.current 
+  end
+
+  def self.get_country_name(query)
+    "%#{ Carmen::Country.named(query).code.downcase }%" if Carmen::Country.named(query)
   end
 
   def past?
