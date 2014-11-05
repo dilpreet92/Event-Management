@@ -12,9 +12,9 @@ class Event < ActiveRecord::Base
   has_attached_file :logo, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/index.jpeg"
 
   validates_attachment_content_type :logo, :content_type => /\Aimage\/.*\Z/
-  validates :name, :address, :city, :country, :contact_number, :description, :user, presence: true
+  validates :name, :address, :city, :country, :contact_number, :description, :user, :start_date, :end_date, presence: true
   validates :description, length: { maximum: 500 }
-  validate :event_date_valid
+  validate :event_date_valid, if: :start_date
 
   scope :enabled, -> { where(enable: true) }
   scope :order_by_start_date, -> (sort) { order(start_date: sort) }

@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   before_save :manipulate_related_events,if: :events
   
   has_many :events
-  has_many :rsvps, dependent: :destroy
+  has_many :rsvps
   has_many :attending_sessions, through: :rsvps, source: :session
   has_many :attending_events, through: :attending_sessions, source: :event
 
