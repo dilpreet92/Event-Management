@@ -40,9 +40,6 @@ Rails.application.routes.draw do
       get '/mine' => 'events#mine'
       get '/search' => 'events#search'
       get '/i_am_attending' => 'events#rsvps'
-      get '/filter' => 'events#filter'
-      get '/mine_events' => 'events#mine_events'
-      get '/attending' => 'events#attending'
       get '/disable' => 'events#disable'
       get '/enable' => 'events#enable'
     end
