@@ -54,7 +54,7 @@ body { background-color: #eeeeee !important; font-family: 'Lato', sans-serif; }
 .event-header {  background-color: #335374;  height: 85px;}
 footer { padding: 20px; background-color: #213e5b; color: #fff;}
 ul.custom-nav {  list-style: none;}
-
+a:hover, a:active, a:focus { outline: 0;}
 /*common classes*/
 
 .mbot0 { margin-bottom: 0px !important;}
