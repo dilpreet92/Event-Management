@@ -40,23 +40,23 @@ div {
 }
 
 .field_with_errors {
-  padding: 2px;
-  background-color: red;
-  display: table;
+  input, textarea, select {
+    border:1px solid red !important;
+    }
 }
 
 #error_explanation {
-  width: 450px;
-  border: 2px solid red;
+  width: 100%;
   padding: 7px;
   padding-bottom: 0;
-  margin-bottom: 20px;
+  margin: 20px 0;
   background-color: #f0f0f0;
+  overflow: hidden;
+  border-radius: 5px;
   h2 {
     text-align: left;
-    font-weight: bold;
-    padding: 5px 5px 5px 15px;
-    font-size: 12px;
+    padding: 7px 7px 7px 15px;
+    font-size: 16px;
     margin: -7px;
     margin-bottom: 0px;
     background-color: #c00;
