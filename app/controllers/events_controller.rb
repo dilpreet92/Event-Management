@@ -10,17 +10,19 @@ class EventsController < ApplicationController
   before_action :authorize_user?, unless: :admin_signed_in?, only: [:edit, :update, :disable, :enable]
 
   def index
+    respond_to do |format|
+      format.html { @events = get_live_and_upcoming_events }
+      format.js do
+        if past?
+          @events = get_past_events
+        else
+          @events = get_live_and_upcoming_events
+        end
+      end
+    end
   end
 
   def filter
-    if past?
-      @events = get_past_events
-    else
-      @events = get_live_and_upcoming_events
-    end
-    respond_to do |format|
-      format.js
-    end
   end
 
   def mine_events

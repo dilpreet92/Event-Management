@@ -1,6 +1,4 @@
 $(document).on('ready page:load', function(){
-  //Submitting the form on page load for upcoming radio button
-  $('#categorySubmit').click();
   //Making pagination links work as a ajax request
   $('#results').on('click', '.pagination a', function () {
     $.get(this.href, null, null, 'script');
