@@ -21,16 +21,18 @@
           <div class="col-md-3 attending-box text-center">
             <span class="sprite"></span>
             <div class="row text-center h6 mtop0">
-                <%= link_to 'Attending', destroy_rsvp_event_sessions_path(session_id: session, event_id: session.event), class: 'attending_session' %>
+              <%= link_to 'Attending', destroy_rsvp_event_sessions_path(session_id: session, event_id: session.event), class: 'attending_session' %>
+            </div>
+          </div>  
           <% else %>
             <div class="col-md-3 attend-box text-center">
-            <span class="sprite"></span>
-            <div class="row text-center h6 mtop0">
-              <%= link_to 'Attend', create_rsvp_event_sessions_path(session_id: session, event_id: session.event) %>
+              <span class="sprite"></span>
+              <div class="row text-center h6 mtop0">
+                <%= link_to 'Attend', create_rsvp_event_sessions_path(session_id: session, event_id: session.event) %>
+              </div>
+            </div>  
           <% end %>
         <% end %>
-            </div>
-          </div>
         <div class="col-md-8 h4 text-blue mtop0">
           <%= session.topic %>
         </div>
