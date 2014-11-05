@@ -4,7 +4,7 @@ class EventsController < ApplicationController
 
   #if admin is logged in there is no need to check authentication
   before_action :set_session_nil, if: :admin_signed_in?
-  before_action :authenticate, unless: :admin_signed_in?, except: [:index, :filter, :show, :search]
+  before_action :authenticate, unless: :admin_signed_in?, except: [:index, :show, :search]
   before_action :empty_search?, only: [:search]
   before_action :set_event, only: [:show, :edit, :update, :destroy, :disable, :enable]
   before_action :authorize_user?, unless: :admin_signed_in?, only: [:edit, :update, :disable, :enable]
@@ -22,31 +22,17 @@ class EventsController < ApplicationController
     end
   end
 
-  def filter
-  end
-
-  def mine_events
-    if past?
-      @events = current_user.created_past_events.paginate(:page => params[:page], :per_page => 5)
-    else
-      @events = current_user.created_upcoming_events.paginate(:page => params[:page], :per_page => 5)
-    end
-    respond_to do |format|
-      format.js
-    end
-  end
 
   def mine
-  end
-
-  def attending
-    if past?
-      @events = current_user.past_attended_events.paginate(:page => params[:page], :per_page => 5).uniq
-    else
-      @events = current_user.upcoming_attending_events.paginate(:page => params[:page], :per_page => 5).uniq
-    end
     respond_to do |format|
-      format.js
+      format.html { @events = current_user.created_upcoming_events.paginate(:page => params[:page], :per_page => 5) }
+      format.js do
+        if past?
+          @events = current_user.created_past_events.paginate(:page => params[:page], :per_page => 5)
+        else
+          @events = current_user.created_upcoming_events.paginate(:page => params[:page], :per_page => 5)
+        end
+      end
     end
   end
 
@@ -58,6 +44,17 @@ class EventsController < ApplicationController
   end
 
   def rsvps
+    respond_to do |format|
+      format.html { @events = current_user.upcoming_attending_events.
+                                paginate(:page => params[:page], :per_page => 5).uniq }
+      format.js do
+        if past?
+          @events = current_user.past_attended_events.paginate(:page => params[:page], :per_page => 5).uniq
+        else
+          @events = current_user.upcoming_attending_events.paginate(:page => params[:page], :per_page => 5).uniq
+        end
+      end
+    end                          
   end
 
   def show
@@ -106,7 +103,7 @@ class EventsController < ApplicationController
   private
 
     def past?
-      params[:events][:filter] == 'past'
+      params[:event][:filter] == 'past'
     end
 
     def get_live_and_upcoming_events

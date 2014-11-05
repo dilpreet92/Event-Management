@@ -1,1 +1,4 @@
-<%= render partial: 'events_category', locals: { path: attending_events_path, id: 'attending_events' } %>
+<%= render partial: 'events_category', locals: { path: i_am_attending_events_path } %>
+<div id='attending_events'>
+  <%= render @events %>
+</div>

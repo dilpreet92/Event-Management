@@ -1,11 +1,9 @@
 <div class="event_radio_list wraper">
 <%= form_tag(path, method: :get, class: 'category', remote: true) do %>
-    <%= radio_button :events, 'filter', 'upcoming', checked: true %>
+    <%= radio_button :event, 'filter', 'upcoming', checked: true %>
     <span id='upcomingLabel'>OnGoing/Upcoming</span>
-    <%= radio_button :events, 'filter', 'past' %>
+    <%= radio_button :event, 'filter', 'past' %>
     <span id='pastLabel'>Past</span>
     <%= submit_tag 'submit', id: 'categorySubmit' %>
 <% end %>
-</div>
-<div id='<%= id %>'>
 </div>
