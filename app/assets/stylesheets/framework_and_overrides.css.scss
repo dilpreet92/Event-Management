@@ -43,7 +43,7 @@ section {
 /*override*/
 
 #categorySubmit {  display: none;}
-.sprite { background: url('image-sprite.png'); height: 20px; width: 20px; display: inline-block; margin-right: 4px;}
+.sprite { background: url('image-sprite.png'); height: 20px; width: 20px; display: inline-block; margin-right: 4px; vertical-align: middle;}
 
 /*layout*/
 
@@ -57,6 +57,7 @@ ul.custom-nav {  list-style: none;}
 
 /*common classes*/
 
+.mbot0 { margin-bottom: 0px !important;}
 .mtop0 { margin-top: 0px !important;}
 .mtop5 { margin-top: 5px !important;}
 .mtop20 { margin-top: 20px !important;}
@@ -78,6 +79,8 @@ ul.custom-nav {  list-style: none;}
 .back-blue { background-color: #e6ecf1;}
 
 .relative {position: relative;}
+.block { display: block;}
+.h100 { height: 100%;}
 
 /*map-area*/
 .map-area { display:inline-block; width:100%; position:relative;}
@@ -144,12 +147,15 @@ a.create_event { color: #335374 !important;}
 .speaker-icon .sprite { background-position: -60px -60px; vertical-align: text-bottom;}
 .attendes-icon .sprite { background-position: 0px -20px; vertical-align: text-bottom;}
 .add_session.sprite { vertical-align: bottom; background-position: -20px -20px;}
-.attend-box, .attending-box { height: 64px; background-color: #f2f5f8; color: #94aabd; border-radius: 5px; margin: 0 0 10px 15px;}
-.attending-box { background-color: #bbc420; color: #fff;}
-.attend-box .sprite, .attending-box .sprite { height: 30px; width: 30px; background-position: 0 -40px; margin-top: 10px; margin-right: 0;}
+.attend-box, .attending-box { height: 64px; background-color: #f2f5f8; border-radius: 5px; margin: 0 0 10px 15px;}
+.attend-box a { color: #94aabd !important;}
+.attending-box { background-color: #bbc420;}
+.attending-box a { color: #fff !important;}
+.attend-box a:hover, .attending-box a:hover { background-color: transparent; text-decoration: none;}
+.attend-box .sprite, .attending-box .sprite { height: 30px; width: 30px; background-position: 0 -40px; margin-top: 10px; margin-bottom: 5px; margin-right: 0;}
 .attending-box .sprite { background-position: -30px -40px;}
-.del-session, .edit-session { position: absolute; height: 30px; width: 30px; background-color: #ff9900; z-index: 20; right: 0; top: 4px; border-radius: 5px; padding: 5px; display: none; cursor: pointer;}
-.del-session { right: 34px; background-color: #D74A38;}
+.del-session, .edit-session, .edit-session:hover { position: absolute; height: 30px; width: 30px; background-color: #ff9900; z-index: 20; right: 0; top: 4px; border-radius: 5px; padding: 5px; display: none; cursor: pointer;}
+.del-session, .del-session:hover { right: 34px; background-color: #D74A38;}
 .edit-session.sprite { background-position: 2px -70px;}
 .del-session.sprite { background-position: -29px -70px;}
 .session-box:hover .del-session, .session-box:hover .edit-session { display: block;}

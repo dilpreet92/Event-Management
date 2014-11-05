@@ -3,34 +3,26 @@
     <div class="session-box relative">
       <% if logged_in? && event.live_and_upcoming? && session.upcoming? %>
         <% if event.owner?(current_user) %>
-          <div class="edit-session sprite" data-toggle="tooltip" data-placement="top" title="Edit Event">
-            <%= link_to 'Edit', edit_event_session_path(session.event, session) %>
-          </div>
-          <div class="del-session sprite" data-toggle="tooltip" data-placement="bottom" title="Disable Event">
-            <%= link_to 'Disable', disable_event_session_path(session.event, session) %>
-          </div>  
+            <%= link_to '', edit_event_session_path(session.event, session), class: 'edit-session sprite' %>
+            <%= link_to '', disable_event_session_path(session.event, session), class: 'del-session sprite' %>
         <% end %>
       <% elsif admin_signed_in? %>
-        <div class="del-session sprite" data-toggle="tooltip" data-placement="bottom" title="Disable Event">
-          <%= link_to 'Disable', disable_event_session_path(session.event, session) %>
-        </div>
+          <%= link_to '', disable_event_session_path(session.event, session), class: 'del-session sprite' %>
       <% end %>
       <div class="row">
         <% if logged_in? && event.live_and_upcoming? && session.upcoming? %>
           <% if current_user.attending?(session) %>
           <div class="col-md-3 attending-box text-center">
-            <span class="sprite"></span>
-            <div class="row text-center h6 mtop0">
-              <%= link_to 'Attending', destroy_rsvp_event_sessions_path(session_id: session, event_id: session.event), class: 'attending_session' %>
+            <div class="row text-center h6 mtop0 mbot0 h100">
+              <%= link_to '<span class="sprite"></span>Attending'.html_safe, destroy_rsvp_event_sessions_path(session_id: session, event_id: session.event), class: 'attending_session block h100' %>
             </div>
-          </div>  
+          </div>
           <% else %>
             <div class="col-md-3 attend-box text-center">
-              <span class="sprite"></span>
-              <div class="row text-center h6 mtop0">
-                <%= link_to 'Attend', create_rsvp_event_sessions_path(session_id: session, event_id: session.event) %>
+              <div class="row text-center h6 mtop0 mbot0 h100">
+                <%= link_to '<span class="sprite"></span>Attend'.html_safe, create_rsvp_event_sessions_path(session_id: session, event_id: session.event), class: 'block h100' %>
               </div>
-            </div>  
+            </div>
           <% end %>
         <% end %>
         <div class="col-md-8 h4 text-blue mtop0">
