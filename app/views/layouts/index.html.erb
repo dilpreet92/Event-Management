@@ -27,12 +27,8 @@
       <%= render 'shared/messages' %>
       <div id='showEvents' class="row">
         <div class="btn-group btn-group-justified">
-          <% unless admin_signed_in? %>
-            <% if current_page?(controller: 'events', action: 'index') || current_page?('/') %>
-              <div class="btn active"><%= link_to 'All Events', events_path, id: 'allEvents' %></div>
-            <% else %>
-              <div class="btn"><%= link_to 'All Events', events_path, id: 'allEvents' %></div>
-            <% end %>
+          <% if current_page?(events_path) || current_page?('/') %>
+            <div class="btn active"><%= link_to 'All Events', events_path, id: 'allEvents' %></div>
           <% else %>
             <div class="btn"><%= link_to 'All Events', events_path, id: 'allEvents' %></div>
           <% end %>
@@ -49,7 +45,11 @@
             <% end %>
           <% end %>
           <% if admin_signed_in? %>
-            <div class="btn"><%= link_to 'Users', { action: 'index', controller: 'admin/users' } %></div>
+            <% if current_page?(controller: 'admin/users', action: 'index') %>
+              <div class="btn active"><%= link_to 'Users', { action: 'index', controller: 'admin/users' } %></div>
+            <% else %>
+              <div class="btn"><%= link_to 'Users', { action: 'index', controller: 'admin/users' } %></div>
+            <% end %>  
           <% end %>
         </div>
       </div>

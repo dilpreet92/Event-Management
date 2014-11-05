@@ -1,13 +1,36 @@
 <% if session.enable? %>
   <div class="col-md-4 mtop35">
     <div class="session-box relative">
-      <div class="edit-session sprite" data-toggle="tooltip" data-placement="top" title="Tooltip on top"></div>
-      <div class="del-session sprite" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom"></div>
-      <div class="row">
-        <div class="col-md-3 attend-box text-center">
-          <span class="sprite"></span>
-          <div class="row text-center h6 mtop0">Attend</div>
+      <% if logged_in? && event.live_and_upcoming? && session.upcoming? %>
+        <% if event.owner?(current_user) %>
+          <div class="edit-session sprite" data-toggle="tooltip" data-placement="top" title="Edit Event">
+            <%= link_to 'Edit', edit_event_session_path(session.event, session) %>
+          </div>
+          <div class="del-session sprite" data-toggle="tooltip" data-placement="bottom" title="Disable Event">
+            <%= link_to 'Disable', disable_event_session_path(session.event, session) %>
+          </div>  
+        <% end %>
+      <% elsif admin_signed_in? %>
+        <div class="del-session sprite" data-toggle="tooltip" data-placement="bottom" title="Disable Event">
+          <%= link_to 'Disable', disable_event_session_path(session.event, session) %>
         </div>
+      <% end %>
+      <div class="row">
+        <% if logged_in? && event.live_and_upcoming? && session.upcoming? %>
+          <% if current_user.attending?(session) %>
+          <div class="col-md-3 attending-box text-center">
+            <span class="sprite"></span>
+            <div class="row text-center h6 mtop0">
+                <%= link_to 'Attending', destroy_rsvp_event_sessions_path(session_id: session, event_id: session.event), class: 'attending_session' %>
+          <% else %>
+            <div class="col-md-3 attend-box text-center">
+            <span class="sprite"></span>
+            <div class="row text-center h6 mtop0">
+              <%= link_to 'Attend', create_rsvp_event_sessions_path(session_id: session, event_id: session.event) %>
+          <% end %>
+        <% end %>
+            </div>
+          </div>
         <div class="col-md-8 h4 text-blue mtop0">
           <%= session.topic %>
         </div>
@@ -27,7 +50,7 @@
         </div>
         <div class="col-md-5 text-blue h6 mtop0 pr0">
           <span class="sprite speaker"></span>
-          10 Speaker
+          <%= session.speaker %>
         </div>
         <div class="col-md-7 text-blue h6 mtop0">
           <span class="sprite atendee-ico"></span>
@@ -36,30 +59,6 @@
         <div class="col-md-12 text-blue h6 mtop0">
           <span class="sprite location"></span>
         <%= session.location %>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <% if logged_in? && event.live_and_upcoming? && session.upcoming? %>
-            <% if current_user.attending?(session) %>
-              <%= link_to 'Unattend', destroy_rsvp_event_sessions_path(session_id: session, event_id: session.event), class: 'attending_session' %>
-            <% else %>
-              <%= link_to 'Attend', create_rsvp_event_sessions_path(session_id: session, event_id: session.event) %>
-            <% end %>
-
-        </div>
-        <div class="col-md-4">
-
-            <% if event.owner?(current_user) %>
-              <%= link_to 'Edit', edit_event_session_path(session.event, session) %>
-
-        </div>
-        <div class="col-md-4">
-          <%= link_to 'Disable', disable_event_session_path(session.event, session) %>
-            <% end %>
-          <% elsif admin_signed_in? %>
-            <%= link_to 'Disable', disable_event_session_path(session.event, session) %>
-        <% end %>
         </div>
       </div>
       <div class="row">

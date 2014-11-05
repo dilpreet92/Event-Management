@@ -18,17 +18,17 @@ class SessionsController < ApplicationController
   def create_rsvp
     @rsvp = @session.rsvps.build(user: current_user)
     if @rsvp.save
-      redirect_to events_url, notice: "You are now attending #{ @session.topic } of  #{ @session.event.name } "
+      redirect_to @rsvp.session.event, notice: "You are now attending #{ @session.topic } of  #{ @session.event.name } "
     else
-      redirect_to events_url, notice: 'You cannot attend this event'
+      redirect_to @rsvp.session.event, notice: 'You cannot attend this event'
     end
   end
 
   def destroy_rsvp
     if @rsvp.destroy
-      redirect_to events_url, notice: "You are now not attending #{ @rsvp.session.topic }"
+      redirect_to @rsvp.session.event, notice: "You are now not attending #{ @rsvp.session.topic }"
     else
-      redirect_to events_url, notice: 'Current operation cannot be performed'
+      redirect_to @rsvp.session.event, notice: 'Current operation cannot be performed'
     end
   end
 
@@ -50,7 +50,7 @@ class SessionsController < ApplicationController
   end
 
   def disable
-    if @session.update_attribute(enable: false)
+    if @session.update_attribute('enable', false)
       redirect_to @session.event, notice: 'Session Disabled'
     else
       redirect_to @session.event, notice: 'Session Cannot be disabled'
@@ -58,7 +58,7 @@ class SessionsController < ApplicationController
   end
 
   def enable
-    if @session.update_attribute(enable: true)
+    if @session.update_attribute('enable', true)
       redirect_to @session.event, notice: 'Session Enabled'
     else
       redirect_to @session.event, notice: 'Session Cannot be enabled'

@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
 
-  layout 'index', except: [:show, :edit, :new]
+  layout 'index', except: [:show, :edit, :new, :create, :update]
 
   #if admin is logged in there is no need to check authentication
   before_action :set_session_nil, if: :admin_signed_in?
