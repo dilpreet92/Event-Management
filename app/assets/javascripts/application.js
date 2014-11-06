@@ -14,7 +14,8 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require jquery.datetimepicker
-//= require_tree .
+//= require bootstrap.min
+//= require events
 
 
 // FIXME_AB: Read about require tree . we should try to avoid this.

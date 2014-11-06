@@ -16,8 +16,7 @@
       <span class="sprite"></span>
       <%= event.address %>
       <%= event.city %>
-      <% country = Carmen::Country.coded(event.country) %>
-      <%= country.name %>
+      <%= Carmen::Country.coded(event.country).name %>
       <%= event.contact_number %>
     </div>
     <div class="col-md-12 event_description">
