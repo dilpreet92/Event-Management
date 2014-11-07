@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
 
   include Destroyable
 
-  before_save :enable_or_disable_events, unless: 'events.empty?'
+  before_save :enable_or_disable_events, unless: Proc.new { |user| user.events.empty? }
   
   has_many :events
   has_many :rsvps

@@ -2,7 +2,7 @@
 <% if @users.empty? %>
   <h3 class="text-center mtop55 text-blue back-blue p5 wraper"> No User Exists </h3>
 <% else %>
-  <%= will_paginate @users, remote: true %>
+  <%= will_paginate @users, remote: true, class: 'pagination bottom-pagination wraper pull-right h4 mtop20 text-grey' %>
   <div class="wraper">
     <table class="table">
       <thead>
