@@ -14,6 +14,7 @@ class Session < ActiveRecord::Base
   validate :session_start_date
   validate :session_end_date
 
+  default_scope { order('end_date DESC') }
   scope :enabled, -> { where(enable: true) }
 
   def upcoming?
