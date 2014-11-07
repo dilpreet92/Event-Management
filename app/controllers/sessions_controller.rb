@@ -6,6 +6,7 @@ class SessionsController < ApplicationController
   before_action :set_event, only: [:new, :edit, :create, :update]
   before_action :set_rsvp, only: [:destroy_rsvp]
   before_action :check_if_already_attending, only: [:create_rsvp]
+  before_action :authorize_user?, only: [:new, :edit, :create, :update]
 
   def new
     @session = @event.sessions.build
@@ -50,7 +51,7 @@ class SessionsController < ApplicationController
   end
 
   def disable
-    if @session.update_attribute('enable', false)
+    if @session.event.owner?(current_user) && @session.update_attribute('enable', false)
       redirect_to @session.event, notice: 'Session Disabled'
     else
       redirect_to @session.event, alert: 'Session Cannot be disabled'
@@ -67,6 +68,12 @@ class SessionsController < ApplicationController
 
 
   private
+
+    def authorize_user?
+      if !@event.owner?(current_user) || @event.past?
+        redirect_to events_url, alert: 'Current Activity cannot be performed'
+      end
+    end
 
     def check_if_already_attending
       @session = Session.where(id: params[:session_id]).first
