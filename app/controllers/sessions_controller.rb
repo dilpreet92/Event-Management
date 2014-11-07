@@ -33,7 +33,7 @@ class SessionsController < ApplicationController
   end
 
   def create
-    @session = @event.sessions.build(session_params)
+    @session = @event.sessions.build(permitted_params)
     if @session.save
       redirect_to @event, notice: 'Session was successfully created.'
     else
@@ -42,7 +42,7 @@ class SessionsController < ApplicationController
   end
 
   def update
-    if @session.update(session_params)
+    if @session.update(permitted_params)
       redirect_to @session.event, notice: 'Session was successfully updated.'
     else
       render :edit
@@ -96,11 +96,11 @@ class SessionsController < ApplicationController
       end  
     end
 
-    def session_params
-      params.require(:session).permit(get_permitted_params)
+    def permitted_params
+      params.require(:session).permit(session_params)
     end
 
-    def get_permitted_params
+    def session_params
       [:topic, :start_date, :end_date, :location, :enable, :description, :speaker, :event_id]
     end
 end

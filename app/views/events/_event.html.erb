@@ -7,10 +7,8 @@
       <%= link_to event.name, event_path(event) %>
     </div>
     <div class="col-md-6 event_time">
-      <% d = event.start_date %>
-      <%= d.strftime('%d %b %Y -') %>
-      <% d = event.end_date %>
-      <%= d.strftime('%d %b %Y') %>
+      <%= event.start_date.strftime('%d %b %Y -') %>
+      <%= event.end_date.strftime('%d %b %Y') %>
     </div>
     <div class="col-md-6 event_address">
       <span class="sprite"></span>

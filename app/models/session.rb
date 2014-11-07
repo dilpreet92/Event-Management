@@ -16,10 +16,6 @@ class Session < ActiveRecord::Base
 
   scope :enabled, -> { where(enable: true) }
 
-  # def enabled?
-  #   enable
-  # end
-
   def upcoming?
     end_date >= Time.current
   end

@@ -37,9 +37,7 @@ Rails.application.routes.draw do
 
   resources :events do
     collection do
-      get '/mine' => 'events#mine'
       get '/search' => 'events#search'
-      get '/i_am_attending' => 'events#rsvps'
       get '/disable' => 'events#disable'
       get '/enable' => 'events#enable'
     end
@@ -52,6 +50,13 @@ Rails.application.routes.draw do
         get '/create_rsvp' => 'sessions#create_rsvp'
         get '/destroy_rsvp' => 'sessions#destroy_rsvp'
       end
+    end
+  end
+
+  resources :users do
+    collection do
+      get '/mine_events' => 'users#mine_events'
+      get '/i_am_attending' => 'users#rsvps'
     end
   end
 

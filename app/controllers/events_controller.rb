@@ -22,39 +22,11 @@ class EventsController < ApplicationController
     end
   end
 
-
-  def mine
-    respond_to do |format|
-      format.html { @events = current_user.created_upcoming_events.paginate(:page => params[:page], :per_page => 5) }
-      format.js do
-        if past?
-          @events = current_user.created_past_events.paginate(:page => params[:page], :per_page => 5)
-        else
-          @events = current_user.created_upcoming_events.paginate(:page => params[:page], :per_page => 5)
-        end
-      end
-    end
-  end
-
   def search
     @events = get_live_and_upcoming_events.eager_load(:sessions).search(params[:search].strip.downcase).uniq
     respond_to do |format|
       format.js
     end
-  end
-
-  def rsvps
-    respond_to do |format|
-      format.html { @events = current_user.upcoming_attending_events.
-                                paginate(:page => params[:page], :per_page => 5).uniq }
-      format.js do
-        if past?
-          @events = current_user.past_attended_events.paginate(:page => params[:page], :per_page => 5).uniq
-        else
-          @events = current_user.upcoming_attending_events.paginate(:page => params[:page], :per_page => 5).uniq
-        end
-      end
-    end                          
   end
 
   def show
@@ -68,7 +40,7 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = current_user.events.build(event_params)
+    @event = current_user.events.build(permitted_params)
     if @event.save
       redirect_to @event, notice: 'Event was successfully created.'
     else
@@ -77,7 +49,7 @@ class EventsController < ApplicationController
   end
 
   def update
-    if @event.update(event_params)
+    if @event.update(permitted_params)
       redirect_to @event, notice: 'Event was successfully updated.'
     else
       render :edit
@@ -137,11 +109,11 @@ class EventsController < ApplicationController
       end
     end
 
-    def event_params
-      params.require(:event).permit(permitted_params)
+    def permitted_params
+      params.require(:event).permit(event_params)
     end
 
-    def permitted_params
+    def event_params
       [ :name, :start_date, :end_date, 
         :address, :city, :country,
         :contact_number, :description, :enable, :logo ]

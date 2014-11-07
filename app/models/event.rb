@@ -6,7 +6,7 @@ class Event < ActiveRecord::Base
   
   has_many :sessions
   has_many :attendes, through: :sessions, source: :attendes
-  before_save :ensure_all_sessions_in_range?
+  before_save :check_all_sessions_in_range?
 
   #FIXED: you should also read about the patterns we can pass to paperclip styles. like we have > sign in following style, there are much more.
   has_attached_file :logo, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/index.jpeg"
@@ -55,7 +55,7 @@ class Event < ActiveRecord::Base
       end 
     end
 
-    def ensure_all_sessions_in_range?
+    def check_all_sessions_in_range?
       #FIXED: We should extract complex conditions in a private method for better readability
       if sessions.all? { |session| validate_session_dates(session) } 
         true

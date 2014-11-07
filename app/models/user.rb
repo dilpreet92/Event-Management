@@ -2,19 +2,21 @@ class User < ActiveRecord::Base
 
   include Destroyable
 
-  before_save :manipulate_related_events,if: :events
+  before_save :enable_or_disable_events, unless: 'events.empty?'
   
   has_many :events
   has_many :rsvps
   has_many :attending_sessions, through: :rsvps, source: :session
   has_many :attending_events, through: :attending_sessions, source: :event
 
-  validates :name, :uid, :handle, :provider, :access_token, :twitter_secret, presence: true
+  validates :name, :uid, :handle, :provider, :access_token, :twitter_secret, :twitter_name, presence: true
 
   def self.create_with_omniauth(auth)
-    create(provider: auth['provider'], uid: auth['uid'], handle: auth['info']['urls']['Twitter'], 
+    create!(provider: auth['provider'], uid: auth['uid'], handle: auth['info']['urls']['Twitter'], 
            name: auth['info']['name'], access_token: auth['credentials']['token'], 
            twitter_secret: auth['credentials']['secret'], twitter_name: auth['info']['nickname'])
+    rescue ActiveRecord::RecordInvalid
+      errors[:base] << 'Invalid Record'
   end
 
   def created_past_events
@@ -39,7 +41,7 @@ class User < ActiveRecord::Base
 
   private
 
-    def manipulate_related_events
+    def enable_or_disable_events
       if enabled?
         events.update_all(:enable => true)
       else
