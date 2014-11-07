@@ -9,6 +9,13 @@ $(document).on('ready page:load', function(){
     $('#categorySubmit').click();
   });
 
+  $('#searchButton').on('click', function() {
+    $('#allEvents').parent('div').addClass('active');
+    $('#mineEvents').hide();
+    $('#userTab').hide();
+    $('#attendingEvents').hide();
+  });
+
   //Clicking on past tab will submit the form with value past
   $('#event_filter_past').on('change', function() {
     $('#categorySubmit').click();
