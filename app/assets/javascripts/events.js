@@ -12,8 +12,8 @@ $(document).on('ready page:load', function(){
   $('#searchButton').on('click', function() {
     $('#allEvents').parent('div').addClass('active');
     $('#mineEvents').hide();
-    $('#userTab').hide();
     $('#attendingEvents').hide();
+    $('#userTab').hide();
   });
 
   //Clicking on past tab will submit the form with value past
