@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
   end
 
   def created_upcoming_events
-    events.live_and_upcoming.order_by_start_date(:asc)
+    events.live_or_upcoming.order_by_start_date(:asc)
   end
 
   def past_attended_events
@@ -32,7 +32,7 @@ class User < ActiveRecord::Base
   end
 
   def upcoming_attending_events
-    attending_events.enabled.live_and_upcoming.order_by_start_date(:asc)
+    attending_events.enabled.live_or_upcoming.order_by_start_date(:asc)
   end
 
   def attending?(session)

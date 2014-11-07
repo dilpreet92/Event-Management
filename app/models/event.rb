@@ -18,12 +18,12 @@ class Event < ActiveRecord::Base
 
   scope :enabled, -> { where(enable: true) }
   scope :order_by_start_date, -> (sort) { order(start_date: sort) }
-  scope :live_and_upcoming, -> { where("events.end_date >= ?", Time.current) }
+  scope :live_or_upcoming, -> { where("events.end_date >= ?", Time.current) }
   scope :past, -> { where("events.end_date < ?", Time.current) }
   scope :search, -> (query) { where("lower(events.name) LIKE :query OR lower(events.city) LIKE :query OR 
     lower(events.country) LIKE :country OR lower(sessions.topic) LIKE :query", query: "%#{ query }%", :country => get_country_name(query) ) }
 
-  def live_and_upcoming?
+  def live_or_upcoming?
     end_date >= Time.current 
   end
 

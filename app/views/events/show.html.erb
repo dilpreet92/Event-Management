@@ -9,7 +9,7 @@
       <%= @event.end_date.strftime('%d %b %Y') %>
     </div>
     <div class="col-md-4 text-right h4 text-orange">
-      <% if logged_in? && @event.owner?(current_user) && @event.live_and_upcoming? %>
+      <% if logged_in? && @event.owner?(current_user) && @event.live_or_upcoming? %>
         <%= link_to 'Edit', edit_event_path(@event) %> |
         <% if @event.enable %>
           <%= link_to 'Disable', disable_events_path(id: @event) %>
@@ -39,7 +39,7 @@
     <h4 class="text-success"><%= pluralize(@event.sessions.enabled.count, 'Session')%><span class="text-blue"> in this Event</span></h4>
   </div>
   <div class="col-md-6 text-right">
-    <% if logged_in? && @event.owner?(current_user) && @event.live_and_upcoming? %>
+    <% if logged_in? && @event.owner?(current_user) && @event.live_or_upcoming? %>
       <%= link_to '<span class="sprite add_session"></span>Add new Session'.html_safe, new_event_session_path(event_id: @event), class:'btn btn-success' %>
     <% end %>
   </div>

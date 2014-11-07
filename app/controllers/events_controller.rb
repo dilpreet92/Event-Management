@@ -11,19 +11,19 @@ class EventsController < ApplicationController
 
   def index
     respond_to do |format|
-      format.html { @events = get_live_and_upcoming_events }
+      format.html { @events = get_live_or_upcoming_events }
       format.js do
         if past?
           @events = get_past_events
         else
-          @events = get_live_and_upcoming_events
+          @events = get_live_or_upcoming_events
         end
       end
     end
   end
 
   def search
-    @events = get_live_and_upcoming_events.eager_load(:sessions).search(params[:search].strip.downcase).uniq
+    @events = get_live_or_upcoming_events.eager_load(:sessions).search(params[:search].strip.downcase).uniq
     respond_to do |format|
       format.js
     end
@@ -60,7 +60,7 @@ class EventsController < ApplicationController
     if @event.update_attribute('enable', false)
       redirect_to events_url, notice: 'Event successfully Disabled'
     else
-      redirect_to events_url, notice: 'Event cannot be disabled'
+      redirect_to events_url, alert: 'Event cannot be disabled'
     end
   end
 
@@ -68,7 +68,7 @@ class EventsController < ApplicationController
     if @event.update_attribute('enable', true)
       redirect_to events_url, notice: 'Event successfully Enabled'
     else
-      redirect_to events_url, notice: 'Event cannot be enabled'
+      redirect_to events_url, alert: 'Event cannot be enabled'
     end
   end
 
@@ -78,8 +78,8 @@ class EventsController < ApplicationController
       params[:event][:filter] == 'past'
     end
 
-    def get_live_and_upcoming_events
-      get_enabled_events.live_and_upcoming.order_by_start_date(:asc)
+    def get_live_or_upcoming_events
+      get_enabled_events.live_or_upcoming.order_by_start_date(:asc)
     end
 
     def get_past_events
@@ -88,7 +88,7 @@ class EventsController < ApplicationController
 
     def authorize_user?
       if !@event.owner?(current_user) || @event.past?
-        redirect_to events_url, notice: 'Current Activity cannot be performed'
+        redirect_to events_url, alert: 'Current Activity cannot be performed'
       end
     end
 
@@ -99,7 +99,7 @@ class EventsController < ApplicationController
     def set_event
       @event = Event.where(id: params[:id]).first
       if @event.nil?
-        redirect_to events_url, notice: 'Event not found or disabled'
+        redirect_to events_url, alert: 'Event not found or disabled'
       end
     end
 

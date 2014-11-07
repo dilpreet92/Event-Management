@@ -5,7 +5,7 @@ class Api::V1::EventsController < ApplicationController
   respond_to :json
 
   def index
-    @events = Event.enabled.live_and_upcoming
+    @events = Event.enabled.live_or_upcoming
   end
 
   def attendees

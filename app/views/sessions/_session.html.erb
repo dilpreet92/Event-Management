@@ -1,7 +1,7 @@
 <% if session.enable? %>
   <div class="col-md-4 mtop35">
     <div class="session-box relative">
-      <% if logged_in? && event.live_and_upcoming? && session.upcoming? %>
+      <% if logged_in? && event.live_or_upcoming? && session.upcoming? %>
         <% if event.owner?(current_user) %>
             <%= link_to '', edit_event_session_path(session.event, session), class: 'edit-session sprite' %>
             <%= link_to '', disable_event_session_path(session.event, session), class: 'del-session sprite' %>
@@ -10,7 +10,7 @@
           <%= link_to '', disable_event_session_path(session.event, session), class: 'del-session sprite' %>
       <% end %>
       <div class="row">
-        <% if logged_in? && event.live_and_upcoming? && session.upcoming? %>
+        <% if logged_in? && event.live_or_upcoming? && session.upcoming? %>
           <% if current_user.attending?(session) %>
           <div class="col-md-3 attending-box text-center">
             <div class="row text-center h6 mtop0 mbot0 h100">

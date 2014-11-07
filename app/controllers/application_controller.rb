@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
 
     def authenticate
       unless current_user
-        redirect_to root_url, notice: "Please log in to perform the current operation"
+        redirect_to root_url, alert: "Please log in to perform the current operation"
       end
     end
 

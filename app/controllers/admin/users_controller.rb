@@ -14,7 +14,7 @@ class Admin::UsersController < ApplicationController
     if @user.update(:enabled => true)
       redirect_to admin_users_url, notice: 'User enabled'
     else
-      redirect_to admin_users_url, notice: 'Failed to enable'
+      redirect_to admin_users_url, alert: 'Failed to enable'
     end
   end
 
@@ -22,7 +22,7 @@ class Admin::UsersController < ApplicationController
     if @user.update(:enabled => false)
       redirect_to admin_users_url, notice: 'User disabled'
     else
-      redirect_to admin_users_url, notice: 'Failed to disable'
+      redirect_to admin_users_url, alert: 'Failed to disable'
     end
   end
 
@@ -32,7 +32,7 @@ class Admin::UsersController < ApplicationController
       @user = User.where(id: params[:id]).first
       #FIXED: instead of if !@user I would prefer if @user.nil?. This looks more readable to me
       if @user.nil?
-        redirect_to users_url, notice: 'User not found'
+        redirect_to users_url, alert: 'User not found'
       end  
     end
 

@@ -20,7 +20,7 @@ class SessionsController < ApplicationController
     if @rsvp.save
       redirect_to @rsvp.session.event, notice: "You are now attending #{ @session.topic } of  #{ @session.event.name } "
     else
-      redirect_to @rsvp.session.event, notice: 'You cannot attend this event'
+      redirect_to @rsvp.session.event, alert: 'You cannot attend this event'
     end
   end
 
@@ -28,7 +28,7 @@ class SessionsController < ApplicationController
     if @rsvp.destroy
       redirect_to @rsvp.session.event, notice: "You are now not attending #{ @rsvp.session.topic }"
     else
-      redirect_to @rsvp.session.event, notice: 'Current operation cannot be performed'
+      redirect_to @rsvp.session.event, alert: 'Current operation cannot be performed'
     end
   end
 
@@ -53,7 +53,7 @@ class SessionsController < ApplicationController
     if @session.update_attribute('enable', false)
       redirect_to @session.event, notice: 'Session Disabled'
     else
-      redirect_to @session.event, notice: 'Session Cannot be disabled'
+      redirect_to @session.event, alert: 'Session Cannot be disabled'
     end    
   end
 
@@ -61,7 +61,7 @@ class SessionsController < ApplicationController
     if @session.update_attribute('enable', true)
       redirect_to @session.event, notice: 'Session Enabled'
     else
-      redirect_to @session.event, notice: 'Session Cannot be enabled'
+      redirect_to @session.event, alert: 'Session Cannot be enabled'
     end
   end
 
@@ -71,28 +71,28 @@ class SessionsController < ApplicationController
     def check_if_already_attending
       @session = Session.where(id: params[:session_id]).first
       if current_user.attending?(@session)
-        redirect_to events_url, notice: "You are already attending #{ @session.topic } or session is disabled"
+        redirect_to events_url, alert: "You are already attending #{ @session.topic } or session is disabled"
       end  
     end
 
     def set_rsvp
       @rsvp = Rsvp.find_by(session_id: params[:session_id], user: current_user)
       if @rsvp.nil?
-        redirect_to events_url, notice: 'Could not perform this operation'
+        redirect_to events_url, alert: 'Could not perform this operation'
       end
     end
 
     def set_session 
       @session = Session.where(id: params[:id]).first
       if @session.nil? || !@session.enable
-        redirect_to events_url, notice: 'Session not found or disabled'
+        redirect_to events_url, alert: 'Session not found or disabled'
       end
     end
     
     def set_event
       @event = Event.where(id: params[:event_id]).first
       if @event.nil?
-        redirect_to events_url, notice: 'Event not found or disabled'
+        redirect_to events_url, alert: 'Event not found or disabled'
       end  
     end
 
