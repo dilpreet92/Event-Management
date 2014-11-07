@@ -35,7 +35,7 @@ class Session < ActiveRecord::Base
     end
 
     def start_date_unacceptable?
-      start_date < event.start_date || start_date > event.end_date 
+      start_date < event.start_date || start_date > event.end_date || ( end_date - start_date ) > 1.day 
     end
 
     def end_date_unacceptable?
@@ -43,7 +43,8 @@ class Session < ActiveRecord::Base
     end
 
     def dates_error_message
-      "Session should be present between #{ event.start_date } and #{ event.end_date }"
+      "Session should be present between #{ event.start_date } and #{ event.end_date } 
+        and session cannot be of more than one day"
     end
 
 end
