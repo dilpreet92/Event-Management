@@ -15,7 +15,7 @@
         <%= render @users %>
       </tbody>
     </table>
+    <%= will_paginate @users, class: 'bottom-pagination wraper pull-right h4 mtop20 text-grey' %>
   </div>
-  <%= will_paginate @users, remote: true, class: 'pagination bottom-pagination wraper pull-right h4 mtop20 text-grey' %>
 <% end %>
 <br>
