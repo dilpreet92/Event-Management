@@ -16,7 +16,7 @@ describe Api::V1::EventsController do
 
     before do
       @events = double(:events)
-      Event.stub_chain(:enabled, :live_and_upcoming).and_return(@events)
+      Event.stub_chain(:enabled, :live_or_upcoming).and_return(@events)
     end
 
     it 'should expect a json response' do

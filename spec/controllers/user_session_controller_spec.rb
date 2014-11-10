@@ -7,29 +7,12 @@ describe UserSessionController do
   end
 
   describe '#create' do
-
-    context 'when new user' do
-      before do
-        @user = double(:user)
-        User.stub(:where).with(:provider => 'twitter', :uid => '12221445').and_return(@user)
-        @user.stub(:first).and_return(nil)
-        User.stub(:create_with_omniauth).with(request.env['omniauth.auth']).and_return(@user)
-        @user.stub(:enabled?).and_return(true)
-        @user.stub(:id).and_return(20)
-      end
-
-      it 'should successfully create a user' do
-      expect {
-        get :create, provider: :twitter
-      }.to change{ User.count }.by(1)
-      end
-
-    end
     
     context 'when user is enabled' do
+
       before do
         @user = double(:user)
-        User.stub(:where).with(:provider => 'twitter', :uid => '12221445').and_return(@user)
+        User.stub(:where).with(:provider => 'twitter', :uid => '12226745').and_return(@user)
         @user.stub(:first).and_return(@user)
         @user.stub(:id).and_return(20)
         @user.stub(:enabled?).and_return(true)
@@ -50,7 +33,7 @@ describe UserSessionController do
     context 'when the user is disabled' do
       before do
         @user = double(:user)
-        User.stub(:where).with(:provider => 'twitter', :uid => '12221445').and_return(@user)
+        User.stub(:where).with(:provider => 'twitter', :uid => '12226745').and_return(@user)
         @user.stub(:first).and_return(@user)
         @user.stub(:id).and_return(20)
         @user.stub(:enabled?).and_return(false)
@@ -61,7 +44,7 @@ describe UserSessionController do
       end
 
       it 'should flash notice' do
-        expect(flash[:notice]).to eql 'Authentication error'
+        expect(flash[:alert]).to eql 'Authentication error'
       end
     end
 

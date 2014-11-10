@@ -41,15 +41,16 @@ describe User do
   describe '#associations' do
     
     it { expect(user).to have_many(:events) }
-    it { expect(user).to have_many(:rsvps).dependent(:destroy) }
+    it { expect(user).to have_many(:rsvps) }
     it { expect(user).to have_many(:attending_sessions).through(:rsvps).source(:session) }
     it { expect(user).to have_many(:attending_events).through(:attending_sessions).source(:event) }
 
   end
 
   describe '#callbacks' do
-    it 'should call manipulate_related_events before save' do
-      expect(user).to receive(:manipulate_related_events)
+    it 'should call enable_or_disable_events before save' do
+      user.events << FactoryGirl.build(:event)
+      expect(user).to receive(:enable_or_disable_events)
       user.save
     end
   end
@@ -109,12 +110,11 @@ describe User do
   describe '.class_methods' do
 
     context '.create_with_ominauth' do
-
       it 'should return user' do
         auth = { 'provider' => "twitter",
-                 'credentials' => { 'token' => "edeed", 'twitter_secret' => "twitter_secret" },
-                 'uid' => "uid",
-                 'info' => { 'urls' => { 'Twitter' => 'abc' }, 'name' => "dp" },
+                 'credentials' => { 'token' => "edeesasd", 'secret' => "twitterdasda" },
+                 'uid' => "qeweqw",
+                 'info' => { 'urls' => { 'Twitter' => 'abc' }, 'name' => "dp", 'nickname' => 'sd' },
                }
         expect(User.create_with_omniauth(auth)).to be_an_instance_of(User)
       end
@@ -142,7 +142,7 @@ describe User do
 
       it 'should return my past created events' do
         event.update_attribute(:end_date, Time.current - 1.day )
-        expect(user.my_created_past_events).to include(event)
+        expect(user.created_past_events).to include(event)
       end
 
     end
@@ -151,7 +151,7 @@ describe User do
 
       it 'should return my upcoming created events' do
         event.save
-        expect(user.my_created_upcoming_events).to include(event)
+        expect(user.created_upcoming_events).to include(event)
       end
 
     end
@@ -166,7 +166,7 @@ describe User do
       end
 
       it 'should return my past attended events' do
-        expect(user.my_past_attended_events).to include(event)
+        expect(user.past_attended_events).to include(event)
       end
 
     end
@@ -175,7 +175,7 @@ describe User do
 
       it 'should return my upcoming attending events' do
         rsvp.save
-        expect(user.my_upcoming_attending_events).to include(event)
+        expect(user.upcoming_attending_events).to include(event)
       end
 
     end

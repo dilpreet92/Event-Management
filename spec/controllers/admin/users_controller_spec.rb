@@ -60,7 +60,7 @@ describe Admin::UsersController do
 
       it 'should flash notice' do
         do_enable
-        expect(flash[:notice]).to eql 'Failed to enable'
+        expect(flash[:alert]).to eql 'Failed to enable'
       end
     end
   end
@@ -100,7 +100,7 @@ describe Admin::UsersController do
 
       it 'should flash notice' do
         do_disable
-        expect(flash[:notice]).to eql 'Failed to disable'
+        expect(flash[:alert]).to eql 'Failed to disable'
       end
     end
   end

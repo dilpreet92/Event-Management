@@ -73,7 +73,7 @@ describe Event do
   describe 'callbacks' do
 
     it 'should call ensure_all_sessions_in_range before save' do
-      expect(event).to receive(:ensure_all_sessions_in_range?) 
+      expect(event).to receive(:check_all_sessions_in_range?) 
       event.save
     end
 
@@ -119,16 +119,16 @@ describe Event do
 
   describe 'scopes' do
 
-    context '.live_and_upcoming' do
+    context '.live_or_upcoming' do
 
-      it 'should return live_and_upcoming events' do
+      it 'should return live_or_upcoming events' do
         event.save
-        expect(Event.live_and_upcoming).to include(event)
+        expect(Event.live_or_upcoming).to include(event)
       end
 
       it 'should not return past_events' do
         event.update_attribute(:end_date, Time.current - 1.day )
-        expect(Event.live_and_upcoming).not_to include(event)
+        expect(Event.live_or_upcoming).not_to include(event)
       end
 
     end
@@ -140,7 +140,7 @@ describe Event do
         expect(Event.past).to include(event)
       end
 
-      it 'should not return live_and_upcoming events' do
+      it 'should not return live_or_upcoming events' do
         event.save
         expect(Event.past).not_to include(event)
       end
@@ -162,7 +162,7 @@ describe Event do
 
     context '.search' do
 
-      let!(:event_session_association) { Event.enabled.live_and_upcoming.eager_load(:sessions) }
+      let!(:event_session_association) { Event.enabled.live_or_upcoming.eager_load(:sessions) }
       before do
         event.save
       end
@@ -177,7 +177,7 @@ describe Event do
       end
 
       it 'should return events as per the country' do
-        query = 'IN'
+        query = 'India'
         expect(event_session_association.search(query.downcase)).to include(event)
       end
 
@@ -191,15 +191,15 @@ describe Event do
 
   describe '#instance_methods' do
 
-    context '#live_and_upcoming?' do
+    context '#live_or_upcoming?' do
 
-      it 'should return true if event is live_and_upcoming' do
-        expect(event.live_and_upcoming?).to be_true
+      it 'should return true if event is live_or_upcoming' do
+        expect(event.live_or_upcoming?).to be_true
       end
 
       it 'should return false if event is past' do
         event.update_attribute(:end_date, (Time.current - 1.day) ) 
-        expect(event.live_and_upcoming?).to be_false
+        expect(event.live_or_upcoming?).to be_false
       end
 
     end
@@ -211,7 +211,7 @@ describe Event do
         expect(event.past?).to be_true
       end
 
-      it 'should return false if event is live_and_upcoming' do
+      it 'should return false if event is live_or_upcoming' do
         event.save
         expect(event.past?).to be_false
       end

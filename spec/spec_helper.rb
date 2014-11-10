@@ -10,7 +10,7 @@ require "paperclip/matchers"
 OmniAuth.config.test_mode = true
 omniauth_hash = { 'provider' => "twitter",
                   'credentials' => { 'token' => "edeed", 'secret' => "twitter_secret" },
-                  'uid' => "12226745",
+                  'uid' => '12226745',
                   'info' => { 'urls' => { 'Twitter' => 'abc' }, 'name' => "dp" },
                 }
  

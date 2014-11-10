@@ -19,9 +19,9 @@ class SessionsController < ApplicationController
   def create_rsvp
     @rsvp = @session.rsvps.build(user: current_user)
     if @rsvp.save
-      redirect_to @rsvp.session.event, notice: "You are now attending #{ @session.topic } of  #{ @session.event.name } "
+      redirect_to @session.event, notice: "You are now attending #{ @session.topic } of  #{ @session.event.name } "
     else
-      redirect_to @rsvp.session.event, alert: 'You cannot attend this event'
+      redirect_to @session.event, alert: 'You cannot attend this event'
     end
   end
 

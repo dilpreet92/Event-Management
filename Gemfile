@@ -10,6 +10,7 @@ group :development, :test do
   gem 'shoulda-matchers', require: false
   gem 'shoulda'
   gem 'capybara'
+  gem 'faker'
 end
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'

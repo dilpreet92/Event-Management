@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
            name: auth['info']['name'], access_token: auth['credentials']['token'], 
            twitter_secret: auth['credentials']['secret'], twitter_name: auth['info']['nickname'])
     rescue ActiveRecord::RecordInvalid
-      errors[:base] << 'Invalid Record'
+      false
   end
 
   def created_past_events

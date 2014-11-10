@@ -7,6 +7,7 @@ describe SessionsController do
     @event = double(:event)
     @session = double(:session)
     User.stub(:find).with(1).and_return(@user)
+    controller.stub(:authorize_user?).and_return(true)
     controller.stub(:admin_signed_in?).and_return(false)
     controller.stub(:current_user).and_return(@user)
   end
@@ -61,12 +62,14 @@ describe SessionsController do
   context '#create_rsvp' do
     before do
       @rsvp = double(:rsvp)
+      @event = mock_model('Event')
+      set_event
       set_session
-      @session.stub_chain(:rsvps, :build).with(:user => @user).and_return(@rsvp)
-      @session.stub(:enable).and_return(true)
-      @session.stub(:topic).and_return('dilpreet')
-      @session.stub_chain(:event, :name).and_return('dilpreet')
       @user.stub(:attending?).with(@session).and_return(false)
+      @session.stub_chain(:rsvps, :build).with(:user => @user).and_return(@rsvp)
+      @session.stub(:topic).and_return('dilpreet')
+      @session.stub(:event).and_return(@event)
+      @session.stub_chain(:event, :name).and_return('dilpreet')
     end
 
     context 'when saved sucessfully' do
@@ -80,8 +83,8 @@ describe SessionsController do
         expect(assigns[:rsvp]).to eql @rsvp
       end
 
-      it 'should redirect to events url' do
-        expect(response).to redirect_to events_url
+      it 'should redirect to event' do
+        expect(response).to redirect_to @session.event
       end
 
       it 'should flash notice' do
@@ -97,12 +100,12 @@ describe SessionsController do
       get :create_rsvp, :event_id => 106, :session_id => 10
      end
 
-      it 'should redirect to events url' do
-        expect(response).to redirect_to events_url
+      it 'should redirect to event' do
+        expect(response).to redirect_to @session.event
       end
 
       it 'should flash notice' do
-        expect(flash[:notice]).to eql 'You cannot attend this event'
+        expect(flash[:alert]).to eql 'You cannot attend this event'
       end
 
     end
@@ -112,8 +115,11 @@ describe SessionsController do
   context '#destroy_rsvp' do
     before do
       @rsvp = double(:rsvp)
+      @event = mock_model('Event')
+      set_event
       Rsvp.stub(:find_by).with(:session_id => '10', user: @user).and_return(@rsvp)
       @rsvp.stub_chain(:session, :topic).and_return('dilpreet')
+      @rsvp.stub_chain(:session, :event).and_return(@event)
       @rsvp.stub(:destroy).and_return(true)
     end
 
@@ -128,8 +134,8 @@ describe SessionsController do
         get :destroy_rsvp, :event_id => 106, :session_id => 10
       end
 
-      it 'should redirect to events url' do
-        expect(response).to redirect_to events_url
+      it 'should redirect to event' do
+        expect(response).to redirect_to @rsvp.session.event
       end
 
       it 'should flash notice' do
@@ -144,12 +150,12 @@ describe SessionsController do
         get :destroy_rsvp, :event_id => 106, :session_id => 10
       end
 
-      it 'should redirect to events url' do
-        expect(response).to redirect_to events_url
+      it 'should redirect to event' do
+        expect(response).to redirect_to @rsvp.session.event
       end
 
       it 'should flash notice' do
-        expect(flash[:notice]).to eql 'Current operation cannot be performed'
+        expect(flash[:alert]).to eql 'Current operation cannot be performed'
       end
     end
   end
@@ -239,17 +245,17 @@ describe SessionsController do
 
   context '#disable' do
     before do
-      @event = mock_model("Event")
-      Event.stub(:where).with(:id => '106').and_return(@event)
-      @event.stub(:first).and_return(@event)
+      @event = mock_model('Event')
       set_session
-      @session.stub(:enable).and_return(true)
-      @session.stub(:update_attribute).with(enable: false).and_return(true)
-      @session.stub(:event).and_return(@event)
+      set_event
+      @session.stub(:enable).and_return(@event)
+      @session.stub_chain(:event).and_return(@event)
+      allow(@event).to receive(:owner?).and_return(true)
+      @session.stub(:update_attribute).with("enable", false).and_return(true)
     end
 
     it 'should receive update attribute' do
-      expect(@session).to receive(:update_attribute).with(enable: false)
+      expect(@session).to receive(:update_attribute).with("enable", false)
       get :disable, :id => 10, :event_id => 106
     end
 
@@ -270,7 +276,7 @@ describe SessionsController do
 
     context 'when not saved' do
       before do
-        @session.stub(:update_attribute).with(enable: false).and_return(false)
+        @session.stub(:update_attribute).with('enable', false).and_return(false)
         get :disable, :id => 10, :event_id => 106
       end
 
@@ -279,7 +285,7 @@ describe SessionsController do
       end
 
       it 'should flash a notice' do
-        expect(flash[:notice]).to eql 'Session Cannot be disabled'
+        expect(flash[:alert]).to eql 'Session Cannot be disabled'
       end
       
     end

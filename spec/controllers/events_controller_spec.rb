@@ -4,13 +4,23 @@ describe EventsController do
 
   before do
     @user = double(:user)
+    @event = double(:event)
     User.stub(:find).with(1).and_return(@user)
     controller.stub(:admin_signed_in?).and_return(false)
     controller.stub(:current_user).and_return(@user)
-    controller.class.stub(:protect_from_forgery).with(:null_session).and_return(:null_session)
+  end
+
+  def set_event
+    Event.stub(:where).with(:id => '142').and_return(@event)
+    @event.stub(:first).and_return(@event)
   end
   
-  context '#index' do
+  context '#index as html format' do
+
+    before do
+      @events = double(:events)
+      Event.stub_chain(:live_or_upcoming, :order_by_start_date).with(:asc).and_return(@events)
+    end
 
     it 'should render the :index view' do
       get :index
@@ -19,14 +29,16 @@ describe EventsController do
 
   end
 
-  context '#filter' do
+  context '#index as js format' do
 
     context 'when event is past' do
 
       before do
         @events = double(:events)
-        Event.stub_chain(:past, :order_by_start_date).with(:desc).and_return(@events)
-        xhr :get, :filter, :events => { :filter => 'past'}, :format => 'js'
+        controller.stub(:past?).and_return(true)
+        Event.stub_chain(:enabled, :paginate).with(:page => nil, :per_page => 5).and_return(@events)
+        @events.stub_chain(:past, :order_by_start_date).with(:desc).and_return(@events)
+        xhr :get, :index, :event => { :filter => 'past'}, :format => 'js'
       end
 
       it 'should assign @events to past events' do
@@ -43,8 +55,10 @@ describe EventsController do
 
       before do
         @events = double(:events)
-        Event.stub_chain(:live_and_upcoming, :order_by_start_date).with(:asc).and_return(@events)
-        xhr :get, :filter, :events => { :filter => 'upcoming'}, :format => 'js'
+        controller.stub(:past?).and_return(false)
+        Event.stub_chain(:enabled, :paginate).with(:page => nil, :per_page => 5).and_return(@events)
+        @events.stub_chain(:live_or_upcoming, :order_by_start_date).with(:asc).and_return(@events)
+        xhr :get, :index, :event => { :filter => 'upcoming'}, :format => 'js'
       end
 
       it 'should assign events to upcoming events' do
@@ -57,100 +71,6 @@ describe EventsController do
     end
 
   end
-
-  context '#mine_events' do
-
-    before do
-      @events = double(:events)
-    end
-
-    context 'when event is past' do
-
-      before do
-        @user.stub_chain(:my_created_past_events, :paginate).with({:page=>nil, :per_page=>5}).and_return(@events)
-        xhr :get, :mine_events, :events => { :filter => 'past'}, :format => 'js'
-      end
-
-      it 'should assign events to my past events' do
-        expect(assigns[:events]).to eql @events
-      end
-      
-      it 'should render the :filter js' do
-        expect(response.content_type).to eq 'text/javascript'
-      end
-
-    end
-
-    context 'when event is upcoming' do
-
-      before do
-        @user.stub_chain(:my_created_upcoming_events, :paginate).with({:page=>nil, :per_page=>5}).and_return(@events)
-        xhr :get, :mine_events, :events => { :filter => 'upcoming' }, :format => 'js'
-      end
-
-      it 'should assign events to my upcoming events' do
-        expect(assigns[:events]).to eql @events
-      end
-
-      it 'should render the :filter js' do
-        expect(response.content_type).to eq 'text/javascript'
-      end
-    end
-
-  end
-
-  context '#attending' do
-
-    before do
-      @events = double(:events)
-    end
-
-    context 'when event is past' do
-
-      before do
-        @user.stub_chain(:my_past_attended_events, :paginate).with({:page=>nil, :per_page=>5}).and_return(@events)
-        @events.stub(:uniq).and_return(@events)
-        xhr :get, :attending, :events => { :filter => 'past'}, :format => 'js'
-      end
-
-      it 'should assign events to my attending events' do
-        expect(assigns[:events]).to eql @events
-      end
-      
-      it 'should render the :filter js' do
-        expect(response.content_type).to eq 'text/javascript'
-      end
-
-    end
-
-    context 'when event is upcoming' do
-
-      before do
-        @user.stub_chain(:my_upcoming_attending_events, :paginate).with({:page=>nil, :per_page=>5}).and_return(@events)
-        @events.stub(:uniq).and_return(@events)
-        xhr :get, :attending, :events => { :filter => 'upcoming'}, :format => 'js'
-      end
-
-      it 'should assign events to my attending events' do
-        expect(assigns[:events]).to eql @events
-      end
-
-      it 'should render the :filter js' do
-        expect(response.content_type).to eq 'text/javascript'
-      end
-    end
-
-  end
-
-  context '#mine' do
-
-    it 'should render the :mine events view' do
-      get :mine
-      expect(response).to render_template(:mine)
-    end
-
-  end
-
 
   context '#search' do
 
@@ -178,7 +98,7 @@ describe EventsController do
       
       before do
         @rsvp = double(:rsvp)
-        controller.stub_chain(:get_live_and_upcoming_events, :eager_load).with(:sessions).and_return(@rsvp)
+        controller.stub_chain(:get_live_or_upcoming_events, :eager_load).with(:sessions).and_return(@rsvp)
         @rsvp.stub(:search).with('dp').and_return(@events)
         @events.stub(:paginate).with({:page=>nil, :per_page=>5}).and_return(@events)
         @events.stub(:uniq).and_return(@events)
@@ -193,15 +113,6 @@ describe EventsController do
         expect(response.content_type).to eq 'text/javascript'
       end
     end
-  end
-
-  context '#rsvps' do
-
-    it 'should render the :rsvps view' do
-      get :rsvps
-      expect(response).to render_template(:rsvps)
-    end
-
   end
 
   context '#show' do
@@ -231,9 +142,10 @@ describe EventsController do
 
   end
 
-  context 'get #edit' do
+  context '#edit' do
 
     before do
+      set_event
       controller.stub(:authorize_user?).and_return(:true)
       get :edit, :id => 142
     end
@@ -295,7 +207,7 @@ describe EventsController do
 
       it 'should flash notice Please log in' do
         do_post
-        expect(flash[:notice]).to eql 'Please log in to perform the current operation'
+        expect(flash[:alert]).to eql 'Please log in to perform the current operation'
       end
 
     end
@@ -390,7 +302,7 @@ describe EventsController do
       end
 
       it 'should flash a notice' do
-        expect(flash[:notice]).to eq 'Event cannot be disabled'
+        expect(flash[:alert]).to eq 'Event cannot be disabled'
       end
 
     end
