@@ -1,4 +1,5 @@
 <%= render partial: 'events_category', locals: { path: events_path } %>
 <div id='all_events'>
   <%= render @events %>
+  <%= will_paginate @events, class: 'bottom-pagination wraper pull-right h4 mtop20 text-grey' %>
 </div>
