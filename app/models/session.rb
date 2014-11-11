@@ -23,12 +23,14 @@ class Session < ActiveRecord::Base
     def validate_session_start_date
       if start_date_unacceptable?
         errors.add(:start_date, dates_error_message)
+        false
       end
     end
 
     def validate_session_end_date
       if end_date_unacceptable?
         errors.add(:end_date, dates_error_message)
+        false
       end
     end
 
