@@ -2,8 +2,6 @@ class User < ActiveRecord::Base
 
   include Destroyable
 
-  before_save :enable_or_disable_events, unless: Proc.new { |user| user.events.empty? }
-  
   has_many :events
   has_many :rsvps
   has_many :attending_sessions, -> { where('sessions.enable = true') }, through: :rsvps, source: :session
@@ -41,15 +39,5 @@ class User < ActiveRecord::Base
   def attending?(session)
     attending_sessions.exists?(session)
   end
-
-  private
-
-    def enable_or_disable_events
-      if enabled?
-        events.update_all(:enable => true)
-      else
-        events.update_all(:enable => false)
-      end
-    end
 
 end

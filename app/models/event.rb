@@ -13,7 +13,7 @@ class Event < ActiveRecord::Base
   validates :description, length: { maximum: 500 }
   validate :event_date_valid, if: :start_date
 
-  scope :enabled, -> { where(enable: true) }
+  scope :enabled, -> { where('events.enable = true').eager_load(:user).where('users.enabled = true') }
   scope :order_by_start_date, -> (sort) { order(start_date: sort) }
   scope :live_or_upcoming, -> { where("events.end_date >= ?", Time.current).order_by_start_date(:asc) }
   scope :past, -> { where("events.end_date < ?", Time.current).order_by_start_date(:desc) }
