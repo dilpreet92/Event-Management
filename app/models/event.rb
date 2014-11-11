@@ -11,7 +11,6 @@ class Event < ActiveRecord::Base
   validates_attachment_content_type :logo, :content_type => /\Aimage\/.*\Z/
   validates :name, :address, :city, :country, :contact_number, :description, :user, :start_date, :end_date, presence: true
   validates :description, length: { maximum: 500 }
-  validate :event_date_valid, if: :start_date
 
   scope :enabled, -> { where('events.enable = true').eager_load(:user).where('users.enabled = true') }
   scope :order_by_start_date, -> (sort) { order(start_date: sort) }
@@ -20,6 +19,7 @@ class Event < ActiveRecord::Base
   scope :search, -> (query) { where("lower(events.name) LIKE :query OR lower(events.city) LIKE :query OR 
     lower(events.country) LIKE :country OR lower(sessions.topic) LIKE :query", query: "%#{ query }%", :country => get_country_name(query) ).distinct }
   
+  before_save :validate_event_date
   before_save :check_all_sessions_in_range?
   
   def live_or_upcoming?
@@ -40,9 +40,10 @@ class Event < ActiveRecord::Base
 
   private
 
-    def event_date_valid
+    def validate_event_date
       if start_date_unacceptable?
         errors[:base] << 'Invalid start or end date'
+        false
       end
     end
     

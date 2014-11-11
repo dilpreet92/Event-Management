@@ -69,8 +69,8 @@ class SessionsController < ApplicationController
 
     def check_if_already_attending
       @session = Session.where(id: params[:session_id]).first
-      if current_user.attending?(@session)
-        redirect_to events_url, alert: "You are already attending #{ @session.topic } or session is disabled"
+      if current_user.attending?(@session) || !@session.upcoming?
+        redirect_to events_url, alert: "You are already attending #{ @session.topic } or session is expired"
       end  
     end
 
