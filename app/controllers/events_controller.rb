@@ -44,7 +44,7 @@ class EventsController < ApplicationController
   def create
     @event = current_user.events.build(permitted_params)
     if @event.save
-      redirect_to @event, notice: " Event #{ @event.name }successfully created."
+      redirect_to @event, notice: " Event #{ @event.name } successfully created."
     else
       render :new
     end
