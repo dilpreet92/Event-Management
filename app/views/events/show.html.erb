@@ -1,4 +1,3 @@
-
 <div class="session_content wraper row mtop35">
   <div class="col-md-2 event_image">
     <%= image_tag @event.logo.url(:medium) %>
@@ -11,13 +10,17 @@
     <div class="col-md-4 text-right h4 text-orange">
       <% if logged_in? && @event.owner?(current_user) && @event.live_or_upcoming? %>
         <%= link_to 'Edit', edit_event_path(@event) %> |
-        <% if @event.enable %>
-          <%= link_to 'Disable', disable_events_path(id: @event) %>
+        <% if @event.enable? %>
+          <%= link_to 'Disable', disable_events_path(id: @event), data: { confirm: 'Are you sure ?' } %>
         <% else %>
-          <%= link_to 'Enable Event', enable_events_path(id: @event) %>
+          <%= link_to 'Enable', enable_events_path(id: @event), data: { confirm: 'Are you sure ?' } %>
         <% end %>
       <% elsif admin_signed_in? %>
-       <%= link_to 'Disable Event', disable_events_path(id: @event) %>
+        <% if @event.enable? %>
+          <%= link_to 'Disable', disable_admin_event_path(@event), data: { confirm: 'Are you sure ?' } %>
+        <% else %>
+          <%= link_to 'Enable', enable_admin_event_path(@event), data: { confirm: 'Are you sure ?' } %>
+        <% end %>
       <% end %>
     </div>
     <div class="col-md-12 event_name text-blue">
@@ -45,22 +48,14 @@
   </div>
 </div>
 
-  <!-- Attendes :
-  <% @event.attendes.uniq.each do |user| %>
-
-      <%= link_to "#{user.name}", user.handle %>
-
-  <% end %>
- -->
-
 <% if @event.sessions.enabled.empty? %>
   <h3 class="text-center mtop55 text-blue back-blue p5 wraper"> No Sessions Created Yet </h3>
 <% else %>
 <div class="row wraper">
-  <% if logged_in? %>
-    <%= render partial: @event.sessions, locals: { :event => @event } %>
+  <% if logged_in? || admin_signed_in? %>
+    <%= render partial: 'sessions/session', collection: @event.sessions, locals: { :event => @event } %>
   <% else %>
-    <%= render partial: @event.sessions, locals: { :event => false } %>
+    <%= render partial: 'sessions/session', collection: @event.sessions, locals: { :event => false } %>
   <% end %>
   </div>
 <% end %>

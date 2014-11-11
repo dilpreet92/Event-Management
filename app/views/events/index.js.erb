@@ -1,2 +1,2 @@
-$('#all_events').html('<%= escape_javascript render partial: "events",
-  locals: { message: "No Events" } %>')
+$('#all_events').html('<%= escape_javascript render partial: "/events/events",
+  locals: { message: "No Events", events: @events } %>')

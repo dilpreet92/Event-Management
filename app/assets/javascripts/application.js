@@ -16,7 +16,5 @@
 //= require jquery.datetimepicker
 //= require bootstrap.min
 //= require events
-
-
-// FIXME_AB: Read about require tree . we should try to avoid this.
+//= require admin/users
 

@@ -1,0 +1,8 @@
+<br>
+<% if users.empty? %>
+  <h3 class="text-center mtop55 text-blue back-blue p5 wraper"><%= message %> </h3>
+<% else %>
+  <%= render partial: 'user', collection: users %>
+  <%= will_paginate users, remote: true, class: 'pagination bottom-pagination wraper pull-right h4 mtop20 text-grey' %>
+<% end %>
+<br>

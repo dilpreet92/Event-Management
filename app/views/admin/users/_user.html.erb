@@ -1,9 +1,17 @@
-<tr class="hover_fix">
-  <td class="h5 dark-grey"><%= user.name %></td>
-  <td class="h5 dark-grey"><%= link_to user.handle, user.handle %></td>
-  <% if user.enabled %>
-    <td class="h5 dark-grey"><%= link_to 'disable', disable_admin_users_path(id: user) %>
-  <% else %>
-    <td class="h5 dark-grey"><%= link_to 'enable', enable_admin_users_path(id: user) %>
-  <% end %>
-</tr>
+<div class="event_content wraper row mtop35">
+  <div class="col-md-2 event_image">
+    <%= user.name %>
+  </div>
+  <div class="col-md-8">
+    <div class="col-md-12 event_name">
+      <%= link_to user.twitter_name, "http://twitter.com/#{ user.twitter_name }" %>   
+    </div>
+    <div class="col-md-6 event_time">
+      <% if user.enabled %>
+        <%= link_to 'disable', disable_admin_users_path(id: user), data: { confirm: 'Are you sure ?' } %>
+      <% else %>
+        <%= link_to 'enable', enable_admin_users_path(id: user), data: { confirm: 'Are you sure ?' } %>
+      <% end %>
+    </div>
+  </div>
+</div>

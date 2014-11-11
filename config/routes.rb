@@ -2,6 +2,12 @@ Rails.application.routes.draw do
   
   devise_for :admin
 
+  devise_scope :admin do
+    authenticated :admin do
+      root 'admin/events#index', as: :authenticated_root
+    end
+  end
+
   namespace :api, defaults: { format: 'json' } do
     namespace :v1 do
       resources :events do
@@ -31,6 +37,17 @@ Rails.application.routes.draw do
       collection do
         get '/disable' => 'users#disable'
         get '/enable' => 'users#enable'
+      end
+    end
+    resources :events do
+      member do
+        get '/disable' => 'events#disable'
+        get '/enable' => 'events#enable'
+      end
+      resources :sessions do
+        member do
+          get '/disable' => 'sessions#disable'
+        end
       end
     end
   end  

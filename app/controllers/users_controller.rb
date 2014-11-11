@@ -20,12 +20,12 @@ class UsersController < ApplicationController
   def rsvps
     respond_to do |format|
       format.html { @events = current_user.upcoming_attending_events.
-                      paginate(:page => params[:page], :per_page => 5).uniq }
+                      paginate(:page => params[:page], :per_page => 5) }
       format.js do
         if past?
-          @events = current_user.past_attended_events.paginate(:page => params[:page], :per_page => 5).uniq
+          @events = current_user.past_attended_events.paginate(:page => params[:page], :per_page => 5)
         else
-          @events = current_user.upcoming_attending_events.paginate(:page => params[:page], :per_page => 5).uniq
+          @events = current_user.upcoming_attending_events.paginate(:page => params[:page], :per_page => 5)
         end
       end
     end

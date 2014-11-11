@@ -9,7 +9,7 @@ class Api::V1::EventsController < ApplicationController
   end
 
   def attendees
-    @users = @event.attendes.uniq
+    @users = @event.attendes
   end
 
   def mine_events
@@ -18,7 +18,7 @@ class Api::V1::EventsController < ApplicationController
   end
 
   def rsvps
-    @events = @current_user.attending_events.enabled.uniq
+    @events = @current_user.attending_events.enabled
   end
 
   private 

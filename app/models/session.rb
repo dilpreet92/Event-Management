@@ -1,42 +1,39 @@
 class Session < ActiveRecord::Base
 
   include Destroyable
+  self.skip_time_zone_conversion_for_attributes = [:start_date, :end_date]
 
   belongs_to :event
-
-  has_many :rsvps, dependent: :destroy
+  has_many :rsvps
   has_many :attendes, through: :rsvps, source: :user
 
-  validates :event, presence: true
-  validates :topic, :location, :description, presence: true
-  #FIXED: Why using old syntax use validates :description, length: { maximum: 250 }
+  validates :topic, :location, :description, :event, :start_date, :end_date, presence: true
   validates :description, length: { maximum: 250 }
-  validate :session_start_date
-  validate :session_end_date
 
-  default_scope { order('end_date DESC') }
   scope :enabled, -> { where(enable: true) }
 
+  before_save :validate_session_start_date, :validate_session_end_date
+
   def upcoming?
-    end_date >= Time.current
+    end_date.utc >= Time.current
   end
   
   private
 
-    def session_start_date
+    def validate_session_start_date
       if start_date_unacceptable?
         errors.add(:start_date, dates_error_message)
       end
     end
 
-    def session_end_date
+    def validate_session_end_date
       if end_date_unacceptable?
         errors.add(:end_date, dates_error_message)
       end
     end
 
     def start_date_unacceptable?
-      start_date < event.start_date || start_date > event.end_date || ( end_date - start_date ) > 1.day 
+      start_date < event.start_date || start_date > event.end_date || end_date.day != start_date.day
     end
 
     def end_date_unacceptable?

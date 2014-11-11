@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <title>Event Management</title>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <meta name="description" content="Event Management System">
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <header>
+      <%= render 'shared/navigation' %>
+    </header>
+    <main role="main">
+      <%= render 'shared/messages' %>
+      <div id='showEvents' class="row">
+        <div class="btn-group btn-group-justified">
+          <% if current_page?(admin_events_path) || current_page?('/') || current_page?(search_events_path)%>
+            <div class="btn active"><%= link_to 'All Events', admin_events_path, id: 'allEvents' %></div>
+          <% else %>
+            <div class="btn"><%= link_to 'All Events', admin_events_path, id: 'allEvents' %></div>
+          <% end %>
+          <% if admin_signed_in? %>
+            <% if current_page?(controller: 'admin/users', action: 'index') %>
+              <div class="btn active"><%= link_to 'All Users', { action: 'index', controller: 'admin/users' }, id: 'userTab' %></div>
+            <% else %>
+              <div class="btn"><%= link_to 'All Users', { action: 'index', controller: 'admin/users' }, id: 'userTab' %></div>
+            <% end %>  
+          <% end %>
+        </div>
+      </div>
+      <div id='mainView'>
+        <div id='results'>
+          <%= yield %>
+        </div>
+      </div>
+    </main>
+    <footer class="text-center">
+      Copyrights &copy;  2014 iConfconnect | Powered by Vinsol
+    </footer>
+  </body>
+</html>

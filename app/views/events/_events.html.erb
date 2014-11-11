@@ -1,8 +1,8 @@
 <br>
-<% if @events.empty? %>
+<% if events.empty? %>
   <h3 class="text-center mtop55 text-blue back-blue p5 wraper"> <%= message %> </h3>
 <% else %>
-  <%= render @events %>
-  <%= will_paginate @events, remote: true, class: 'pagination bottom-pagination wraper pull-right h4 mtop20 text-grey' %>
+  <%= render partial: 'events/event', collection: events %>
+  <%= will_paginate events, remote: true, class: 'pagination bottom-pagination wraper pull-right h4 mtop20 text-grey' %>
 <% end %>
 <br>

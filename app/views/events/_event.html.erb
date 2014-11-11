@@ -1,38 +1,44 @@
-<div class="event_content wraper row mtop35">
-  <div class="col-md-2 event_image">
-  <%= image_tag event.logo.url(:thumb) %>
+<% if event.user.enabled? || admin_signed_in? %>
+  <div class="event_content wraper row mtop35">
+    <div class="col-md-2 event_image">
+    <%= image_tag event.logo.url(:thumb) %>
+    </div>
+    <div class="col-md-8">
+      <div class="col-md-12 event_name">
+        <% if admin_signed_in? %>
+          <%= link_to event.name, admin_event_path(event) %>
+        <% else %>
+          <%= link_to event.name, event_path(event) %>
+        <% end %>    
+      </div>
+      <div class="col-md-6 event_time">
+        <%= event.start_date.strftime('%d %b %Y -') %>
+        <%= event.end_date.strftime('%d %b %Y') %>
+      </div>
+      <div class="col-md-6 event_address">
+        <span class="sprite"></span>
+        <%= event.address %>
+        <%= event.city %>
+        <%= Carmen::Country.coded(event.country).name %>
+        <%= event.contact_number %>
+      </div>
+      <div class="col-md-12 event_description">
+        <%= event.description %>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="h5 dark-grey event-icon">
+        <span class="sprite"></span>
+        <%= pluralize(event.sessions.enabled.count, 'Event') %>
+      </div>
+      <div class="h5 dark-grey speaker-icon">
+        <span class="sprite"></span>
+        <%= pluralize(event.sessions.enabled.map(&:speaker).join(',').split(',').uniq.count, 'Speaker') %>
+      </div>
+      <div class="h5 dark-grey attendes-icon">
+        <span class="sprite"></span>
+        <%= pluralize(event.attendes.count, 'Attendee') %> 
+      </div>
+    </div>
   </div>
-  <div class="col-md-8">
-    <div class="col-md-12 event_name">
-      <%= link_to event.name, event_path(event) %>
-    </div>
-    <div class="col-md-6 event_time">
-      <%= event.start_date.strftime('%d %b %Y -') %>
-      <%= event.end_date.strftime('%d %b %Y') %>
-    </div>
-    <div class="col-md-6 event_address">
-      <span class="sprite"></span>
-      <%= event.address %>
-      <%= event.city %>
-      <%= Carmen::Country.coded(event.country).name %>
-      <%= event.contact_number %>
-    </div>
-    <div class="col-md-12 event_description">
-      <%= event.description %>
-    </div>
-  </div>
-  <div class="col-md-2">
-    <div class="h5 dark-grey event-icon">
-      <span class="sprite"></span>
-      <%= pluralize(event.sessions.enabled.count, 'Event') %>
-    </div>
-    <!-- <div class="h5 dark-grey speaker-icon">
-      <span class="sprite"></span>
-      <%= pluralize(event.sessions.enabled.count, 'Speaker') %>
-    </div> -->
-    <div class="h5 dark-grey attendes-icon">
-      <span class="sprite"></span>
-      <%= event.attendes.uniq.count %> Attendees
-    </div>
-  </div>
-</div>
+<% end %>  

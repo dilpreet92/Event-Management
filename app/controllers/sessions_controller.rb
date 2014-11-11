@@ -21,13 +21,13 @@ class SessionsController < ApplicationController
     if @rsvp.save
       redirect_to @session.event, notice: "You are now attending #{ @session.topic } of  #{ @session.event.name } "
     else
-      redirect_to @session.event, alert: 'You cannot attend this event'
+      redirect_to @session.event, alert: "You cannot attend #{ @session.event.name } event"
     end
   end
 
   def destroy_rsvp
     if @rsvp.destroy
-      redirect_to @rsvp.session.event, notice: "You are now not attending #{ @rsvp.session.topic }"
+      redirect_to @rsvp.session.event, notice: "You have unattended #{ @rsvp.session.topic } session of #{ @rsvp.session.event.name }"
     else
       redirect_to @rsvp.session.event, alert: 'Current operation cannot be performed'
     end
@@ -36,7 +36,7 @@ class SessionsController < ApplicationController
   def create
     @session = @event.sessions.build(permitted_params)
     if @session.save
-      redirect_to @event, notice: 'Session was successfully created.'
+      redirect_to @event, notice: "Session #{ @session.topic } was successfully created."
     else
       render :new
     end
@@ -44,7 +44,7 @@ class SessionsController < ApplicationController
 
   def update
     if @session.update(permitted_params)
-      redirect_to @session.event, notice: 'Session was successfully updated.'
+      redirect_to @session.event, notice: "Session #{ @session.topic } was successfully updated."
     else
       render :edit
     end
@@ -52,18 +52,10 @@ class SessionsController < ApplicationController
 
   def disable
     if @session.event.owner?(current_user) && @session.update_attribute('enable', false)
-      redirect_to @session.event, notice: 'Session Disabled'
+      redirect_to @session.event, notice: "Session #{ @session.topic } successfully disabled"
     else
-      redirect_to @session.event, alert: 'Session Cannot be disabled'
+      redirect_to @session.event, alert: "Session #{ @session.topic } cannot be disabled"
     end    
-  end
-
-  def enable
-    if @session.update_attribute('enable', true)
-      redirect_to @session.event, notice: 'Session Enabled'
-    else
-      redirect_to @session.event, alert: 'Session Cannot be enabled'
-    end
   end
 
 
@@ -71,7 +63,7 @@ class SessionsController < ApplicationController
 
     def authorize_user?
       if !@event.owner?(current_user) || @event.past?
-        redirect_to events_url, alert: 'Current Activity cannot be performed'
+        redirect_to events_url, alert: 'Current activity cannot be performed'
       end
     end
 

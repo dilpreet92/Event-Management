@@ -10,10 +10,7 @@ $(document).on('ready page:load', function(){
   });
 
   $('#searchButton').on('click', function() {
-    $('#allEvents').parent('div').addClass('active');
-    $('#mineEvents').parent('div').hide();
-    $('#attendingEvents').parent('div').hide();
-    $('#userTab').parent('div').hide();
+    $('#showEvents').hide();
   });
 
   //Clicking on past tab will submit the form with value past

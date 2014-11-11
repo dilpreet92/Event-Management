@@ -6,15 +6,18 @@ class User < ActiveRecord::Base
   
   has_many :events
   has_many :rsvps
-  has_many :attending_sessions, through: :rsvps, source: :session
-  has_many :attending_events, through: :attending_sessions, source: :event
+  has_many :attending_sessions, -> { where('sessions.enable = true') }, through: :rsvps, source: :session
+  has_many :attending_events, -> { distinct }, through: :attending_sessions, source: :event
 
-  validates :name, :uid, :handle, :provider, :access_token, :twitter_secret, :twitter_name, presence: true
+  validates :name, :uid, :provider, :access_token, :twitter_secret, :twitter_name, presence: true
+
+  scope :enabled, -> { where(enabled: true) }
+  scope :disabled, -> { where(enabled: false) }
 
   def self.create_with_omniauth(auth)
-    create!(provider: auth['provider'], uid: auth['uid'], handle: auth['info']['urls']['Twitter'], 
-           name: auth['info']['name'], access_token: auth['credentials']['token'], 
-           twitter_secret: auth['credentials']['secret'], twitter_name: auth['info']['nickname'])
+    create!(provider: auth['provider'], uid: auth['uid'], name: auth['info']['name'], 
+           access_token: auth['credentials']['token'], twitter_secret: auth['credentials']['secret'], 
+           twitter_name: auth['info']['nickname'])
     rescue ActiveRecord::RecordInvalid
       false
   end

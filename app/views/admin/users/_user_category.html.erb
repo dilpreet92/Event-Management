@@ -1,0 +1,9 @@
+<div class="event_radio_list wraper">
+<%= form_tag(path, method: :get, class: 'category', remote: true) do %>
+    <%= radio_button :user, 'filter', 'enabled', checked: true %>
+    <span id='enabledLabel'>Enabled</span>
+    <%= radio_button :user, 'filter', 'disabled' %>
+    <span id='disabledLabel'>Disabled</span>
+    <%= submit_tag 'submit', id: 'categorySubmit' %>
+<% end %>
+</div>

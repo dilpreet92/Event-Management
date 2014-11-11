@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141108113612) do
+ActiveRecord::Schema.define(version: 20141111071942) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,7 +42,6 @@ ActiveRecord::Schema.define(version: 20141108113612) do
     t.string   "logo_content_type"
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
-    t.boolean  "disabled_by_admin", default: false
   end
 
   create_table "rsvps", force: true do |t|
@@ -75,7 +74,6 @@ ActiveRecord::Schema.define(version: 20141108113612) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "uid"
-    t.string   "handle"
     t.boolean  "enabled",        default: true
     t.string   "twitter_name"
   end

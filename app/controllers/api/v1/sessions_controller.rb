@@ -32,7 +32,6 @@ class Api::V1::SessionsController < ApplicationController
   end
 
   def destroy_rsvp
-    #FIXED: session.rsvps.find_by
     @rsvp = @session.rsvps.find_by(user: @current_user)
     if @rsvp.destroy
       render json: { message: 'success' }, status: 200

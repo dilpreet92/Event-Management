@@ -1,5 +1,9 @@
-<%= render partial: 'events_category', locals: { path: events_path } %>
+<% if admin_signed_in? %>
+  <%= render partial: '/events/events_category', locals: { path: admin_events_path } %>
+<% else %>
+  <%= render partial: '/events/events_category', locals: { path: events_path } %>
+<% end %>  
 <div id='all_events'>
-  <%= render @events %>
+  <%= render partial: '/events/event', collection: @events %>
   <%= will_paginate @events, class: 'bottom-pagination wraper pull-right h4 mtop20 text-grey' %>
 </div>
