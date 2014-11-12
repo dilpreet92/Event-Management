@@ -41,11 +41,36 @@
         </div>
         <div class="col-md-5 text-blue h6 mtop0 pr0">
           <span class="sprite speaker"></span>
-          <%= pluralize(session.speaker.split(',').count, 'Speaker') %>
+          <span class="dropdown event-dropdown">
+              <% speakers = session.speaker.split(',') %>
+              <a href="#" ><%= pluralize(speakers.count, 'Speaker') %><span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <% if speakers.count.zero? %>
+                  <li>No speakers<li>
+                <% else %>    
+                  <% speakers.each do |speaker| %>
+                  <li><%= speaker %></li>
+                  <% end %>
+                <% end %>  
+              </ul>
+          </span>
         </div>
         <div class="col-md-7 text-blue h6 mtop0">
           <span class="sprite atendee-ico"></span>
-        <%= pluralize(session.attendes.count, 'Attendee') %>
+            <span class="dropdown event-dropdown">
+              <% attendees = session.attendes %>
+              <a href="#" ><%= pluralize(attendees.count, 'Attendee') %><span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <% if attendees.empty? %>
+                  <li>No attendees yet<li>
+                <% else %>    
+                  <% attendees.each do |attendee| %>
+                    <li><%= link_to attendee.twitter_name, "http://twitter.com/#{ attendee.twitter_name }", target: '_blank' %>
+                    </li>
+                  <% end %>
+                <% end %>   
+              </ul>
+           </span>
         </div>
         <div class="col-md-12 text-blue h6 mtop0">
           <span class="sprite location"></span>

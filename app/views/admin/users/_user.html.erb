@@ -4,7 +4,7 @@
   </div>
   <div class="col-md-8">
     <div class="col-md-12 event_name">
-      <%= link_to user.twitter_name, "http://twitter.com/#{ user.twitter_name }" %>   
+      <%= link_to user.twitter_name, "http://twitter.com/#{ user.twitter_name }", target: '_blank' %>   
     </div>
     <div class="col-md-6 event_time">
       <% if user.enabled %>

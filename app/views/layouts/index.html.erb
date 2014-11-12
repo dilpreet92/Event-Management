@@ -38,9 +38,9 @@
               <div class="btn"><%= link_to 'Events I Created', mine_events_users_path, id: 'mineEvents' %></div>
             <% end %>
             <%if current_page?(i_am_attending_users_path) %>
-              <div class="btn active"><%= link_to "Event I'm Attending", i_am_attending_users_path, id: 'attendingEvents' %></div>
+              <div class="btn active"><%= link_to "Events I'm Attending", i_am_attending_users_path, id: 'attendingEvents' %></div>
             <% else %>
-              <div class="btn"><%= link_to "Event I'm Attending", i_am_attending_users_path, id: 'attendingEvents' %></div>
+              <div class="btn"><%= link_to "Events I'm Attending", i_am_attending_users_path, id: 'attendingEvents' %></div>
             <% end %>
           <% end %>
         </div>
@@ -52,7 +52,7 @@
       </div>
     </main>
     <footer class="text-center">
-      Copyrights &copy;  2014 iConfconnect | Powered by Vinsol
+      Copyrights &copy;  2014 iConfConnect | Powered by <a href='http://vinsol.com/' target='_blank'>Vinsol</a>
     </footer>
   </body>
 </html>

@@ -43,13 +43,13 @@
   </div>
   <div class="col-md-6 text-right">
     <% if logged_in? && @event.owner?(current_user) && @event.live_or_upcoming? %>
-      <%= link_to '<span class="sprite add_session"></span>Add new Session'.html_safe, new_event_session_path(event_id: @event), class:'btn btn-success' %>
+      <%= link_to '<span class="sprite add_session"></span>Add new session'.html_safe, new_event_session_path(event_id: @event), class:'btn btn-success' %>
     <% end %>
   </div>
 </div>
 
 <% if @event.sessions.enabled.empty? %>
-  <h3 class="text-center mtop55 text-blue back-blue p5 wraper"> No Sessions Created Yet </h3>
+  <h3 class="text-center mtop55 text-blue back-blue p5 wraper"> No sessions created yet </h3>
 <% else %>
 <div class="row wraper">
   <% if logged_in? || admin_signed_in? %>

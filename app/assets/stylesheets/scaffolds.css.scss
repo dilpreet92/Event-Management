@@ -11,7 +11,16 @@ p, ol, ul, td {
   font-size: 13px;
   line-height: 18px;
 }
+.event-dropdown {
+  .dropdown-menu {
+    margin:0;
+  }
 
+  &:hover .dropdown-menu {
+    display:block;
+  }
+  
+}
 pre {
   background-color: #eee;
   padding: 10px;
