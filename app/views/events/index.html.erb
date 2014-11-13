@@ -1,9 +1,11 @@
-<% if admin_signed_in? %>
-  <%= render partial: '/events/events_category', locals: { path: admin_events_path } %>
-<% else %>
-  <%= render partial: '/events/events_category', locals: { path: events_path } %>
-<% end %>  
-<div id='all_events'>
-  <%= render partial: '/events/events', locals: { events: @events, message: "No Events" } %>
-  <%= will_paginate @events, class: 'bottom-pagination wraper pull-right h4 mtop20 text-grey' %>
+<div class='result-container'>
+  <% if admin_signed_in? %>
+    <%= render partial: '/events/events_category', locals: { path: admin_events_path } %>
+  <% else %>
+    <%= render partial: '/events/events_category', locals: { path: events_path } %>
+  <% end %>
+  <div id='all_events'>
+    <%= render partial: '/events/events', locals: { events: @events, message: "No Events" } %>
+    <%= will_paginate @events, class: 'bottom-pagination wraper pull-right h4 mtop20 text-grey' %>
+  </div>
 </div>

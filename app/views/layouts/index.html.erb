@@ -2,8 +2,8 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
     <title>Event Management</title>
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -13,44 +13,46 @@
     <%= csrf_meta_tags %>
   </head>
   <body>
-    <header>
-      <%= render 'shared/navigation' %>
-    </header>
-    <!-- <div class="map-area">
-      <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d112083.90692396626!2d77.19589335408418!3d28.611111892729635!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1398852914658"  frameborder="0" style="border:0"></iframe>
-      <div class="anchorarea active">
-        <div class="content">Welcome to iConfConnect<sub>Lists all Technical Conferences and Events across the Globe</sub></div>
-      </div>
-    </div> -->
-    <main role="main">
-      <%= render 'shared/messages' %>
-      <div id='showEvents' class="row">
-        <div class="btn-group btn-group-justified">
-          <% if current_page?(events_path) || current_page?('/') || current_page?(search_events_path)%>
-            <div class="btn active"><%= link_to 'All Events', events_path, id: 'allEvents' %></div>
-          <% else %>
-            <div class="btn"><%= link_to 'All Events', events_path, id: 'allEvents' %></div>
-          <% end %>
-          <% if logged_in? %>
-            <% if current_page?(mine_events_users_path)  %>
-              <div class="btn active"><%= link_to 'Events I Created', mine_events_users_path, id: 'mineEvents' %></div>
-            <% else %>
-              <div class="btn"><%= link_to 'Events I Created', mine_events_users_path, id: 'mineEvents' %></div>
-            <% end %>
-            <%if current_page?(i_am_attending_users_path) %>
-              <div class="btn active"><%= link_to "Events I'm Attending", i_am_attending_users_path, id: 'attendingEvents' %></div>
-            <% else %>
-              <div class="btn"><%= link_to "Events I'm Attending", i_am_attending_users_path, id: 'attendingEvents' %></div>
-            <% end %>
-          <% end %>
+    <div class="bh100">
+      <header>
+        <%= render 'shared/navigation' %>
+      </header>
+      <!-- <div class="map-area">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d112083.90692396626!2d77.19589335408418!3d28.611111892729635!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1398852914658"  frameborder="0" style="border:0"></iframe>
+        <div class="anchorarea active">
+          <div class="content">Welcome to iConfConnect<sub>Lists all Technical Conferences and Events across the Globe</sub></div>
         </div>
-      </div>
-      <div id='mainView'>
-        <div id='results'>
-          <%= yield %>
+      </div> -->
+      <main role="main">
+        <%= render 'shared/messages' %>
+        <div id='showEvents'>
+          <ul class="nav nav-tabs">
+            <% if current_page?(events_path) || current_page?('/') || current_page?(search_events_path)%>
+              <li class="active"><%= link_to 'All Events', events_path, id: 'allEvents' %></li>
+            <% else %>
+              <li><%= link_to 'All Events', events_path, id: 'allEvents' %></li>
+            <% end %>
+            <% if logged_in? %>
+              <% if current_page?(mine_events_users_path)  %>
+                <li class="active"><%= link_to 'Events I Created', mine_events_users_path, id: 'mineEvents' %></li>
+              <% else %>
+                <li><%= link_to 'Events I Created', mine_events_users_path, id: 'mineEvents' %></li>
+              <% end %>
+              <%if current_page?(i_am_attending_users_path) %>
+                <li class="active"><%= link_to "Events I'm Attending", i_am_attending_users_path, id: 'attendingEvents' %></li>
+              <% else %>
+                <li><%= link_to "Events I'm Attending", i_am_attending_users_path, id: 'attendingEvents' %></li>
+              <% end %>
+            <% end %>
+          </ul>
         </div>
-      </div>
-    </main>
+        <div id='mainView'>
+          <div id='results'>
+            <%= yield %>
+          </div>
+        </div>
+      </main>
+    </div>
     <footer class="text-center">
       Copyrights &copy;  2014 iConfConnect | Powered by <a href='http://vinsol.com/' target='_blank'>Vinsol</a>
     </footer>

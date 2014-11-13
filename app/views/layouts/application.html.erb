@@ -13,17 +13,19 @@
     <%= csrf_meta_tags %>
   </head>
   <body>
-    <header>
-      <%= render 'shared/navigation' %>
-    </header>
-    <main role="main">
-      <%= render 'shared/messages' %>
-      <div id='mainView'>
-        <div id='results'>
-          <%= yield %>
+    <div class="bh100">
+      <header>
+        <%= render 'shared/navigation' %>
+      </header>
+      <main role="main">
+        <%= render 'shared/messages' %>
+        <div id='mainView'>
+          <div id='results'>
+            <%= yield %>
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
     <footer class="text-center">
       Copyrights &copy; 2014 iConfConnect | Powered by <a href='http://vinsol.com/' target='_blank'>Vinsol</a>
     </footer>

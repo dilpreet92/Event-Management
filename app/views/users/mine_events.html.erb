@@ -1,5 +1,7 @@
-<%= render partial: 'events/events_category', locals: { path: mine_events_users_path } %>
-<div id='mine_events'>
-  <%= render partial: '/events/events', locals: { events: @events, message: "You have not created any event" } %>
-  <%= will_paginate @events, class: 'bottom-pagination wraper pull-right h4 mtop20 text-grey' %>
+<div class='result-container'>
+  <%= render partial: 'events/events_category', locals: { path: mine_events_users_path } %>
+  <div id='mine_events'>
+    <%= render partial: '/events/events', locals: { events: @events, message: "You have not created any event" } %>
+    <%= will_paginate @events, class: 'bottom-pagination wraper pull-right h4 mtop20 text-grey' %>
+  </div>
 </div>

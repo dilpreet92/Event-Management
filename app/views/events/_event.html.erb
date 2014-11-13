@@ -8,7 +8,7 @@
           <%= link_to event.name, admin_event_path(event) %>
         <% else %>
           <%= link_to event.name, event_path(event) %>
-        <% end %>    
+        <% end %>
       </div>
       <div class="col-md-6 event_time">
         <%= event.start_date.strftime('%d %b %Y -') %>
@@ -16,10 +16,10 @@
       </div>
       <div class="col-md-6 event_address">
         <span class="sprite"></span>
-        <%= event.address %>
-        <%= event.city %>
-        <%= Carmen::Country.coded(event.country).name %>
-        <%= event.contact_number %>
+          <%= event.address %>
+          <%= event.city %>
+          <%= Carmen::Country.coded(event.country).name %>
+          <%= event.contact_number %>
       </div>
       <div class="col-md-12 event_description">
         <%= event.description.truncate(350) %>
@@ -36,7 +36,7 @@
       </div>
       <div class="h5 dark-grey attendes-icon">
         <span class="sprite"></span>
-        <%= pluralize(event.attendes.count, 'Attendee') %> 
+        <%= pluralize(event.attendes.count, 'Attendee') %>
       </div>
     </div>
   </div>

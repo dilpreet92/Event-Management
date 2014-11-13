@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
     <title>Event Management</title>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -13,33 +13,35 @@
     <%= csrf_meta_tags %>
   </head>
   <body>
-    <header>
-      <%= render 'shared/navigation' %>
-    </header>
-    <main role="main">
-      <%= render 'shared/messages' %>
-      <div id='showEvents' class="row">
-        <div class="btn-group btn-group-justified">
-          <% if current_page?(admin_events_path) || current_page?('/') || current_page?(search_events_path)%>
-            <div class="btn active"><%= link_to 'All Events', admin_events_path, id: 'allEvents' %></div>
-          <% else %>
-            <div class="btn"><%= link_to 'All Events', admin_events_path, id: 'allEvents' %></div>
-          <% end %>
-          <% if admin_signed_in? %>
-            <% if current_page?(controller: 'admin/users', action: 'index') %>
-              <div class="btn active"><%= link_to 'All Users', { action: 'index', controller: 'admin/users' }, id: 'userTab' %></div>
+    <div class="bh100">
+      <header>
+        <%= render 'shared/navigation' %>
+      </header>
+      <main role="main">
+        <%= render 'shared/messages' %>
+        <div id='showEvents' class="row">
+          <ul class="nav nav-tabs">
+            <% if current_page?(admin_events_path) || current_page?('/') || current_page?(search_events_path)%>
+              <li class="btn active"><%= link_to 'All Events', admin_events_path, id: 'allEvents' %></li>
             <% else %>
-              <div class="btn"><%= link_to 'All Users', { action: 'index', controller: 'admin/users' }, id: 'userTab' %></div>
-            <% end %>  
-          <% end %>
+              <li class="btn"><%= link_to 'All Events', admin_events_path, id: 'allEvents' %></li>
+            <% end %>
+            <% if admin_signed_in? %>
+              <% if current_page?(controller: 'admin/users', action: 'index') %>
+                <li class="btn active"><%= link_to 'All Users', { action: 'index', controller: 'admin/users' }, id: 'userTab' %></li>
+              <% else %>
+                <li class="btn"><%= link_to 'All Users', { action: 'index', controller: 'admin/users' }, id: 'userTab' %></li>
+              <% end %>
+            <% end %>
+          </ul>
         </div>
-      </div>
-      <div id='mainView'>
-        <div id='results'>
-          <%= yield %>
+        <div id='mainView'>
+          <div id='results'>
+            <%= yield %>
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
     <footer class="text-center">
       Copyrights &copy;  2014 iConfConnect | Powered by <a href='http://vinsol.com/' target='_blank'>Vinsol</a>
     </footer>
