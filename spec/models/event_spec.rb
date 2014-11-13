@@ -45,18 +45,6 @@ describe Event do
         expect { event.user }.not_to be_nil
       end
 
-      describe '#event_date_valid' do
-
-        before do
-          event.start_date = Time.current - 1.day
-        end
-
-        context 'when date invalid' do
-          it { expect(event.errors).not_to be_nil }
-        end
-
-      end
-
     end
 
   end
@@ -72,7 +60,7 @@ describe Event do
 
   describe 'callbacks' do
 
-    it 'should call ensure_all_sessions_in_range before save' do
+    it 'should call check_all_sessions_in_range before save' do
       expect(event).to receive(:check_all_sessions_in_range?) 
       event.save
     end
@@ -94,6 +82,23 @@ describe Event do
         end
       end
     end
+
+    it 'should call valid event date before save' do
+      expect(event).to receive(:valid_event_date?)
+      event.save
+    end
+
+    describe '#event_date_valid' do
+
+        before do
+          event.start_date = Time.current - 1.day
+        end
+
+        context 'when date invalid' do
+          it { expect(event.errors).not_to be_nil }
+        end
+
+      end
   
   end
 
@@ -136,7 +141,9 @@ describe Event do
     context '.past' do
 
       it 'should return past_events' do
-        event.update_attribute(:end_date, Time.current - 1.day )
+        event.save
+        event.update_attribute(:start_date, (Time.current - 2.day))
+        event.update_attribute(:end_date, (Time.current - 1.day) )
         expect(Event.past).to include(event)
       end
 

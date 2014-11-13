@@ -62,7 +62,7 @@ describe Session do
   describe '#associations' do
 
     it { expect(session).to belong_to(:event) }
-    it { expect(session).to have_many(:rsvps).dependent(:destroy) }
+    it { expect(session).to have_many(:rsvps) }
     it { expect(session).to have_many(:attendes).through(:rsvps).source(:user) }
   
   end

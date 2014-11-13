@@ -19,7 +19,7 @@ class Event < ActiveRecord::Base
   scope :search, -> (query) { where("lower(events.name) LIKE :query OR lower(events.city) LIKE :query OR 
     lower(events.country) LIKE :country OR lower(sessions.topic) LIKE :query", query: "%#{ query }%", :country => get_country_name(query) ).distinct }
   
-  before_save :validate_event_date
+  before_save :valid_event_date?
   before_save :check_all_sessions_in_range?
   
   def live_or_upcoming?
@@ -40,7 +40,7 @@ class Event < ActiveRecord::Base
 
   private
 
-    def validate_event_date
+    def valid_event_date?
       if start_date_unacceptable?
         errors[:base] << 'Invalid start or end date'
         false

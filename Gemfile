@@ -32,9 +32,14 @@ group :development do
   gem 'binding_of_caller', :platforms=>[:mri_21]
 end
 gem "bullet", :group => "development"
-group :production do
-  gem 'thin'
-end
 
+gem 'capistrano', '3.2.1'
+gem 'capistrano-bundler', '~> 1.1.2'
+gem 'capistrano-rails', '~> 1.1.1'
+gem 'capistrano-rvm', github: "capistrano/rvm"
+# group :production do
+#   gem 'thin'
+# end
+gem 'simplecov', :require => false, :group => :test
 gem 'bootstrap-sass'
 gem 'will_paginate'

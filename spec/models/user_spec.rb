@@ -47,14 +47,6 @@ describe User do
 
   end
 
-  describe '#callbacks' do
-    it 'should call enable_or_disable_events before save' do
-      user.events << FactoryGirl.build(:event)
-      expect(user).to receive(:enable_or_disable_events)
-      user.save
-    end
-  end
-
   context '#events' do
 
     it 'should return events' do
@@ -141,6 +133,7 @@ describe User do
     context '#my_created_past_events' do
 
       it 'should return my past created events' do
+        event.save
         event.update_attribute(:end_date, Time.current - 1.day )
         expect(user.created_past_events).to include(event)
       end
