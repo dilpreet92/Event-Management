@@ -22,6 +22,5 @@ test:
 production:
   <<: *default
   host: 106.187.52.252
-  role: 'vinsol'
-  password: 'vinsol'
-  database: db/production
+  role: 'postgres'
+  database: iConfConnect

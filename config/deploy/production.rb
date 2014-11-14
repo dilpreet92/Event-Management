@@ -11,7 +11,7 @@
 # used to set extended properties on the server.
 set :branch, :production
 
-server '106.187.52.252', user: 'deploy', roles: %w{vinsol}
+server '106.187.52.252', user: 'root', roles: %w{vinsol}
 
 # Custom SSH Options
 # ==================
