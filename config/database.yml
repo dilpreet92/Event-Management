@@ -5,8 +5,8 @@
 # gem 'sqlite3'
 #
 default: &default
-  adapter: postgresql
-  encoding: unicode
+  adapter: mysql2
+  encoding: utf8
   pool: 5
 
 development:
@@ -21,6 +21,6 @@ test:
 
 production:
   <<: *default
-  host: 106.187.52.252
-  role: 'postgres'
+  user: root
+  password: vinsol
   database: iConfConnect
