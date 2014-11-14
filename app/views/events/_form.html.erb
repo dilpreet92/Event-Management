@@ -3,7 +3,9 @@
   <div class="row">
       <div class="col-md-6 mtop35">
         <div class="field">
-          <%= f.label :name %>
+          <%= f.label :name do %>
+           Name<span>*</span>
+          <% end %>
           <%= f.text_field :name, class: 'form-control' %>
         </div>
         <div class="field mtop20">
@@ -12,35 +14,49 @@
         </div>
       </div>
       <div class="field col-md-6 mtop35">
-        <%= f.label :description %>
+        <%= f.label :description do %>
+           Description<span>*</span>
+          <% end %>
         <%= f.text_area :description, class: 'form-control' %>
       </div>
   </div>
   <div class="row">
     <div class="field col-md-6 mtop35">
-      <%= f.label :start_date %>
+      <%= f.label :start_date do %>
+           Start Date<span>*</span>
+          <% end %>
       <%= f.text_field :start_date, class: 'datetimepicker form-control' %>
     </div>
     <div class="field col-md-6 mtop35">
-      <%= f.label :end_date %>
+      <%= f.label :end_date do %>
+           End Date<span>*</span>
+          <% end %>
       <%= f.text_field :end_date, class: 'datetimepicker form-control' %>
     </div>
   </div>
   <div class="row">
     <div class="field col-md-3 mtop35">
-      <%= f.label :contact_number %>
+      <%= f.label :contact_number do %>
+           Contact Number<span>*</span>
+          <% end %>
       <%= f.text_field :contact_number, class: 'form-control' %>
     </div>
     <div class="field col-md-3 mtop35">
-      <%= f.label :address %>
+      <%= f.label :address do %>
+           Address<span>*</span>
+          <% end %>
       <%= f.text_field :address, class: 'form-control' %>
     </div>
     <div class="field col-md-2 mtop35">
-      <%= f.label :city %>
+      <%= f.label :city do %>
+           City<span>*</span>
+          <% end %>
       <%= f.text_field :city, class: 'form-control' %>
     </div>
     <div class="field col-md-4 mtop35 country_select">
-      <%= f.label :country %>
+      <%= f.label :country do %>
+           Country<span>*</span>
+          <% end %>
       <%= f.country_select :country, { prompt: 'Please Select a country'}, class: 'form-control' %>
     </div>
   </div>

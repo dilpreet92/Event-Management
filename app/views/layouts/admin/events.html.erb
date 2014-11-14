@@ -12,7 +12,7 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
   </head>
-  <body>
+  <body class="back-eee">
     <div class="bh100">
       <header>
         <%= render 'shared/navigation' %>
@@ -22,15 +22,15 @@
         <div id='showEvents' class="row">
           <ul class="nav nav-tabs">
             <% if current_page?(admin_events_path) || current_page?('/') || current_page?(search_events_path)%>
-              <li class="btn active"><%= link_to 'All Events', admin_events_path, id: 'allEvents' %></li>
+              <li class="active"><%= link_to 'ALL EVENTS', admin_events_path, id: 'allEvents' %></li>
             <% else %>
-              <li class="btn"><%= link_to 'All Events', admin_events_path, id: 'allEvents' %></li>
+              <li><%= link_to 'ALL EVENTS', admin_events_path, id: 'allEvents' %></li>
             <% end %>
             <% if admin_signed_in? %>
               <% if current_page?(controller: 'admin/users', action: 'index') %>
-                <li class="btn active"><%= link_to 'All Users', { action: 'index', controller: 'admin/users' }, id: 'userTab' %></li>
+                <li class="active"><%= link_to 'All Users', { action: 'index', controller: 'admin/users' }, id: 'userTab' %></li>
               <% else %>
-                <li class="btn"><%= link_to 'All Users', { action: 'index', controller: 'admin/users' }, id: 'userTab' %></li>
+                <li><%= link_to 'All Users', { action: 'index', controller: 'admin/users' }, id: 'userTab' %></li>
               <% end %>
             <% end %>
           </ul>
