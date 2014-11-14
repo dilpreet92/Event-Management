@@ -46,12 +46,12 @@
               <a href="#" ><%= pluralize(speakers.count, 'Speaker') %><span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                 <% if speakers.count.zero? %>
-                  <li>No speakers<li>
-                <% else %>    
+                  <li><span class='hover_items'>No speakers</span><li>
+                <% else %>
                   <% speakers.each do |speaker| %>
-                  <li><%= speaker %></li>
+                  <li><span class='hover_items'><%= speaker %></span></li>
                   <% end %>
-                <% end %>  
+                <% end %>
               </ul>
           </span>
         </div>
@@ -62,13 +62,13 @@
               <a href="#" ><%= pluralize(attendees.count, 'Attendee') %><span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                 <% if attendees.empty? %>
-                  <li>No attendees yet<li>
-                <% else %>    
+                  <li><span class='hover_items'>No attendees yet</span><li>
+                <% else %>
                   <% attendees.each do |attendee| %>
                     <li><%= link_to attendee.twitter_name, "http://twitter.com/#{ attendee.twitter_name }", target: '_blank' %>
                     </li>
                   <% end %>
-                <% end %>   
+                <% end %>
               </ul>
            </span>
         </div>

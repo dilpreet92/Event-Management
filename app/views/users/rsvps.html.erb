@@ -1,7 +1,11 @@
 <div class='result-container'>
   <%= render partial: 'events/events_category', locals: { path: i_am_attending_users_path } %>
   <div id='attending_events'>
-    <%= render partial: '/events/events', locals: { events: @events, message: "You are not attending any event" } %>
-    <%= will_paginate @events, class: 'bottom-pagination wraper pull-right h4 mtop20 text-grey' %>
+    <% if @events.empty? %>
+      <h3 class="text-center mtop55 text-blue back-blue p5 wraper"> You are not attending any event </h3>
+    <% else %>
+      <%= render @events %>
+      <%= will_paginate @events, class: 'bottom-pagination' %>
+    <% end %>
   </div>
 </div>

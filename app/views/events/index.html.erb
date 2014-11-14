@@ -5,7 +5,11 @@
     <%= render partial: '/events/events_category', locals: { path: events_path } %>
   <% end %>
   <div id='all_events'>
-    <%= render partial: '/events/events', locals: { events: @events, message: "No Events" } %>
-    <%= will_paginate @events, class: 'bottom-pagination wraper pull-right h4 mtop20 text-grey' %>
+    <% if @events.empty? %>
+      <h3 class="text-center mtop55 text-blue back-blue p5 wraper"> No events </h3>
+    <% else %>
+      <%= render @events %>
+      <%= will_paginate @events, class: 'bottom-pagination' %>
+    <% end %>
   </div>
 </div>

@@ -1,17 +1,16 @@
-<div class="event_content wraper row mtop35">
-  <div class="col-md-2 event_image">
-    <%= user.name %>
+<div class="wraper row mtop35 user-content">
+  <div class="col-md-4">
+    <label>User Name:</label> <%= user.name %>
   </div>
-  <div class="col-md-8">
-    <div class="col-md-12 event_name">
-      <%= link_to user.twitter_name, "http://twitter.com/#{ user.twitter_name }", target: '_blank' %>   
-    </div>
-    <div class="col-md-6 event_time">
-      <% if user.enabled %>
-        <%= link_to 'disable', disable_admin_users_path(id: user), data: { confirm: 'Are you sure ?' } %>
+  <div class="col-md-4">
+    <label>Twitter Name:</label> <%= link_to user.twitter_name, "http://twitter.com/#{ user.twitter_name }", target: '_blank' %>
+  </div>
+  <div class="col-md-3">
+    <label>Mode:</label>
+    <% if user.enabled %>
+     <%= link_to 'Disabled', disable_admin_users_path(id: user), data: { confirm: 'Are you sure ?' } %>
       <% else %>
-        <%= link_to 'enable', enable_admin_users_path(id: user), data: { confirm: 'Are you sure ?' } %>
+        <%= link_to 'Enabled', enable_admin_users_path(id: user), data: { confirm: 'Are you sure ?' } %>
       <% end %>
-    </div>
   </div>
 </div>

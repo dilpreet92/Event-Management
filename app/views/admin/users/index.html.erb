@@ -1,11 +1,13 @@
+<div class='result-container row'>
 <br>
 <% if @users.empty? %>
   <h3 class="text-center mtop55 text-blue back-blue p5 wraper"> No User Exists </h3>
 <% else %>
   <%= render partial: 'user_category', locals: { path: admin_users_path } %>
-  <div id= 'all_users'>  
+  <div id= 'all_users'>
     <%= render @users %>
-    <%= will_paginate @users, class: 'bottom-pagination wraper pull-right h4 mtop20 text-grey' %>
-  </div>  
+    <%= will_paginate @users, class: 'bottom-pagination' %>
+  </div>
 <% end %>
 <br>
+</div>

@@ -3,26 +3,32 @@
     <%= image_tag event.logo.url(:thumb) %>
     </div>
     <div class="col-md-8">
-      <div class="col-md-12 event_name">
-        <% if admin_signed_in? %>
-          <%= link_to event.name, admin_event_path(event) %>
-        <% else %>
-          <%= link_to event.name, event_path(event) %>
-        <% end %>
+      <div class="row">
+        <div class="col-md-12 event_name">
+          <% if admin_signed_in? %>
+            <%= link_to event.name, admin_event_path(event) %>
+          <% else %>
+            <%= link_to event.name, event_path(event) %>
+          <% end %>
+        </div>
       </div>
-      <div class="col-md-6 event_time">
-        <%= event.start_date.strftime('%d %b %Y -') %>
-        <%= event.end_date.strftime('%d %b %Y') %>
+      <div class="row">
+        <div class="col-md-5 event_time">
+          <%= event.start_date.strftime('%d %b %Y -') %>
+          <%= event.end_date.strftime('%d %b %Y') %>
+        </div>
+        <div class="col-md-7 event_address">
+          <span class="sprite"></span>
+            <%= event.address %>
+            <%= event.city %>
+            <%= Carmen::Country.coded(event.country).name %>
+            <%= event.contact_number %>
+        </div>
       </div>
-      <div class="col-md-6 event_address">
-        <span class="sprite"></span>
-          <%= event.address %>
-          <%= event.city %>
-          <%= Carmen::Country.coded(event.country).name %>
-          <%= event.contact_number %>
-      </div>
-      <div class="col-md-12 event_description">
-        <%= event.description.truncate(350) %>
+      <div class="row">
+        <div class="col-md-12 event_description">
+          <%= event.description.truncate(350) %>
+        </div>
       </div>
     </div>
     <div class="col-md-2">
