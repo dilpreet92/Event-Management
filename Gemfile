@@ -36,9 +36,9 @@ gem "bullet", :group => "development"
 gem 'capistrano', '3.2.1'
 gem 'capistrano-bundler', '~> 1.1.2'
 gem 'capistrano-rails', '~> 1.1.1'
-# group :production do
-#   gem 'thin'
-# end
+group :production do
+  gem 'thin'
+end
 gem 'simplecov', :require => false, :group => :test
 gem 'bootstrap-sass'
 gem 'will_paginate'
