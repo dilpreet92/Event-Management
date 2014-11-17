@@ -17,7 +17,8 @@ class Event < ActiveRecord::Base
   scope :live_or_upcoming, -> { where("events.end_date >= ?", Time.current).order_by_start_date(:asc) }
   scope :past, -> { where("events.end_date < ?", Time.current).order_by_start_date(:desc) }
   scope :search, -> (query) { where("lower(events.name) LIKE :query OR lower(events.city) LIKE :query OR 
-    lower(events.country) LIKE :country OR lower(sessions.topic) LIKE :query", query: "%#{ query }%", :country => get_country_name(query) ).distinct }
+                              lower(events.country) LIKE :country OR lower(sessions.topic) LIKE :query", 
+                              query: "%#{ query }%", :country => get_country_name(query) ).distinct }
   
   before_save :valid_event_date?
   before_save :check_all_sessions_in_range?

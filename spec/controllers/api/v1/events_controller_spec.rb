@@ -45,7 +45,7 @@ describe Api::V1::EventsController do
       @event = double(:event)
       Event.stub(:where).with(:id => '146').and_return(@event)
       @event.stub(:first).and_return(@event)
-      @event.stub_chain(:attendes, :uniq).and_return(@users)
+      @event.stub_chain(:attendes).and_return(@users)
     end
 
     it 'should expect a json response' do
@@ -98,7 +98,7 @@ describe Api::V1::EventsController do
 
     before do
       @events = double(:events)
-      @current_user.stub_chain(:attending_events, :enabled, :uniq).and_return(@events)
+      @current_user.stub_chain(:attending_events, :enabled).and_return(@events)
     end
 
     it 'should expect a json response' do

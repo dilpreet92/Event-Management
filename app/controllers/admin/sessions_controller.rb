@@ -1,7 +1,7 @@
 class Admin::SessionsController < ApplicationController
   
   before_action :authenticate_admin!
-  before_action :set_session, only: [:enable, :disable]
+  before_action :set_session
 
   def disable
     if @session.update_attribute('enable', false)

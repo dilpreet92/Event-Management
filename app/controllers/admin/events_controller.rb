@@ -1,7 +1,7 @@
 class Admin::EventsController < ApplicationController
 
   before_action :authenticate_admin!
-  before_action :set_event, only: [:show, :disable, :enable]
+  before_action :set_event, except: [:index]
 
   def index
     respond_to do |format|

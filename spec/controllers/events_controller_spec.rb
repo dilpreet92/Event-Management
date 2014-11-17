@@ -19,7 +19,7 @@ describe EventsController do
 
     before do
       @events = double(:events)
-      Event.stub_chain(:live_or_upcoming, :order_by_start_date).with(:asc).and_return(@events)
+      Event.stub_chain(:enabled, :live_or_upcoming, :paginate).with(:page => nil, :per_page => 5).and_return(@events)
     end
 
     it 'should render the :index view' do
@@ -36,8 +36,7 @@ describe EventsController do
       before do
         @events = double(:events)
         controller.stub(:past?).and_return(true)
-        Event.stub_chain(:enabled, :paginate).with(:page => nil, :per_page => 5).and_return(@events)
-        @events.stub_chain(:past, :order_by_start_date).with(:desc).and_return(@events)
+        Event.stub_chain(:enabled, :past, :paginate).with(:page => nil, :per_page => 5).and_return(@events)
         xhr :get, :index, :event => { :filter => 'past'}, :format => 'js'
       end
 
@@ -56,8 +55,7 @@ describe EventsController do
       before do
         @events = double(:events)
         controller.stub(:past?).and_return(false)
-        Event.stub_chain(:enabled, :paginate).with(:page => nil, :per_page => 5).and_return(@events)
-        @events.stub_chain(:live_or_upcoming, :order_by_start_date).with(:asc).and_return(@events)
+        Event.stub_chain(:enabled, :live_or_upcoming, :paginate).with(:page => nil, :per_page => 5).and_return(@events)
         xhr :get, :index, :event => { :filter => 'upcoming'}, :format => 'js'
       end
 
@@ -98,10 +96,9 @@ describe EventsController do
       
       before do
         @rsvp = double(:rsvp)
-        controller.stub_chain(:get_live_or_upcoming_events, :eager_load).with(:sessions).and_return(@rsvp)
+        Event.stub_chain(:enabled, :live_or_upcoming, :eager_load).with(:sessions).and_return(@rsvp)
         @rsvp.stub(:search).with('dp').and_return(@events)
         @events.stub(:paginate).with({:page=>nil, :per_page=>5}).and_return(@events)
-        @events.stub(:uniq).and_return(@events)
         xhr :get, :search, :search => 'dp', :format => 'js'
       end
 
@@ -171,6 +168,7 @@ describe EventsController do
     context 'when logged in' do
 
       before do
+        @event.stub(:name).and_return('dp')
         @user.stub_chain(:events, :build).with(@event_params).and_return(@event)
         @event.stub(:save).and_return(true)
       end 
@@ -187,7 +185,7 @@ describe EventsController do
 
       it 'should flash a notice' do
         do_post
-        expect(flash[:notice]).to eql 'Event was successfully created.'
+        expect(flash[:notice]).to eql ' Event dp successfully created.'
       end
 
       it 'should render :new when not saved' do
@@ -220,6 +218,7 @@ describe EventsController do
       @event = mock_model("Event")
       Event.stub(:where).with(:id => '142').and_return(@event)
       @event.stub(:first).and_return(@event)
+      @event.stub(:name).and_return('dp')
       @event.stub(:update).and_return(true)
       controller.stub(:authorize_user?).and_return(true)
     end
@@ -249,7 +248,7 @@ describe EventsController do
     it 'should flash notice' do
       event_params = { "name" => 'dsds' }
       do_put(event_params)
-      expect(flash[:notice]).to eql 'Event was successfully updated.'
+      expect(flash[:notice]).to eql 'Event dp was successfully updated.'
     end
 
     it 'should render edit: view' do
@@ -266,6 +265,7 @@ describe EventsController do
       @event = double(:event)
       Event.stub(:where).with(:id => '142').and_return(@event)
       @event.stub(:first).and_return(@event)
+      @event.stub(:name).and_return('dp')
       controller.stub(:authorize_user?).and_return(true)
     end
 
@@ -285,7 +285,7 @@ describe EventsController do
       end
 
       it 'should flash a notice Event successfully disabled' do
-        expect(flash[:notice]).to eq 'Event successfully Disabled'
+        expect(flash[:notice]).to eq 'Event dp successfully disabled'
       end
 
     end
@@ -302,7 +302,7 @@ describe EventsController do
       end
 
       it 'should flash a notice' do
-        expect(flash[:alert]).to eq 'Event cannot be disabled'
+        expect(flash[:alert]).to eq 'Event dp cannot be disabled'
       end
 
     end

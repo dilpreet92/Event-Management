@@ -10,7 +10,7 @@ describe Admin::UsersController do
   context '#index' do
     before do
       @users =  double(:users)
-      User.stub_chain(:all, :paginate).with(:page => '1', :per_page => 5).and_return(@users)
+      User.stub_chain(:enabled, :paginate).with(:page => '1', :per_page => 5).and_return(@users)
       get :index, :page => '1'
     end
 
@@ -20,6 +20,18 @@ describe Admin::UsersController do
 
     it 'should assign users' do
       expect(assigns[:users]).to eql @users
+    end
+  end
+
+  context '#index as js request' do
+    before do
+      @users =  double(:users)
+      controller.stub(:enabled?).and_return(true)
+      User.stub_chain(:enabled, :paginate).with(:page => '1', :per_page => 5).and_return(@users)
+      get :index, :page => '1'
+    end
+
+    context 'when user enabled' do
     end
   end
 
@@ -33,6 +45,7 @@ describe Admin::UsersController do
       @user = double(:user)
       User.stub(:where).with(:id => '1').and_return(@user)
       @user.stub(:first).and_return(@user)
+      @user.stub(:name).and_return('dilpreet')
       @user.stub(:update).with(:enabled => true).and_return(true)
     end
 
@@ -44,7 +57,7 @@ describe Admin::UsersController do
 
       it 'should flash notice' do
         do_enable
-        expect(flash[:notice]).to eql 'User enabled'
+        expect(flash[:notice]).to eql "#{ @user.name } successfully enabled "
       end
     end
 
@@ -60,7 +73,7 @@ describe Admin::UsersController do
 
       it 'should flash notice' do
         do_enable
-        expect(flash[:alert]).to eql 'Failed to enable'
+        expect(flash[:alert]).to eql "Failed to enable #{ @user.name }"
       end
     end
   end
@@ -73,6 +86,7 @@ describe Admin::UsersController do
       @user = double(:user)
       User.stub(:where).with(:id => '1').and_return(@user)
       @user.stub(:first).and_return(@user)
+      @user.stub(:name).and_return('dilpreet')
       @user.stub(:update).with(:enabled => false).and_return(true)
     end
 
@@ -84,7 +98,7 @@ describe Admin::UsersController do
 
       it 'should flash notice' do
         do_disable
-        expect(flash[:notice]).to eql 'User disabled'
+        expect(flash[:notice]).to eql "#{ @user.name } successfully disabled "
       end
     end
 
@@ -100,7 +114,7 @@ describe Admin::UsersController do
 
       it 'should flash notice' do
         do_disable
-        expect(flash[:alert]).to eql 'Failed to disable'
+        expect(flash[:alert]).to eql "Failed to disable #{ @user.name }"
       end
     end
   end

@@ -13,7 +13,7 @@ describe SessionsController do
   end
 
   def set_event
-    Event.stub(:where).with(:id => "106").and_return(@event)
+    Event.stub(:where).with(:id => "129").and_return(@event)
     @event.stub(:first).and_return(@event)
   end
 
@@ -27,7 +27,7 @@ describe SessionsController do
     before do
       set_event
       @event.stub_chain(:sessions, :build).and_return(@session)
-      xhr :get, :new, :event_id => "106"
+      xhr :get, :new, :event_id => "129"
     end
 
     it 'should render new template' do
@@ -46,7 +46,7 @@ describe SessionsController do
       set_event
       @event.stub_chain(:sessions, :where).with(:id => "10").and_return(@session)
       @session.stub(:first).and_return(@session)
-      xhr :get, :edit, :event_id => 106, :id => 10
+      xhr :get, :edit, :event_id => 129, :id => 10
     end
 
     it 'should render edit template' do
@@ -69,6 +69,7 @@ describe SessionsController do
       @session.stub_chain(:rsvps, :build).with(:user => @user).and_return(@rsvp)
       @session.stub(:topic).and_return('dilpreet')
       @session.stub(:event).and_return(@event)
+      @session.stub(:upcoming?).and_return(true)
       @session.stub_chain(:event, :name).and_return('dilpreet')
     end
 
@@ -76,7 +77,7 @@ describe SessionsController do
 
       before do
         @rsvp.stub(:save).and_return(true)
-        get :create_rsvp, :event_id => 106, :session_id => 10
+        get :create_rsvp, :event_id => 129, :session_id => 10
       end
 
       it 'should assign rsvp' do
@@ -105,7 +106,7 @@ describe SessionsController do
       end
 
       it 'should flash notice' do
-        expect(flash[:alert]).to eql 'You cannot attend this event'
+        expect(flash[:alert]).to eql 'You cannot attend dilpreet event'
       end
 
     end
@@ -120,6 +121,7 @@ describe SessionsController do
       Rsvp.stub(:find_by).with(:session_id => '10', user: @user).and_return(@rsvp)
       @rsvp.stub_chain(:session, :topic).and_return('dilpreet')
       @rsvp.stub_chain(:session, :event).and_return(@event)
+      @rsvp.stub_chain(:session, :event, :name).and_return('dp')
       @rsvp.stub(:destroy).and_return(true)
     end
 
@@ -139,7 +141,7 @@ describe SessionsController do
       end
 
       it 'should flash notice' do
-        expect(flash[:notice]).to eql "You are now not attending #{ @rsvp.session.topic }"
+        expect(flash[:notice]).to eql "You have unattended #{ @rsvp.session.topic } session of #{ @rsvp.session.event.name }"
       end
     end
 
@@ -170,6 +172,7 @@ describe SessionsController do
         "location" => "fewfwe", "speaker" => "wefwef", "enable" => true, "description" => "fwefwef" }
       @event.stub_chain(:sessions, :build).with(@session_params).and_return(@session)
       @session.stub(:save).and_return(true)
+      @session.stub(:topic).and_return('dilpreet')
     end
 
     def do_post
@@ -189,7 +192,7 @@ describe SessionsController do
       end
       it 'should flash a notice' do
         do_post
-        expect(flash[:notice]).to eql 'Session was successfully created.'
+        expect(flash[:notice]).to eql 'Session dilpreet was successfully created.'
       end
     end
 
@@ -215,6 +218,7 @@ describe SessionsController do
         "location" => "fewfwe", "speaker" => "wefwef", "enable" => true, "description" => "fwefwef" }
       @session.stub(:update).with(@session_params).and_return(true)
       @session.stub(:event).and_return(@event)
+      @session.stub(:topic).and_return('dilpreet')
     end
 
     def do_put
@@ -228,7 +232,7 @@ describe SessionsController do
       end
       it 'should flash notice' do
         do_put
-        expect(flash[:notice]).to eql 'Session was successfully updated.'
+        expect(flash[:notice]).to eql 'Session dilpreet was successfully updated.'
       end
     end
 
@@ -252,6 +256,7 @@ describe SessionsController do
       @session.stub_chain(:event).and_return(@event)
       allow(@event).to receive(:owner?).and_return(true)
       @session.stub(:update_attribute).with("enable", false).and_return(true)
+      @session.stub(:topic).and_return('dilpreet')
     end
 
     it 'should receive update attribute' do
@@ -270,7 +275,7 @@ describe SessionsController do
       end
 
       it 'should flash a notice' do
-        expect(flash[:notice]).to eql 'Session Disabled'
+        expect(flash[:notice]).to eql "Session #{ @session.topic } successfully disabled"
       end
     end
 
@@ -285,7 +290,7 @@ describe SessionsController do
       end
 
       it 'should flash a notice' do
-        expect(flash[:alert]).to eql 'Session Cannot be disabled'
+        expect(flash[:alert]).to eql "Session #{ @session.topic } cannot be disabled"
       end
       
     end
