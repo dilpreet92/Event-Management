@@ -29,16 +29,16 @@ gem 'carmen-rails', '~> 1.0.0'
 gem 'therubyracer', :platform=>:ruby
 group :development do
   gem 'better_errors'
-  gem 'binding_of_caller', :platforms=>[:mri_21]
+  #gem 'binding_of_caller', :platforms=>[:mri_21]
 end
 gem "bullet", :group => "development"
 
 gem 'capistrano', '3.2.1'
 gem 'capistrano-bundler', '~> 1.1.2'
 gem 'capistrano-rails', '~> 1.1.1'
-group :production do
-  gem 'thin'
-end
+# group :production do
+#   gem 'thin'
+# end
 gem 'simplecov', :require => false, :group => :test
 gem 'bootstrap-sass'
 gem 'will_paginate'
