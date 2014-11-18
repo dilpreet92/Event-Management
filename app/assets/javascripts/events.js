@@ -1,4 +1,7 @@
-$(document).on('ready page:load', function(){
+function CheckEvent() {}
+
+CheckEvent.prototype.bindEvents = function() {
+
   //Making pagination links work as a ajax request
   $('#results').on('click', '.pagination a', function () {
     $.get(this.href, null, null, 'script');
@@ -19,6 +22,13 @@ $(document).on('ready page:load', function(){
   });
 
   $('.datetimepicker').datetimepicker();
+
+};
+
+$(document).on('ready page:load', function(){
+
+  var event = new CheckEvent();
+  event.bindEvents();
 
 });
 

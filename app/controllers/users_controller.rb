@@ -4,7 +4,7 @@ class UsersController < ApplicationController
 
   before_action :authenticate
 
-  def mine_events
+  def events
     respond_to do |format|
       format.html { @events = current_user.created_upcoming_events.paginate(:page => params[:page], :per_page => 5) }
       format.js do

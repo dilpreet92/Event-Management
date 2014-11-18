@@ -1,5 +1,5 @@
 <div class='result-container'>
-  <%= render partial: 'events/events_category', locals: { path: i_am_attending_users_path } %>
+  <%= render partial: 'events/events_category', locals: { path: attending_events_users_path } %>
   <div id='attending_events'>
     <% if @events.empty? %>
       <h3 class="text-center mtop55 text-blue back-blue p5 wraper"> You are not attending any event </h3>

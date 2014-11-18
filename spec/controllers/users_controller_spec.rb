@@ -9,10 +9,10 @@ describe UsersController do
     controller.stub(:current_user).and_return(@user)
   end
 
-  context '#mine_events when html request' do
+  context '#events when html request' do
     before do
       @user.stub_chain(:created_upcoming_events, :paginate).with(:page => nil, :per_page => 5).and_return(@events)
-      get :mine_events
+      get :events
     end
 
     it 'should assign @events' do
@@ -20,7 +20,7 @@ describe UsersController do
     end
 
     it 'should render the mine events view' do
-      expect(response).to render_template(:mine_events)
+      expect(response).to render_template(:events)
     end
   end
 
@@ -31,7 +31,7 @@ describe UsersController do
       before do
         @user.stub_chain(:created_past_events, :paginate).with({:page=>nil, :per_page=>5}).and_return(@events)
         controller.stub(:past?).and_return(true)
-        xhr :get, :mine_events, :event => { :filter => 'past'}, :format => 'js'
+        xhr :get, :events, :event => { :filter => 'past'}, :format => 'js'
       end
 
       it 'should assign events to my past events' do
@@ -49,7 +49,7 @@ describe UsersController do
       before do
         @user.stub_chain(:created_upcoming_events, :paginate).with({:page=>nil, :per_page=>5}).and_return(@events)
         controller.stub(:past?).and_return(false)
-        xhr :get, :mine_events, :events => { :filter => 'upcoming' }, :format => 'js'
+        xhr :get, :events, :events => { :filter => 'upcoming' }, :format => 'js'
       end
 
       it 'should assign events to my upcoming events' do

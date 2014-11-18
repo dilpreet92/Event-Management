@@ -1,0 +1,11 @@
+<div class='result-container'>
+  <%= render partial: 'events/events_category', locals: { path: events_users_path } %>
+  <div id='mine_events'>
+    <% if @events.empty? %>
+      <h3 class="text-center mtop55 text-blue back-blue p5 wraper"> You have not created any event </h3>
+    <% else %>
+      <%= render @events %>
+      <%= will_paginate @events, class: 'bottom-pagination' %>
+    <% end %>
+  </div>
+</div>

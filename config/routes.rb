@@ -72,8 +72,8 @@ Rails.application.routes.draw do
 
   resources :users do
     collection do
-      get '/mine_events' => 'users#mine_events'
-      get '/i_am_attending' => 'users#rsvps'
+      get '/events' => 'users#events'
+      get '/attending_events' => 'users#rsvps'
     end
   end
 
