@@ -6,11 +6,11 @@
     <label>Twitter Name:</label> <%= link_to user.twitter_name, "http://twitter.com/#{ user.twitter_name }", target: '_blank' %>
   </div>
   <div class="col-md-3">
-    <label>Mode:</label>
+    <label>Action:</label>
     <% if user.enabled %>
-     <%= link_to 'Disabled', disable_admin_users_path(id: user), data: { confirm: 'Are you sure ?' } %>
+     <%= link_to 'Disable', disable_admin_users_path(id: user), data: { confirm: 'Are you sure ?' } %>
       <% else %>
-        <%= link_to 'Enabled', enable_admin_users_path(id: user), data: { confirm: 'Are you sure ?' } %>
+        <%= link_to 'Enable', enable_admin_users_path(id: user), data: { confirm: 'Are you sure ?' } %>
       <% end %>
   </div>
 </div>

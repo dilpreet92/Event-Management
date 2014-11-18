@@ -2,7 +2,7 @@
 <% if events.empty? %>
   <h3 class="text-center mtop55 text-blue back-blue p5 wraper"> <%= message %> </h3>
 <% else %>
-  <%= render partial: 'events/event', collection: events %>
+  <%= render partial: '/events/event', collection: events %>
   <%= will_paginate events, remote: true, class: 'pagination bottom-pagination' %>
 <% end %>
 <br>
