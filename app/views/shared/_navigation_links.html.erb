@@ -7,7 +7,7 @@
     <%= submit_tag '', id: 'searchButton', class: 'sprite' %>
   <% end %>
 </li>
-<% unless admin_signed_in? %>
+<% unless admin_signed_in? || current_page?('/admin/sign_in') %>
   <li class="pull-right">
   <%= link_to '<span class="sprite"></span>Create an event'.html_safe, new_event_path, :class => 'btn create_event' %></li>
 <% end %>
