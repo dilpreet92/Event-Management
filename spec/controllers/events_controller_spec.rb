@@ -4,15 +4,101 @@ describe EventsController do
 
   before do
     @user = double(:user)
-    @event = double(:event)
     User.stub(:find).with(1).and_return(@user)
     controller.stub(:admin_signed_in?).and_return(false)
     controller.stub(:current_user).and_return(@user)
   end
 
   def set_event
+    @event = double(:event)
     Event.stub(:where).with(:id => '142').and_return(@event)
     @event.stub(:first).and_return(@event)
+  end
+
+  describe 'callbacks' do
+    describe '#past?' do
+      context 'when past' do
+        before do
+          controller.params = ActionController::Parameters.new(:event => { :filter => 'past' } )
+        end
+        it 'should return true' do
+          expect(controller.send(:past?)).to be_true
+        end
+      end
+      context 'when upcoming' do
+        before do
+          controller.params = ActionController::Parameters.new(:event => { :filter => 'upcoming' } )
+        end
+        it 'should return false' do
+          expect(controller.send(:past?)).to be_false
+        end
+      end
+    end
+
+    describe '#set_event' do
+      context 'when event found' do
+        before do
+          set_event
+          controller.params = ActionController::Parameters.new(id: '142')
+        end
+        it 'should assign @event' do
+          controller.send(:set_event)
+          expect(assigns[:event]).to eql @event
+        end
+      end
+
+      context 'when event not found' do
+        before do
+          controller.params = ActionController::Parameters.new(id: '2000')
+        end
+        it 'should redirect_to to events_url with a alert message' do
+          controller.should_receive(:redirect_to).with(events_url, {:alert=>"Event not found or disabled"} )
+          controller.send(:set_event)
+        end
+      end
+    end
+
+    describe '#hide_event_if_user_disabled' do
+      before do
+        set_event
+        controller.params = ActionController::Parameters.new(id: '142')
+        controller.send(:set_event)
+        @event.stub_chain(:user, :enabled?).and_return(false)
+      end
+      it 'should redirect to events url with a alert message' do
+        controller.should_receive(:redirect_to).with(events_url, alert: "Creator of the user is currently disabled")
+        controller.send(:hide_event_if_user_disabled)
+      end
+    end
+
+    describe '#authorize_user?' do
+
+      before do
+        set_event
+        controller.params = ActionController::Parameters.new(id: '142')
+        controller.send(:set_event)
+      end
+      
+      context 'when not the owner of the event' do
+        before do
+          @event.stub(:owner?).with(@user).and_return(false)
+        end
+        it 'should redirect_to events url with a alert message' do
+          controller.should_receive(:redirect_to).with(events_url, alert: 'Current activity cannot be performed')
+          controller.send(:authorize_user?)
+        end
+      end
+
+      context 'when current user is the owner of the event' do
+        before do
+          @event.stub(:owner?).with(@user).and_return(true)
+          @event.stub(:past?).and_return(false)
+        end
+        it 'should return nil' do
+          expect(controller.send(:authorize_user?)).to be_nil
+        end
+      end
+    end
   end
   
   context '#index as html format' do
@@ -113,9 +199,12 @@ describe EventsController do
   end
 
   context '#show' do
-
+    before do
+      set_event
+      controller.stub(:hide_event_if_user_disabled).and_return(true)
+    end
     it 'should render the :show view' do
-      get :show, :id => 1
+      get :show, :id => 142
       expect(response).to render_template(:show)
     end
 
@@ -303,6 +392,54 @@ describe EventsController do
 
       it 'should flash a notice' do
         expect(flash[:alert]).to eq 'Event dp cannot be disabled'
+      end
+
+    end
+         
+  end
+
+  context '#enable' do
+   
+    before do
+      set_event
+      @event.stub(:name).and_return('dp')
+      controller.stub(:authorize_user?).and_return(true)
+    end
+
+    context 'when successfully enabled' do
+
+      before do
+        @event.stub(:update_attribute).with('enable', true).and_return(true)
+        xhr :get, :enable, :id => 142
+      end
+
+      it 'should assign event to current event' do
+        expect(assigns[:event]).to eql @event
+      end
+
+      it 'should redirect to events page' do
+        expect(response).to redirect_to events_url
+      end
+
+      it 'should flash a notice Event successfully disabled' do
+        expect(flash[:notice]).to eq "Event #{ @event.name } successfully enabled"
+      end
+
+    end
+
+    context 'when not enabled' do
+
+      before do
+        @event.stub(:update_attribute).with('enable', true).and_return(false)
+        xhr :get, :enable, :id => 142
+      end
+
+      it 'should redirect to events page' do
+        expect(response).to redirect_to events_url
+      end
+
+      it 'should flash a notice' do
+        expect(flash[:alert]).to eq "Event #{ @event.name } cannot be enabled"
       end
 
     end

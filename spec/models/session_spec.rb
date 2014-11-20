@@ -33,16 +33,35 @@ describe Session do
         expect(session.description.length).to be <= 250
       end
 
-    end  
+    end
+  end
+
+  describe 'callbacks' do
+
+    it 'should call validate_session_start_date before save' do
+      expect(session).to receive(:validate_session_start_date) 
+      session.save
+    end
+
+    it 'should call validate_session_end_date before save' do
+      expect(session).to receive(:validate_session_end_date)
+      session.save
+    end
 
     describe '#session_start_date' do
 
       context 'when invalid' do
         before do
           session.start_date = Time.current - 1.day
-          session.save
         end
-          it { expect(session.errors).not_to be_nil }
+        it 'should return false ' do
+         expect(session.save).to be_false
+       end
+        it 'should add to the errors messages' do
+          session.save
+          expect(session.errors.messages[:start_date]).to include "Session should be present between #{ event.start_date } and #{ event.end_date } 
+        and session cannot be of more than one day"
+        end
       end
 
     end
@@ -50,10 +69,16 @@ describe Session do
     describe '#session_end_date' do
       context 'when invalid' do
         before do
-          session.end_date = Time.current - 1.day
-          session.save
+          session.end_date = session.start_date - 1.hours
         end
-        it { expect(session.errors).not_to be_nil }
+        it 'should return false' do
+          expect(session.save).to be_false
+        end
+        it 'should add to error messages' do
+          session.save
+          expect(session.errors.messages[:end_date]).to include "Session should be present between #{ event.start_date } and #{ event.end_date } 
+        and session cannot be of more than one day"
+        end
       end
     end
 

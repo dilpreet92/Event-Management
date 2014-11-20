@@ -12,6 +12,56 @@ describe Admin::EventsController do
     @event.stub(:first).and_return(@event)
   end
 
+  describe 'callbacks' do
+    describe '#past?' do
+      context 'when event is past' do
+        before do
+          @events = double(:events)
+          Event.stub_chain(:past, :paginate).with(:page => nil, :per_page => 5).and_return(@events)
+          xhr :get, :index, :event => { :filter => 'past' }, :format => 'js'
+        end
+        it 'should return true' do
+          expect(controller.send(:past?)).to be_true
+        end
+      end
+
+      context 'when event is upcoming?' do
+        before do
+          @events = double(:events)
+          Event.stub_chain(:live_or_upcoming, :paginate).with(:page => nil, :per_page => 5).and_return(@events)
+          xhr :get, :index, :event => { :filter => 'upcoming'}, :format => 'js'
+        end
+        it 'should return false' do
+          expect(controller.send(:past?)).to be_false
+        end
+      end
+    end
+
+    describe '#set_event' do
+      context 'when event found' do
+        before do
+          set_event
+          controller.params = ActionController::Parameters.new(id: '106')
+        end
+        it 'should assign @event' do
+          controller.send(:set_event)
+          expect(assigns[:event]).to eql @event
+        end
+      end
+
+      context 'when event not found' do
+        before do
+          controller.params = ActionController::Parameters.new(id: '2000')
+        end
+        it 'should redirect_to to events_url with a alert message' do
+          controller.should_receive(:redirect_to).with(events_url, {:alert=>"Event not found or disabled"} )
+          controller.send(:set_event)
+        end
+      
+      end
+    end
+  end
+
   describe '#index as html request' do
     before do
       @events = double(:events)

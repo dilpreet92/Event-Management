@@ -9,6 +9,30 @@ describe UsersController do
     controller.stub(:current_user).and_return(@user)
   end
 
+  describe 'private instance methods' do
+    describe '#past?' do
+      context 'when event is past' do
+        before do
+          @user.stub_chain(:created_past_events, :paginate).with({:page=>nil, :per_page=>5}).and_return(@events)
+          xhr :get, :events, :event => { :filter => 'past'}, :format => 'js'
+        end
+        it 'should return true' do
+          expect(controller.send(:past?)).to be_true
+        end
+      end
+
+      context 'when event is upcoming?' do
+        before do
+          @user.stub_chain(:created_upcoming_events, :paginate).with({:page=>nil, :per_page=>5}).and_return(@events)
+          xhr :get, :events, :event => { :filter => 'upcoming'}, :format => 'js'
+        end
+        it 'should return false' do
+          expect(controller.send(:past?)).to be_false
+        end
+      end
+    end
+  end
+
   context '#events when html request' do
     before do
       @user.stub_chain(:created_upcoming_events, :paginate).with(:page => nil, :per_page => 5).and_return(@events)

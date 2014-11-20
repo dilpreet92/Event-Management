@@ -101,14 +101,27 @@ describe User do
 
   describe '.class_methods' do
 
-    context '.create_with_ominauth' do
-      it 'should return user' do
-        auth = { 'provider' => "twitter",
-                 'credentials' => { 'token' => "edeesasd", 'secret' => "twitterdasda" },
-                 'uid' => "qeweqw",
-                 'info' => { 'urls' => { 'Twitter' => 'abc' }, 'name' => "dp", 'nickname' => 'sd' },
-               }
-        expect(User.create_with_omniauth(auth)).to be_an_instance_of(User)
+    describe '.create_with_ominauth' do
+      context 'when user successfully created' do
+        it 'should return user' do
+          auth = { 'provider' => "twitter",
+                   'credentials' => { 'token' => "edeesasd", 'secret' => "twitterdasda" },
+                   'uid' => "qeweqw",
+                   'info' => { 'urls' => { 'Twitter' => 'abc' }, 'name' => "dp", 'nickname' => 'sd' },
+                 }
+          expect(User.create_with_omniauth(auth)).to be_an_instance_of(User)
+        end
+      end
+
+      context 'when user not created' do
+        it 'should return false' do
+          auth = { 'provider' => "twitter",
+                   'credentials' => { 'token' => "edeesasd", 'secret' => "twitterdasda" },
+                   'uid' => "qeweqw",
+                   'info' => { 'urls' => { 'Twitter' => 'abc' }, 'name' => "dp", 'nickname' => nil },
+                 }
+          expect(User.create_with_omniauth(auth)).to be_false
+        end
       end
 
     end

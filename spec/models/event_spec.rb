@@ -58,7 +58,9 @@ describe Event do
 
   end
 
-  describe 'callbacks' do
+  describe 'callbacks' do 
+    let!(:user) { FactoryGirl.create :user }
+    let!(:event) { FactoryGirl.create(:event, :user => user) }
 
     it 'should call check_all_sessions_in_range before save' do
       expect(event).to receive(:check_all_sessions_in_range?) 
@@ -74,11 +76,13 @@ describe Event do
       end
 
       context 'when false' do
-        let!(:session) { FactoryGirl.build(:session, :event => event ) }
+        let!(:session) { FactoryGirl.create(:session, :event => event ) }
         it 'should add error message' do
-          session.start_date = session.event.start_date - 1.day
-          event.save
+          event.update_attribute(:start_date, session.start_date + 1.day )
+          event.sessions(true)
+          expect(event.save).to be_false
           expect(event.errors).not_to be_nil
+          expect(event.errors[:base]).to include 'Event cannot be updated as event has sessions outside the given interval'
         end
       end
     end

@@ -12,7 +12,9 @@ describe SessionsController do
     controller.stub(:current_user).and_return(@user)
   end
 
+
   def set_event
+    @event = double(:event)
     Event.stub(:where).with(:id => "129").and_return(@event)
     @event.stub(:first).and_return(@event)
   end
@@ -20,6 +22,86 @@ describe SessionsController do
   def set_session
     Session.stub(:where).with(:id => "10").and_return(@session)
     @session.stub(:first).and_return(@session)
+  end
+
+  describe '#callbacks' do
+    describe '#set_session' do
+      context 'when session found' do
+        before do
+          set_session
+          controller.params = ActionController::Parameters.new(id: '10')
+          @session.stub(:enable).and_return(true)
+        end
+        it 'should assign @session' do
+          controller.send(:set_session)
+          expect(assigns[:session]).to eql @session
+        end
+      end
+
+      context 'when session not found' do
+        before do
+          controller.params = ActionController::Parameters.new(id: '10000')
+        end
+        it 'should redirect to events url with a alert message' do
+          controller.should_receive(:redirect_to).with(events_url, alert: 'Session not found or disabled')
+          controller.send(:set_session)
+        end
+      end
+    end
+
+    describe '#set_event' do
+      context 'when event found' do
+        before do
+          set_event
+          controller.params = ActionController::Parameters.new(event_id: '129')
+        end
+        it 'should assign @event' do
+          controller.send(:set_event)
+          expect(assigns[:event]).to eql @event
+        end
+      end
+
+      context 'when not found' do
+        before do
+          controller.params = ActionController::Parameters.new(event_id: '14600')
+        end
+        it 'should redirect to events_url with a alert message' do
+          controller.should_receive(:redirect_to).with(events_url, alert: 'Event not found or disabled')
+          controller.send(:set_event)
+        end
+      end
+    end
+
+    describe '#authorize_user?' do
+
+      before do
+        set_event
+        controller.params = ActionController::Parameters.new(event_id: '129')
+        controller.send(:set_event)
+      end
+      
+      context 'when not the owner of the event' do
+        before do
+          @event.stub(:owner?).with(@user).and_return(false)
+          @event.stub(:past?).and_return(true)
+        end
+        it 'should redirect_to events url with a alert message' do
+          controller.should_receive(:redirect_to).with(events_url, alert: 'Current activity cannot be performed')
+          debugger
+          controller.send(:authorize_user?)
+        end
+      end
+
+      context 'when current user is the owner of the event' do
+        before do
+          @event.stub(:owner?).with(@user).and_return(true)
+          @event.stub(:past?).and_return(false)
+        end
+        it 'should return true' do
+          expect(controller.send(:authorize_user?)).to be_true
+        end
+      end
+    end
   end
 
   context '#new' do

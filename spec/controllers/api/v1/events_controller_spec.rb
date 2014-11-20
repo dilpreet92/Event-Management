@@ -8,6 +8,37 @@ describe Api::V1::EventsController do
     @current_user.stub(:first).and_return(@current_user)
   end
 
+  def set_event
+    @event = double(:event)
+    Event.stub(:where).with(:id => '146').and_return(@event)
+    @event.stub(:first).and_return(@event)
+  end
+
+  describe '#callbacks' do
+    describe '#set_event' do
+      context 'when found' do
+        before do
+          set_event
+          controller.params = ActionController::Parameters.new(id: '146')
+        end
+        it 'should assign @event' do
+          controller.send(:set_event)
+          expect(assigns[:event]).to eql @event
+        end
+      end
+
+      context 'when not found' do
+        before do
+          controller.params = ActionController::Parameters.new(id: '14600')
+        end
+        it 'should render json with a message and status 404' do
+          controller.should_receive(:render).with(json: {message: 'Event not found'}, status: 404)
+          controller.send(:set_event)
+        end
+      end
+    end
+  end
+
   context '#index' do
 
     def get_index
@@ -42,9 +73,7 @@ describe Api::V1::EventsController do
 
     before do
       @users = double(:mock)
-      @event = double(:event)
-      Event.stub(:where).with(:id => '146').and_return(@event)
-      @event.stub(:first).and_return(@event)
+      set_event
       @event.stub_chain(:attendes).and_return(@users)
     end
 
