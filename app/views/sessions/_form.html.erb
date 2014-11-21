@@ -49,7 +49,7 @@
             <%= t.text_field :name, class: 'form-control', :readonly => read %>
             <%= t.label :twitter_handle %>
             <%= t.text_field :twitter_handle, class: 'form-control', :readonly => read %>
-            <% if read %>
+            <% if !read %>
               <a href="#" class="remove">Remove Speaker</a>
             <% end %>  
             <%= t.hidden_field :id %>
@@ -57,7 +57,7 @@
           </fieldset>
         <% end %>
       </div>
-      <% if read %>
+      <% if !read %>
         <a href="#" class="add">Add Speakers</a> 
       <% end %>
     </div>
