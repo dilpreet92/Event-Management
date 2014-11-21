@@ -49,13 +49,17 @@
             <%= t.text_field :name, class: 'form-control', :readonly => read %>
             <%= t.label :twitter_handle %>
             <%= t.text_field :twitter_handle, class: 'form-control', :readonly => read %>
-            <a href="#" class="remove">Remove Speaker</a>
+            <% if read %>
+              <a href="#" class="remove">Remove Speaker</a>
+            <% end %>  
             <%= t.hidden_field :id %>
             <%= t.hidden_field :_destroy %>
           </fieldset>
         <% end %>
       </div>
-      <a href="#" class="add">Add Speakers</a> 
+      <% if read %>
+        <a href="#" class="add">Add Speakers</a> 
+      <% end %>
     </div>
     <div class="field enable-checkbox col-md-2 mtop70 text-right">
       <%= f.check_box :enable, :disabled => read %>
