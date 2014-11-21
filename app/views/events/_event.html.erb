@@ -19,8 +19,8 @@
         </div>
         <div class="col-md-7 event_address">
           <span class="sprite"></span>
-            <%= event.address %>
-            <%= event.city %>
+            <%= event.address %>,
+            <%= event.city %>,
             <%= Carmen::Country.coded(event.country).name %>
             <%= event.contact_number %>
         </div>
@@ -34,7 +34,7 @@
     <div class="col-md-2">
       <div class="h5 dark-grey event-icon">
         <span class="sprite"></span>
-        <%= pluralize(event.sessions.enabled.count, 'Event') %>
+        <%= pluralize(event.sessions.enabled.count, 'Session') %>
       </div>
       <div class="h5 dark-grey speaker-icon">
         <span class="sprite"></span>

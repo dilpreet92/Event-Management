@@ -71,37 +71,6 @@ describe SessionsController do
         end
       end
     end
-
-    describe '#authorize_user?' do
-
-      before do
-        set_event
-        controller.params = ActionController::Parameters.new(event_id: '129')
-        controller.send(:set_event)
-      end
-      
-      context 'when not the owner of the event' do
-        before do
-          @event.stub(:owner?).with(@user).and_return(false)
-          @event.stub(:past?).and_return(true)
-        end
-        it 'should redirect_to events url with a alert message' do
-          controller.should_receive(:redirect_to).with(events_url, alert: 'Current activity cannot be performed')
-          debugger
-          controller.send(:authorize_user?)
-        end
-      end
-
-      context 'when current user is the owner of the event' do
-        before do
-          @event.stub(:owner?).with(@user).and_return(true)
-          @event.stub(:past?).and_return(false)
-        end
-        it 'should return true' do
-          expect(controller.send(:authorize_user?)).to be_true
-        end
-      end
-    end
   end
 
   context '#new' do

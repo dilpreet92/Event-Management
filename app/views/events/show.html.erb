@@ -27,8 +27,8 @@
       <%= @event.name %>
     </div>
     <div class="col-md-12 text-blue back-eee p5 m15">
-      <%= @event.address %>
-      <%= @event.city %>
+      <%= @event.address %>,
+      <%= @event.city %>,
       <%= Carmen::Country.coded(@event.country).name %>
       <%= @event.contact_number %>
     </div>
