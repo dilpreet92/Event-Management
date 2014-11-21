@@ -23,6 +23,8 @@ CheckEvent.prototype.bindEvents = function() {
 
   $('.datetimepicker').datetimepicker();
 
+  $('FORM').nestedFields();
+
 };
 
 $(document).on('ready page:load', function(){

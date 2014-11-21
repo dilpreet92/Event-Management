@@ -4,5 +4,5 @@
       <div class="iconf_title">Create Session for <span class=" fw400 text-grey"> (<%= @event.name %>) </span></div>
     </div>
   </div>
-  <%= render 'form' %>
+  <%= render partial: 'form', locals: { read: false } %>
 </div>

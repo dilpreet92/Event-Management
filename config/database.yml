@@ -21,5 +21,6 @@ test:
 
 production:
   <<: *default
-  user: vinsol
-  database: iConfConnect
+  user: dp
+  password: dp
+  database: iconf

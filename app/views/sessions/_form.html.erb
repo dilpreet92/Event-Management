@@ -6,20 +6,20 @@
         <%= f.label :topic do %>
            Topic<span>*</span>
           <% end %>
-        <%= f.text_field :topic, class: 'form-control' %>
+        <%= f.text_field :topic, class: 'form-control', :readonly => read %>
       </div>
       <div class="field mtop20">
         <%= f.label :location do %>
            Location<span>*</span>
           <% end %>
-        <%= f.text_field :location, class: 'form-control' %>
+        <%= f.text_field :location, class: 'form-control', :readonly => read %>
       </div>
     </div>
     <div class="field col-md-6 mtop35">
       <%= f.label :description do %>
            Description<span>*</span>
           <% end %>
-      <%= f.text_area :description, class: 'form-control' %>
+      <%= f.text_area :description, class: 'form-control', :readonly => read %>
     </div>
   </div>
   <div class="row">
@@ -27,27 +27,42 @@
       <%= f.label :start_date do %>
            Start Date<span>*</span>
           <% end %>
-      <%= f.text_field :start_date, class: 'datetimepicker form-control' %>
+      <%= f.text_field :start_date, class: 'datetimepicker form-control', :readonly => read %>
     </div>
     <div class="field col-md-6 mtop35">
       <%= f.label :end_date do %>
            End Date<span>*</span>
           <% end %>
-      <%= f.text_field :end_date, class: 'datetimepicker form-control' %>
+      <%= f.text_field :end_date, class: 'datetimepicker form-control', :readonly => read %>
     </div>
   </div>
   <div class="row">
     <div class="field col-md-6 mtop35">
-      <%= f.label :speaker %>Enter Comma Separated values if more than one speaker
-      <%= f.text_field :speaker, class: 'form-control' %>
+      <%#= f.label :speaker %><!--Enter Comma Separated values if more than one speaker-->
+      <%#= f.text_field :speaker, class: 'form-control', :readonly => read %>
+      <div class='items'>
+        <%= f.nested_fields_for :speakers do |t| %>
+          <fieldset class="item">
+            <%= t.label :name do %>
+              Speaker Name<span>*</span>
+            <% end %>  
+            <%= t.text_field :name, class: 'form-control', :readonly => read %>
+            <%= t.label :twitter_handle %>
+            <%= t.text_field :twitter_handle, class: 'form-control', :readonly => read %>
+            <a href="#" class="remove">Remove Speaker</a>
+            <%= t.hidden_field :id %>
+            <%= t.hidden_field :_destroy %>
+          </fieldset>
+        <% end %>
+      </div>
+      <a href="#" class="add">Add Speakers</a> 
     </div>
-    <div class="col-md-1 "></div>
     <div class="field enable-checkbox col-md-2 mtop70 text-right">
-      <%= f.check_box :enable %>
+      <%= f.check_box :enable, :disabled => read %>
       <%= f.label :enable %>
     </div>
     <div class="actions col-md-3 text-right mtop55">
-      <%= f.submit 'Create', class: 'btn btn-lg btn-warning' %>
+      <%= f.submit 'Create', class: 'btn btn-lg btn-warning', :disabled => read %>
       <% end %>
       <%= link_to 'Cancel', @session.event, method: :get, class:'btn btn-lg btn-primary' %>
     </div>

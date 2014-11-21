@@ -1,8 +1,21 @@
 <div class="create_event_design row wraper">
   <div class="row">
     <div class="col-md-12">
-      <div class="iconf_title">Editing session</div>
+      <div class="iconf_title">
+        Editing session
+        <div class='col-md-12 text-right h4 text-orange'>
+        <% if @session.enable? %>  
+          <%= link_to 'Disable', disable_event_session_path(@session.event, @session), data: { confirm: 'Are you sure you want to disable this session?' } %>
+        <% else %>
+          <%= link_to 'Enable', enable_event_session_path(@session.event, @session), data: { confirm: 'Are you sure you want to enable this session?' } %>
+        <% end %>  
+      </div>
+      </div>
     </div>
   </div>
-  <%= render 'form' %>
+  <% if admin_signed_in? %>
+    <%= render partial: 'form', locals: { read: true } %>
+  <% else %>  
+    <%= render partial: 'form', locals: { read: false } %>
+  <% end %>
 </div>

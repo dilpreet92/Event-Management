@@ -98,9 +98,8 @@ class EventsController < ApplicationController
     end
 
     def empty_search?
-      if params[:search].blank? && admin_signed_in?
-        render :js => "window.location = '/admin/events'"
-      else  
+      if params[:search].blank?
+        render :js => "window.location = '/admin/events'" if admin_signed_in?
         render :js => "window.location = '/events'"
       end
     end

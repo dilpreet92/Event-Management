@@ -5,8 +5,9 @@ class Event < ActiveRecord::Base
 
   belongs_to :user
   has_many :sessions
+  has_many :speakers, -> { where('sessions.enable = ?', true).distinct }, through: :sessions, source: :speakers
   has_many :attendes, -> { where('sessions.enable = true').distinct }, through: :sessions, source: :attendes
-  has_attached_file :logo, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/rails.jpeg"
+  has_attached_file :logo, :styles => { :medium => "1000x400<", :thumb => "300x100>" }, :default_url => "/images/:style/rails.jpeg"
   
   validates_attachment_content_type :logo, :content_type => /\Aimage\/.*\Z/
   validates :name, :address, :city, :country, :contact_number, :description, :user, :start_date, :end_date, presence: true

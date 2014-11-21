@@ -47,6 +47,7 @@ Rails.application.routes.draw do
       resources :sessions do
         member do
           get '/disable' => 'sessions#disable'
+          get '/enable' => 'sessions#enable'
         end
       end
     end

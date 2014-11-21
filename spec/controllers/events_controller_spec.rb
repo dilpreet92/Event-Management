@@ -163,27 +163,54 @@ describe EventsController do
     end
 
     context 'when no paramaters is assigned' do
-
-      before do
+      def search
         xhr :get, :search, :search => '', :format => 'js'
       end
+      context 'when admin not signed in' do
 
-      it 'should generate js response' do
-        expect(response.content_type).to eq 'text/javascript'
+        it 'should render js and redirect to events url' do
+          controller.should_receive(:redirect_to).with(events_url)
+          search
+        end
+
+        it 'should generate js response' do
+          search
+          expect(response.content_type).to eq 'text/javascript'
+        end
+
+        it 'should generate a sucessfull response' do
+          search
+          expect(response.status).to eql 200
+        end
       end
 
-      it 'should generate a sucessfull response' do
-        expect(response.status).to eql 200
-      end
+      context 'when admin signed in' do
+        before do
+          controller.stub(:admin_signed_in?).and_return(true)
+        end
+        it 'should render js and redirect to admin/events url' do
+          controller.should_receive(:redirect_to).with(events_url)
+          search
+        end
+
+        it 'should generate js response' do
+          search
+          expect(response.content_type).to eq 'text/javascript'
+        end
+
+        it 'should generate a sucessfull response' do
+          search
+          expect(response.status).to eql 200
+        end
+      end 
 
     end
 
     context 'when a query is passed as parameters' do
       
       before do
-        @rsvp = double(:rsvp)
-        Event.stub_chain(:enabled, :live_or_upcoming, :eager_load).with(:sessions).and_return(@rsvp)
-        @rsvp.stub(:search).with('dp').and_return(@events)
+        Event.stub_chain(:enabled, :live_or_upcoming, :eager_load).with(:sessions).and_return(@events)
+        @events.stub(:search).with('dp').and_return(@events)
         @events.stub(:paginate).with({:page=>nil, :per_page=>5}).and_return(@events)
         xhr :get, :search, :search => 'dp', :format => 'js'
       end

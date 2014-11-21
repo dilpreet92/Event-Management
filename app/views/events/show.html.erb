@@ -15,7 +15,7 @@
         <% else %>
           <%= link_to 'Enable', enable_events_path(id: @event), data: { confirm: 'Are you sure ?' } %>
         <% end %>
-      <% elsif admin_signed_in? %>
+      <% elsif admin_signed_in? && @event.live_or_upcoming? %>
         <% if @event.enable? %>
           <%= link_to 'Disable', disable_admin_event_path(@event), data: { confirm: 'Are you sure ?' } %>
         <% else %>
@@ -39,7 +39,11 @@
 </div>
 <div class="row wraper mtop35">
   <div class="col-md-6">
-    <h4 class="text-success"><%= pluralize(@event.sessions.enabled.count, 'Session')%><span class="text-blue"> in this Event</span></h4>
+    <% if admin_signed_in? || ( logged_in? && @event.owner?(current_user) ) %>
+      <h4 class="text-success"><%= pluralize(@event.sessions.count, 'Session')%><span class="text-blue"> in this Event</span></h4>
+    <% else %>
+      <h4 class="text-success"><%= pluralize(@event.sessions.enabled.count, 'Session')%><span class="text-blue"> in this Event</span></h4>
+    <% end %>  
   </div>
   <div class="col-md-6 text-right">
     <% if logged_in? && @event.owner?(current_user) && @event.live_or_upcoming? %>
@@ -48,14 +52,20 @@
   </div>
 </div>
 
-<% if @event.sessions.enabled.empty? %>
-  <h3 class="text-center mtop55 text-blue back-blue p5 wraper"> No sessions created yet </h3>
-<% else %>
-<div class="row wraper">
-  <% if logged_in? || admin_signed_in? %>
-    <%= render partial: 'sessions/session', collection: @event.sessions, locals: { :event => @event } %>
+<% if admin_signed_in? || ( logged_in? && @event.owner?(current_user) )  %>
+  <% if @event.sessions.empty? %>
+    <h3 class="text-center mtop55 text-blue back-blue p5 wraper"> No sessions created yet </h3>
   <% else %>
-    <%= render partial: 'sessions/session', collection: @event.sessions, locals: { :event => false } %>
+    <div class="row wraper">
+      <%= render partial: 'sessions/session', collection: @event.sessions, locals: { :event => @event } %>
+    </div>
+  <% end %>  
+<% else %>
+  <% if @event.sessions.enabled.empty? %>
+    <h3 class="text-center mtop55 text-blue back-blue p5 wraper"> No sessions created yet </h3>
+  <% else %>
+    <div class="row wraper">
+      <%= render partial: 'sessions/session', collection: @event.sessions.enabled, locals: { :event => @event } %>
+    </div>  
   <% end %>
-  </div>
 <% end %>

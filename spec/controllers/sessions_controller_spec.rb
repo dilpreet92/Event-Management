@@ -6,10 +6,10 @@ describe SessionsController do
     @user = double(:user)
     @event = double(:event)
     @session = double(:session)
-    User.stub(:find).with(1).and_return(@user)
+    #User.stub(:find).with(1).and_return(@user)
     controller.stub(:authorize_user?).and_return(true)
     controller.stub(:admin_signed_in?).and_return(false)
-    controller.stub(:current_user).and_return(@user)
+    #controller.stub(:current_user).and_return(@user)
   end
 
 
@@ -22,6 +22,12 @@ describe SessionsController do
   def set_session
     Session.stub(:where).with(:id => "10").and_return(@session)
     @session.stub(:first).and_return(@session)
+  end
+
+  def set_rsvp
+    set_session
+    @rsvp = double(:rsvp)
+    Rsvp.stub(:find_by).with(session_id: '10', user: @user)
   end
 
   describe '#callbacks' do
@@ -68,6 +74,34 @@ describe SessionsController do
         it 'should redirect to events_url with a alert message' do
           controller.should_receive(:redirect_to).with(events_url, alert: 'Event not found or disabled')
           controller.send(:set_event)
+        end
+      end
+    end
+
+    describe '#set_rsvp' do
+      context 'when found' do
+        before do
+          set_rsvp
+          session[:user_id] = 1
+          controller.params = ActionController::Parameters.new(session_id: '10')
+          #controller.send(:current_user)#.and_return(@user)
+        end
+        it 'should assign @rsvp' do
+          #debugger
+          controller.send(:set_rsvp)
+          expect(assigns[:rsvp]).to be_instance_of(Rsvp)
+        end
+      end
+
+      context 'when not found' do
+        before do
+          controller.params = ActionController::Parameters.new(session_id: '13320')
+          controller.stub(:current_user).and_return(false)
+        end
+
+        it 'should redirect to events_url with a alert message' do
+          controller.should_receive(:redirect_to).with(events_url, alert: 'Could not perform this operation')
+          controller.send(:set_rsvp)
         end
       end
     end

@@ -17,4 +17,5 @@
 //= require bootstrap.min
 //= require events
 //= require admin/users
+//= require jquery.nested-fields
 

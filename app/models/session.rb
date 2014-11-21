@@ -5,7 +5,9 @@ class Session < ActiveRecord::Base
 
   belongs_to :event
   has_many :rsvps
+  has_many :speakers
   has_many :attendes, through: :rsvps, source: :user
+  accepts_nested_attributes_for :speakers, :allow_destroy => true
 
   validates :topic, :location, :description, :event, :start_date, :end_date, presence: true
   validates :description, length: { maximum: 250 }
