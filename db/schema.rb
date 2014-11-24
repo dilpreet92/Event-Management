@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141121144802) do
+ActiveRecord::Schema.define(version: 20141124092659) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,8 +79,12 @@ ActiveRecord::Schema.define(version: 20141121144802) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "uid"
-    t.boolean  "enabled",        default: true
+    t.boolean  "enabled",                      default: true
     t.string   "twitter_name"
+    t.string   "profile_picture_file_name"
+    t.string   "profile_picture_content_type"
+    t.integer  "profile_picture_file_size"
+    t.datetime "profile_picture_updated_at"
   end
 
 end

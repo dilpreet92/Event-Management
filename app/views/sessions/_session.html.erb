@@ -69,7 +69,7 @@
                 <li><span class='hover_items'>No attendees yet</span><li>
               <% else %>
                 <% attendees.each do |attendee| %>
-                  <li><%= link_to attendee.twitter_name, "http://twitter.com/#{ attendee.twitter_name }", target: '_blank' %>
+                  <li><%= link_to attendee.name, "http://twitter.com/#{ attendee.twitter_name }", target: '_blank' %>
                   </li>
                 <% end %>
               <% end %>

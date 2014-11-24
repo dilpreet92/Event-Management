@@ -38,7 +38,7 @@ CheckEvent.prototype.bindEvents = function() {
 
 };
 
-$(document).on('ready page:load', function(){
+$(document).on('ready page:change', function(){
 
   var event = new CheckEvent();
   event.bindEvents();
