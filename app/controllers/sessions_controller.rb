@@ -13,6 +13,12 @@ class SessionsController < ApplicationController
     @session = @event.sessions.build
   end
 
+  def show
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def edit
     @session = @event.sessions.where(id: params[:id]).first
   end

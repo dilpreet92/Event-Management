@@ -1,0 +1,5 @@
+$modal = $('.modal'),
+$modalBody = $('.modal .modal-body'),
+$modalHeading = $('.modal .modal-heading');
+$modalHeading.html("<%= @session.topic %>");
+$modalBody.html("<%= @session.start_date %>");

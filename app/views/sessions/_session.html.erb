@@ -30,7 +30,7 @@
         <% end %>  
       <% end %>
       <div class="col-md-8 h4 text-blue mtop0">
-        <%= session.topic %>
+        <%= link_to session.topic, event_session_path(session.event, session), remote: true, 'data-popup' => true %>
       </div>
     </div>
     <div class="row back-blue session-info">

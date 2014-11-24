@@ -3,6 +3,9 @@ function CheckEvent() {}
 CheckEvent.prototype.bindEvents = function() {
 
   //Making pagination links work as a ajax request
+
+  $('.modal').hide();
+
   $('#results').on('click', '.pagination a', function () {
     $.get(this.href, null, null, 'script');
     return false;
@@ -24,6 +27,14 @@ CheckEvent.prototype.bindEvents = function() {
   $('.datetimepicker').datetimepicker();
 
   $('FORM').nestedFields();
+
+  $('a[data-popup]').on('click', function(e) {
+    $('.modal').show();
+  });
+
+  $('a[data-dismiss]').on('click', function() {
+    $('.modal').hide();
+  });
 
 };
 
