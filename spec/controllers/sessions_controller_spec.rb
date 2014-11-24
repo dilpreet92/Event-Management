@@ -4,12 +4,15 @@ describe SessionsController do
   
   before do
     @user = double(:user)
-    @event = double(:event)
-    @session = double(:session)
+    #@event = double(:event)
     #User.stub(:find).with(1).and_return(@user)
-    controller.stub(:authorize_user?).and_return(true)
     controller.stub(:admin_signed_in?).and_return(false)
     #controller.stub(:current_user).and_return(@user)
+  end
+
+  def set_user
+    @user = double(:user)
+    User.stub(:find).with(1).and_return(@user)
   end
 
 
@@ -20,12 +23,14 @@ describe SessionsController do
   end
 
   def set_session
+    @session = double(:session)
     Session.stub(:where).with(:id => "10").and_return(@session)
     @session.stub(:first).and_return(@session)
   end
 
   def set_rsvp
     set_session
+    set_user
     @rsvp = double(:rsvp)
     Rsvp.stub(:find_by).with(session_id: '10', user: @user)
   end
@@ -111,6 +116,9 @@ describe SessionsController do
     
     before do
       set_event
+      set_user
+      controller.stub(:current_user).and_return(@user)
+      controller.stub(:authorize_user?).and_return(true)
       @event.stub_chain(:sessions, :build).and_return(@session)
       xhr :get, :new, :event_id => "129"
     end
@@ -129,12 +137,16 @@ describe SessionsController do
     
     before do
       set_event
-      @event.stub_chain(:sessions, :where).with(:id => "10").and_return(@session)
-      @session.stub(:first).and_return(@session)
+      set_user
+      @event.stub_chain(:sessions, :where).with(:id => "10").and_return(@event)
+      @event.stub(:first).and_return(@session)
+      controller.stub(:current_user).and_return(@user)
+      controller.stub(:authorize_user?).and_return(true)
       xhr :get, :edit, :event_id => 129, :id => 10
     end
 
     it 'should render edit template' do
+      #debugger
       expect(response).to render_template :edit
     end
 
@@ -146,11 +158,10 @@ describe SessionsController do
 
   context '#create_rsvp' do
     before do
-      @rsvp = double(:rsvp)
       @event = mock_model('Event')
       set_event
       set_session
-      @user.stub(:attending?).with(@session).and_return(false)
+      controller.stub(:check_if_already_attending).and_return(false)
       @session.stub_chain(:rsvps, :build).with(:user => @user).and_return(@rsvp)
       @session.stub(:topic).and_return('dilpreet')
       @session.stub(:event).and_return(@event)

@@ -47,10 +47,10 @@
               Speaker Name<span>*</span>
             <% end %>  
             <%= t.text_field :name, class: 'form-control', :readonly => read %>
-            <%= t.label :twitter_handle %>
+            <%= t.label :twitter_handle, class: 'mtop20' %>
             <%= t.text_field :twitter_handle, class: 'form-control', :readonly => read %>
             <% if !read %>
-              <a href="#" class="remove">Remove Speaker</a>
+              <a href="#" class="remove text-orange mtop5">Remove Speaker</a>
             <% end %>  
             <%= t.hidden_field :id %>
             <%= t.hidden_field :_destroy %>
@@ -58,7 +58,7 @@
         <% end %>
       </div>
       <% if !read %>
-        <a href="#" class="add">Add Speakers</a> 
+        <a href="#" class="add text-grey mtop10">Add Speakers</a> 
       <% end %>
     </div>
     <div class="field enable-checkbox col-md-2 mtop70 text-right">
