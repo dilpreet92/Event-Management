@@ -147,7 +147,7 @@ describe User do
 
       it 'should return my past created events' do
         event.save
-        event.update_attribute(:end_date, Time.current - 1.day )
+        event.update_attribute(:end_date, Time.current - 4.day )
         expect(user.created_past_events).to include(event)
       end
 
@@ -165,7 +165,7 @@ describe User do
     context '#my_past_attended_events' do
 
       before do
-        event.update_attribute(:end_date, Time.current - 1.day )
+        event.update_attribute(:end_date, Time.current - 4.day )
         user.save
         session.save(validate: false)
         rsvp.save
