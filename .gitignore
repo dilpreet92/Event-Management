@@ -27,4 +27,4 @@ Gemfile
 Gemfile.lock
 config/database.yml
 db/schema.rb
-
+config/database.yml
