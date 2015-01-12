@@ -12,7 +12,9 @@ class Speaker < ActiveRecord::Base
       if self.profile_picture_file_name.nil?
         self.profile_picture = Client.user(self.twitter_handle).profile_image_url_https.to_s
         self.save
-      end    
+      end
+      rescue Twitter::Error::Unauthorized
+        self.profile_picture = nil
     end
 
 end
