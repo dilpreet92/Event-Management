@@ -469,6 +469,7 @@ a.create_event {
   background-position: -20px -20px;
 }
 .attend-box, .attending-box {
+  width: 64px;
   height: 64px;
   background-color: #f2f5f8;
   border-radius: 5px;
@@ -644,5 +645,21 @@ footer .container:before{
 }
 .fright .row .col-md-4 {
   padding: 0 0 0 100px;
+}
+
+/*---- Modal CSS ----*/
+
+.modal {
+  width: 600px;
+  padding: 0;
+}
+.modal .modal-header {
+  color: #999;
+  font-size: 18px;
+  line-height: 30px;
+  font-weight: 700;
+}
+.modal-attending-box {
+  padding: 20px;
 }
 
