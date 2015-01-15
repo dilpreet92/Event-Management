@@ -646,21 +646,3 @@ footer .container:before{
   padding: 0 0 0 100px;
 }
 
-/*---- Modal CSS ----*/
-
-.modal {
-  background-color: rgba(0, 0, 0, 0.8);
-}
-.modal .modal-container {
-  width: 600px;
-  background-color: #fff;
-  margin: 110px auto 0;
-  border-radius: 5px;
-  min-height: 200px;
-}
-.modal .modal-container .modal-header {
-  color: #999;
-  font-size: 18px;
-  line-height: 30px;
-  font-weight: 700;
-}

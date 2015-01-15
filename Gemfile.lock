@@ -122,9 +122,16 @@ GEM
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
     jquery-datetimepicker-rails (2.3.9.0)
+    jquery-modal-rails (0.0.4)
+      jquery-ui-rails
+      railties (>= 3.2.0, < 5.0)
+      thor (~> 0.14)
+      uuidtools
     jquery-rails (3.1.2)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
+    jquery-ui-rails (5.0.3)
+      railties (>= 3.2.16)
     json (1.8.1)
     libv8 (3.16.14.7)
     mail (2.6.3)
@@ -261,6 +268,7 @@ GEM
       json (>= 1.8.0)
     unicode_utils (1.4.0)
     uniform_notifier (1.6.2)
+    uuidtools (2.1.5)
     warden (1.2.3)
       rack (>= 1.0)
     will_paginate (3.0.7)
@@ -290,7 +298,9 @@ DEPENDENCIES
   faker
   jbuilder (~> 2.0)
   jquery-datetimepicker-rails
+  jquery-modal-rails
   jquery-rails
+  jquery-ui-rails
   omniauth
   omniauth-twitter
   paperclip (~> 4.2)

@@ -18,4 +18,5 @@
 //= require events
 //= require admin/users
 //= require jquery.nested-fields
+//= require jquery.modal
 

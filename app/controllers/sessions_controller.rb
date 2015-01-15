@@ -2,7 +2,7 @@ class SessionsController < ApplicationController
 
   before_action :set_session, only: [:show, :update, :destroy, :disable, :enable]
   #skip authentication when admin is signed in
-  before_action :authenticate, unless: :admin_signed_in?
+  before_action :authenticate, unless: :admin_signed_in?, except: :show
   before_action :set_event, only: [:new, :edit, :create, :update, :disable, :enable]
   before_action :set_rsvp, only: [:destroy_rsvp]
   before_action :check_if_already_attending, only: [:create_rsvp]
@@ -15,6 +15,7 @@ class SessionsController < ApplicationController
 
   def show
     respond_to do |format|
+      format.html
       format.js
     end
   end

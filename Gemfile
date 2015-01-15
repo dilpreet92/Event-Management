@@ -18,6 +18,8 @@ end
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
+gem 'jquery-modal-rails'
 gem 'awesome_nested_fields'
 gem 'turbolinks'
 gem "paperclip", "~> 4.2"
