@@ -137,6 +137,11 @@ a:hover, a:active, a:focus {
 .pr0 {
   padding-right: 0;
 }
+.pl0 {
+  padding-left: 0;
+}.pl35 {
+  padding-left: 35px;
+}
 .fw400 {
   font-weight: 400;
 }
@@ -651,6 +656,7 @@ footer .container:before{
 
 .modal {
   width: 600px;
+  min-height: 600px;
   padding: 0;
 }
 .modal .modal-header {
@@ -661,5 +667,9 @@ footer .container:before{
 }
 .modal-attending-box {
   padding: 20px;
+}
+.modal-attending-box .attend-box,
+.modal-attending-box .attending-box {
+  margin-left: 5px;
 }
 

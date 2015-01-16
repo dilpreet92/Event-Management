@@ -41,68 +41,33 @@
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-2 text-blue h6">
+  <div class="row mtop10">
+    <div class="col-md-2 text-blue">
       <span class="sprite date"></span>
       <%= @session.start_date.strftime('%d %b') %>
     </div>
-    <div class="col-md-10 text-blue h6 pr0">
+    <div class="col-md-10 text-blue pl0">
       <span class="sprite clock"></span>
       <%= @session.start_date.strftime('%I:%M %P -') %>
       <%= @session.end_date.strftime('%I:%M %P') %>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-12 text-blue h6 mtop0">
+  <div class="row mtop5">
+    <div class="col-md-12 text-blue">
       <span class="sprite location"></span>
     <%= @session.location %>
     </div>
   </div>
 </div>
-
-
-
-
-
-
-
-
 <div class="row back-blue session-info">
-  <div class="col-md-5 text-blue h6 mtop0 pr0">
-    <span class="dropdown event-dropdown">
-      <% speakers = @session.speakers %>
-      <a href="#" ><%= pluralize(speakers.count, 'Speaker') %><span class="caret"></span></a>
-        <ul class="dropdown-menu" role="menu">
-          <% if speakers.count.zero? %>
-            <li><span class='hover_items'>No speakers</span><li>
-          <% else %>
-            <% speakers.each do |speaker| %>
-            <li><span class='hover_items'><%= link_to speaker.name, "http://twitter.com/#{ speaker.twitter_handle }", target: '_blank' %></span></li>
-            <% end %>
-          <% end %>
-        </ul>
-    </span>
+  <div class="col-md-12 text-blue h4 pl35">
+    Speakers
+    <span class="text-grey h6">(12)</span>
   </div>
 </div>
-
-
-
-
-<div class="row back-blue session-info">
-  <div class="col-md-7 text-blue h6 mtop0">
-      <span class="dropdown event-dropdown">
-        <% attendees = @session.attendes %>
-        <a href="#" ><%= pluralize(attendees.count, 'Attendee') %><span class="caret"></span></a>
-        <ul class="dropdown-menu" role="menu">
-          <% if attendees.empty? %>
-            <li><span class='hover_items'>No attendees yet</span><li>
-          <% else %>
-            <% attendees.each do |attendee| %>
-              <li><%= link_to attendee.name, "http://twitter.com/#{ attendee.twitter_name }", target: '_blank' %>
-              </li>
-            <% end %>
-          <% end %>
-        </ul>
-      </span>
+<div class="row back-blue session-info mtop20">
+  <div class="col-md-12 text-blue h4 pl35">
+    Attendees
+    <span class="text-grey h6">(210)</span>
   </div>
 </div>
