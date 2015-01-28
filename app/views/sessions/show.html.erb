@@ -26,6 +26,8 @@
             </div>
           </div>
         <% end %>
+      <% else %>
+        <h5> Session expired </h5>
       <% end %>
     </div>
     <div class="col-md-10">
@@ -62,12 +64,29 @@
 <div class="row back-blue session-info">
   <div class="col-md-12 text-blue h4 pl35">
     Speakers
-    <span class="text-grey h6">(12)</span>
+    <span class="text-grey h6">(
+      <% speakers = @session.speakers %>
+      <%= speakers.count %>
+      )</span>
   </div>
 </div>
+<div class='speaker_name_and_handle'>
+  <% speakers.each do |speaker| %>
+    <%= speaker.name %>
+    <%= speaker.twitter_handle %>
+  <% end %>  
+</div> 
 <div class="row back-blue session-info mtop20">
   <div class="col-md-12 text-blue h4 pl35">
     Attendees
-    <span class="text-grey h6">(210)</span>
+    <span class="text-grey h6">(
+      <% attendes = @session.attendes %>
+      <%= attendes.count %>
+      )</span>
   </div>
 </div>
+<div class='attendes_images'>
+  <% attendes.each do |attendee| %>
+    <%= link_to image_tag(attendee.profile_picture(:thumb)), "http://twitter.com/#{ attendee.twitter_name }", target: '_blank' %>
+  <% end %>
+<div>
