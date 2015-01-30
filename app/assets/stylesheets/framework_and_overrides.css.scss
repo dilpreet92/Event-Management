@@ -116,6 +116,9 @@ a:hover, a:active, a:focus {
 .mtop10 {
   margin-top: 10px !important;
 }
+.mtop15 {
+  margin-top: 15px !important;
+}
 .mtop20 {
   margin-top: 20px !important;
 }
@@ -656,7 +659,7 @@ footer .container:before{
 
 .modal {
   width: 600px;
-  min-height: 600px;
+  height: 600px;
   padding: 0;
 }
 .modal .modal-header {
@@ -671,5 +674,13 @@ footer .container:before{
 .modal-attending-box .attend-box,
 .modal-attending-box .attending-box {
   margin-left: 5px;
+}
+.speaker_name_and_handle .h4,
+.speaker_name_and_handle .h5 {
+  margin: 0;
+}
+.attendes_images a {
+  width: 5%;
+  float: left;
 }
 

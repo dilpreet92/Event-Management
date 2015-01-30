@@ -70,12 +70,22 @@
       )</span>
   </div>
 </div>
-<div class='speaker_name_and_handle'>
+<div class='speaker_name_and_handle row'>
   <% speakers.each do |speaker| %>
-    <%= speaker.name %>
-    <%= speaker.twitter_handle %>
-  <% end %>  
-</div> 
+  <div class="col-md-4 mtop15">
+      <div class="col-md-4">
+      </div>
+      <div class="col-md-8 mtop5">
+        <div class="text-blue h4">
+          <%= speaker.name %>
+        </div>
+        <div class="text-grey h5">
+          <%= speaker.twitter_handle %>
+        </div>
+    </div>
+  </div>
+  <% end %>
+</div>
 <div class="row back-blue session-info mtop20">
   <div class="col-md-12 text-blue h4 pl35">
     Attendees
@@ -85,7 +95,7 @@
       )</span>
   </div>
 </div>
-<div class='attendes_images'>
+<div class='attendes_images col-md-12 mtop15'>
   <% attendes.each do |attendee| %>
     <%= link_to image_tag(attendee.profile_picture(:thumb)), "http://twitter.com/#{ attendee.twitter_name }", target: '_blank' %>
   <% end %>
